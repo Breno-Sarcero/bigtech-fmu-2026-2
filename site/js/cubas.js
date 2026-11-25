@@ -89,7 +89,7 @@
   function serieSimulada() {
     const s = []; let nivel = 100;
     for (let i = 0; i < N; i++) {
-      const t = i * PASSO, demanda = Math.exp(-((t - 100) ** 2) / (2 * 32 * 32));   // pico às 12h40
+      const t = i * PASSO, demanda = Math.exp(-((t - 100) ** 2) / (2 * 44 * 44));   // pico às 12h40, mesma curva da fila
       const ruido = ((i * 37) % 7 - 3) * 0.4;
       nivel = Math.max(0, nivel - (0.6 + 11.4 * demanda) + ruido);
       if (nivel <= 22) nivel = 100;                          // alguém repôs a cuba

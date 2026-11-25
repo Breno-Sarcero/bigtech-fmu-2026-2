@@ -5,7 +5,7 @@
 (function (root) {
   const WINDOW = 210;          // minutos simulados: 11h00 a 14h30
   const PEAK_AT = 100;         // 12h40
-  const SIGMA = 32;            // largura do pico, em minutos
+  const SIGMA = 44;            // largura do pico, em minutos: põe ~76% das chegadas entre 11h50 e 13h30 (estimativa da equipe: 70–80%)
   const PEAK_FROM = 50, PEAK_TO = 150;   // 11h50 a 13h30
 
   function rng(seed) {         // mulberry32: determinístico, bom o bastante para simulação
@@ -47,9 +47,10 @@
     const BIN = 5, nb = WINDOW / BIN;
     const sumW = new Array(nb).fill(0), cntW = new Array(nb).fill(0);
     const occSum = new Array(WINDOW + 120).fill(0);
-    let peakWaits = [];
+    let peakWaits = [], totalArr = 0;
     for (let k = 0; k < replicas; k++) {
       const { arr, waits, occ } = once(p, 1000 + k);
+      totalArr += arr.length;
       for (let i = 0; i < arr.length; i++) {
         const b = Math.min(nb - 1, Math.floor(arr[i] / BIN));
         sumW[b] += waits[i]; cntW[b]++;
@@ -63,7 +64,7 @@
     const mean = peakWaits.length ? peakWaits.reduce((a, b) => a + b, 0) / peakWaits.length : 0;
     const p90 = peakWaits.length ? peakWaits[Math.floor(peakWaits.length * 0.9)] : 0;
     let occMax = 0, occAt = 0; ocup.forEach((v, i) => { if (v > occMax) { occMax = v; occAt = i; } });
-    return { BIN, espera, ocup, mediaPico: mean, p90Pico: p90, ocupMax: occMax, ocupMaxEm: occAt };
+    return { BIN, espera, ocup, mediaPico: mean, p90Pico: p90, ocupMax: occMax, ocupMaxEm: occAt, shareNoPico: totalArr ? peakWaits.length / totalArr : 0 };
   }
 
   const api = { simulate, WINDOW, PEAK_FROM, PEAK_TO };
