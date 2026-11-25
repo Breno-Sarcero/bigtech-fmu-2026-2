@@ -14,25 +14,21 @@
   const alertsBox = document.getElementById('alerts');
   const $ = id => document.getElementById(id);
 
+  // Regras fixas da demo: alerta de atendimento (min), mesa suja (min), tempo de garçom na mesa (s reais).
+  // A velocidade do relógio é acelerada para caber num vídeo curto: 30x no roteiro simulado, 8x em vídeo real.
   const cfg = { thr: 2, dirty: 5, speed: 30, waiterSecs: 2 };
-  [['thr', 'thrOut', v => v.toFixed(1).replace('.', ',')], ['dirty', 'dirtyOut', v => v], ['speed', 'speedOut', v => v]].forEach(([id, out, fmt]) => {
-    const el = $(id);
-    const upd = () => { cfg[id] = +el.value; $(out).textContent = fmt(+el.value); };
-    el.addEventListener('input', upd); upd();
-  });
+  const SPEED_SIM = 30, SPEED_REAL = 8, UNI_TOL = 60;
 
   let source = 'none';       // none | video | image | cam | sim
   let imageEl = null, model = null, modelLoading = false;
   let zones = [], vt = 0, lastTs = performance.now(), lastDetect = 0, lastDetectTs = 0;
   let dets = [];              // detecções desenhadas: {cls, x, y, w, h, score, role}
   let drag = null, nextId = 1, picking = false;
-  let uniform = hexToRgb($('uni').value), tol = +$('uniTol').value;
+  let uniform = hexToRgb($('uni').value), tol = UNI_TOL;
 
   function hexToRgb(h) { return [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)); }
   const rgbToHex = c => '#' + c.map(v => Math.round(v).toString(16).padStart(2, '0')).join('');
   $('uni').addEventListener('input', e => { uniform = hexToRgb(e.target.value); });
-  $('uniTol').addEventListener('input', e => { tol = +e.target.value; $('uniTolOut').textContent = tol; });
-  $('uniTolOut').textContent = tol;
   $('uniPick').addEventListener('click', () => { picking = true; hint.textContent = 'Clique sobre a camisa de um garçom no vídeo para copiar a cor do uniforme.'; });
 
   const hooks = { log };
@@ -56,8 +52,7 @@
   }
 
   // ---------- fontes ----------
-  function setMode(m, label) { source = m; modePill.textContent = label; modePill.className = 'pill ' + (m === 'sim' ? 'sim' : m === 'none' ? '' : 'real'); setSpeed(m === 'sim' ? 30 : 6); }
-  function setSpeed(v) { cfg.speed = v; $('speed').value = v; $('speedOut').textContent = v; }
+  function setMode(m, label) { source = m; modePill.textContent = label; modePill.className = 'pill ' + (m === 'sim' ? 'sim' : m === 'none' ? '' : 'real'); cfg.speed = m === 'sim' ? SPEED_SIM : SPEED_REAL; }
   function stopMedia() {
     if (video.srcObject) { video.srcObject.getTracks().forEach(t => t.stop()); video.srcObject = null; }
     video.pause(); video.removeAttribute('src'); video.load(); imageEl = null; dets = [];

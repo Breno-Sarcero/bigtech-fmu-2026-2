@@ -75,11 +75,10 @@ nav.top a:hover { color: var(--text); }
 /* "invisível." tem um contorno fantasma sempre visível; o preenchimento é revelado por cima */
 #hero h1 .inv { position: relative; color: var(--ember); }
 #hero h1 .inv::before { content: attr(data-t); position: absolute; left: 0; top: 0; color: transparent; -webkit-text-stroke: 1.5px rgba(255, 90, 31, .45); }
-.hidden-metrics { position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  -webkit-mask-image: radial-gradient(circle 210px at var(--mx) var(--my), #000 0%, rgba(0,0,0,.85) 35%, transparent 100%);
-          mask-image: radial-gradient(circle 210px at var(--mx) var(--my), #000 0%, rgba(0,0,0,.85) 35%, transparent 100%); }
-.hidden-metrics span { position: absolute; font-size: clamp(.8rem, 1.5vw, 1.05rem); letter-spacing: .12em; text-transform: uppercase; color: var(--ember-2); white-space: nowrap; }
-@media (prefers-reduced-motion: reduce) { .hidden-metrics { -webkit-mask-image: none; mask-image: none; opacity: .22; } }
+/* métricas escondidas: acendem e apagam sozinhas (animação em main.js), sem depender do mouse */
+.hidden-metrics { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.hidden-metrics span { position: absolute; font-size: clamp(.8rem, 1.5vw, 1.05rem); letter-spacing: .12em; text-transform: uppercase; color: var(--ember-2); white-space: nowrap; opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .hidden-metrics span { opacity: .3; } }
 .cta { display: flex; flex-wrap: wrap; gap: 24px; align-items: center; justify-content: space-between; margin-top: 28px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 30px; }
 .cta p { margin: 6px 0 0; max-width: 560px; font-size: .95rem; }
 .cta-btns { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -146,6 +145,13 @@ input[type=number], input[type=text] { width: 100%; background: #120f0d; border:
 .alerts div { padding: 6px 10px; border-left: 3px solid var(--bad); background: rgba(255,77,77,.06); margin-bottom: 6px; border-radius: 0 8px 8px 0; }
 .alerts div.ok { border-color: var(--ok); background: rgba(61,220,132,.06); }
 .note { font-size: .82rem; color: #8a8176; border-left: 2px solid var(--line); padding-left: 12px; margin-top: 14px; }
+
+/* regras fixas mostradas no lugar de controles ajustáveis */
+.rules { font-size: .9rem; margin: 0 0 14px; }
+.rules b { color: var(--text); }
+.facts { list-style: none; margin: 0 0 14px; padding: 0; display: grid; gap: 8px; font-size: .92rem; color: var(--muted); }
+.facts b { color: var(--text); font-size: 1.1rem; margin-right: 6px; }
+.facts span { font-size: .8rem; color: #8a8176; }
 
 /* gráficos */
 .chart { width: 100%; height: 220px; display: block; background: #120f0d; border-radius: 12px; border: 1px solid var(--line); }

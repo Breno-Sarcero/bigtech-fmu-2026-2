@@ -4,6 +4,8 @@
 (function () {
   const $ = id => document.getElementById(id);
   const S = 560;
+  // Valores fixos de exemplo (não ajustáveis na página): peso lido na balança, parte do prato analisada e limite de carne.
+  const PESO_G = 520, RAIO_PCT = 92, LIMITE_CARNE = 45;
   const canvas = $('pratoCanvas'), ctx = canvas.getContext('2d', { willReadFrequently: true });
   const base = document.createElement('canvas'); base.width = base.height = S;
   const bctx = base.getContext('2d', { willReadFrequently: true });
@@ -34,9 +36,8 @@
   }
 
   function analyze() {
-    const raio = +$('pRaio').value / 100 * S / 2;
-    const peso = +$('pPeso').value, limCarne = +$('pCarne').value;
-    $('pPesoOut').textContent = peso; $('pRaioOut').textContent = $('pRaio').value; $('pCarneOut').textContent = limCarne;
+    const raio = RAIO_PCT / 100 * S / 2;
+    const peso = PESO_G, limCarne = LIMITE_CARNE;
     const img = bctx.getImageData(0, 0, S, S), out = ctx.createImageData(S, S);
     const cnt = [0, 0, 0, 0]; let inside = 0;
     const cx = S / 2, cy = S / 2;
@@ -102,6 +103,5 @@
     analyze();
   }
   $('pratoGen').addEventListener('click', sample);
-  ['pPeso', 'pRaio', 'pCarne'].forEach(id => $(id).addEventListener('input', analyze));
   sample();
 })();
