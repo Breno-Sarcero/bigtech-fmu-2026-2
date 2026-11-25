@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visão do Salão — Bovinu's Grill & Beer · Hackathon Tech FMU 2026.2</title>
+<meta name="description" content="Câmeras que a casa já tem + visão computacional: mesas atendidas a tempo, mix do prato sob controle e fila previsível. Proposta acadêmica para a Bovinu's Augusta.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ff5a1f'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%230b0a09'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="progress"></div>
+<nav class="top">
+  <b>Visão do Salão <span style="color:var(--ember)">·</span> Bovinu's</b>
+  <ul>
+    <li><a href="#problema">Problema</a></li>
+    <li><a href="#solucao">Solução</a></li>
+    <li><a href="#mesas">Mesas</a></li>
+    <li><a href="#fila">Fila</a></li>
+    <li><a href="#prato">Prato</a></li>
+    <li><a href="#arquitetura">Instalação</a></li>
+    <li><a href="#roi">Custo</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="glow"></div><div class="glow b"></div>
+  <div class="wrap">
+    <span class="pill" id="heroPill">Hackathon Tech FMU 2026.2 · Projeto acadêmico</span>
+    <h1 style="margin-top:26px">
+      <span class="line"><span>O salão</span></span>
+      <span class="line"><span class="grad">passa a enxergar.</span></span>
+    </h1>
+    <p class="lead" style="margin-top:28px" id="heroLead">
+      Usamos as câmeras Intelbras que a Bovinu's Augusta já tem para avisar o metre quando uma mesa espera demais,
+      mostrar o mix real do prato e prever a fila — sem trocar nenhum sistema e sem mexer em pagamento, balança ou cozinha.
+    </p>
+  </div>
+  <div class="scroll-cue">role<i></i></div>
+</section>
+
+<!-- PROBLEMA -->
+<section id="problema">
+  <div class="wrap">
+    <span class="eyebrow reveal">O contexto</span>
+    <h2 class="reveal">Um quilo que <span class="grad">roda no limite</span> no horário de pico.</h2>
+    <div class="stats">
+      <div class="stat reveal"><div class="n" data-count="600">0</div><div class="l">clientes por dia, de segunda a sexta</div></div>
+      <div class="stat reveal"><div class="n" data-count="450">0</div><div class="l">lugares no salão</div></div>
+      <div class="stat reveal"><div class="n"><span data-count="4">0</span> min</div><div class="l">fila da churrasqueira — o ideal é 2,5 min</div></div>
+      <div class="stat reveal"><div class="n">11h50</div><div class="l">às 13h30: o pico que decide a experiência</div></div>
+    </div>
+    <p class="src reveal">Números informados pela empresa durante o evento do hackathon. Nada aqui foi medido por nós.</p>
+
+    <div class="pains">
+      <div class="pain reveal"><span class="tag">Dor 1 · a mais crítica</span><h3>Mix do prato</h3><p>O peso sozinho esconde o que está no prato: o cliente troca peso por calda e água e a margem some.</p></div>
+      <div class="pain reveal"><span class="tag">Dor 2</span><h3>Filas e tempo</h3><p>Fila da churrasqueira acima do ideal e mesa sem atendimento no meio do pico.</p></div>
+      <div class="pain reveal"><span class="tag">Dor 3</span><h3>Limpeza do salão</h3><p>Mesa que sai e demora a ser limpa trava a próxima família e piora a avaliação.</p></div>
+      <div class="pain reveal"><span class="tag">Dor 4</span><h3>Qualidade da comida</h3><p>A reposição das cubas é feita no olho; falta dado de qual item acaba e quando.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUÇÃO (pinada) -->
+<section id="solucao">
+  <div class="pin">
+    <div class="steps">
+      <div class="step"><div class="big">01</div><h3>Mesas com relógio</h3><p>A câmera vê a mesa ocupada. Se ninguém atende em 1–2 minutos (configurável), o metre da praça recebe o alerta. Mesa que saiu e não foi limpa também avisa.</p></div>
+      <div class="step"><div class="big">02</div><h3>Mix do prato</h3><p>Uma foto no momento da pesagem mostra a proporção de carne, carboidrato, salada e sobremesa — junto do peso que o sistema já registra.</p></div>
+      <div class="step"><div class="big">03</div><h3>Buffet que se avisa</h3><p>Câmera sobre as cubas conta reposições e mostra o que mais sai e o que acaba cedo, hora a hora.</p></div>
+      <div class="step"><div class="big">04</div><h3>Avaliação sem atrito</h3><p>QR code na mesa, junto aos guardanapos, abre direto a avaliação no Google. Sem brinde, como a política do Google exige.</p></div>
+    </div>
+    <div class="visual">
+      <svg viewBox="0 0 400 300" aria-hidden="true">
+        <g class="vis" id="v1">
+          <rect x="40" y="70" width="90" height="60" rx="8" fill="none" stroke="#3ddc84" stroke-width="3"/>
+          <rect x="150" y="70" width="90" height="60" rx="8" fill="none" stroke="#ff4d4d" stroke-width="3"/>
+          <rect x="260" y="70" width="90" height="60" rx="8" fill="none" stroke="#ffb02e" stroke-width="3"/>
+          <rect x="40" y="170" width="90" height="60" rx="8" fill="none" stroke="#3ddc84" stroke-width="3"/>
+          <rect x="150" y="170" width="90" height="60" rx="8" fill="none" stroke="#5ab0ff" stroke-width="3"/>
+          <circle cx="195" cy="100" r="8" fill="#ff4d4d"/><circle cx="305" cy="100" r="8" fill="#ffb02e"/>
+          <text x="200" y="50" text-anchor="middle" fill="#f4efe8" font-size="14">3 mesas pedem atenção</text>
+        </g>
+        <g class="vis" id="v2">
+          <circle cx="200" cy="150" r="100" fill="#1b1714" stroke="#2b2520" stroke-width="3"/>
+          <path d="M200 150 L200 50 A100 100 0 0 1 280 210 Z" fill="#8a4b2a"/>
+          <path d="M200 150 L280 210 A100 100 0 0 1 130 235 Z" fill="#e9c46a"/>
+          <path d="M200 150 L130 235 A100 100 0 0 1 100 110 Z" fill="#3dae6a"/>
+          <path d="M200 150 L100 110 A100 100 0 0 1 200 50 Z" fill="#c05680"/>
+        </g>
+        <g class="vis" id="v3">
+          <g fill="#2a231d" stroke="#2b2520"><rect x="30" y="90" width="80" height="60" rx="6"/><rect x="130" y="90" width="80" height="60" rx="6"/><rect x="230" y="90" width="80" height="60" rx="6"/><rect x="330" y="90" width="50" height="60" rx="6"/></g>
+          <rect x="40" y="130" width="60" height="12" fill="#8a4b2a"/><rect x="140" y="110" width="60" height="32" fill="#e9c46a"/><rect x="240" y="136" width="60" height="6" fill="#3dae6a"/>
+          <text x="200" y="190" text-anchor="middle" fill="#ffb02e" font-size="14">cuba 3: repor</text>
+        </g>
+        <g class="vis" id="v4">
+          <rect x="130" y="60" width="140" height="180" rx="14" fill="#fff"/>
+          <g fill="#111"><rect x="150" y="80" width="40" height="40"/><rect x="210" y="80" width="40" height="40"/><rect x="150" y="140" width="40" height="40"/><rect x="210" y="150" width="20" height="20"/><rect x="236" y="176" width="14" height="14"/><rect x="170" y="196" width="60" height="14"/></g>
+          <text x="200" y="262" text-anchor="middle" fill="#f4efe8" font-size="13">★★★★★ avalie a sua visita</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO MESAS -->
+<section id="mesas">
+  <div class="wrap">
+    <span class="eyebrow reveal">Módulo 1 · demo</span>
+    <h2 class="reveal">Mesa esperando? <span class="grad">O metre sabe.</span></h2>
+    <p class="lead reveal">Suba um vídeo ou foto do salão e desenhe as mesas com o mouse. Um detector de pessoas roda <b>no seu navegador</b> e a regra de estados faz o resto. Sem vídeo? Use o modo simulado.</p>
+
+    <div class="panel reveal">
+      <div class="toolbar">
+        <label class="btn" for="mesaFile">Enviar vídeo ou foto</label>
+        <input id="mesaFile" type="file" accept="video/*,image/*">
+        <button id="mesaCam">Usar webcam</button>
+        <button id="mesaSim" class="primary">Modo simulado</button>
+        <button id="mesaClear">Limpar mesas</button>
+        <span class="pill" id="mesaMode">nenhuma fonte</span>
+      </div>
+      <div class="demo-grid">
+        <div>
+          <div class="stage">
+            <video id="mesaVideo" playsinline muted loop></video>
+            <canvas id="mesaCanvas" width="960" height="540"></canvas>
+            <div class="hint" id="mesaHint">Escolha uma fonte e arraste sobre a imagem para marcar cada mesa.</div>
+          </div>
+          <p class="note">Detecção real: modelo COCO-SSD (TensorFlow.js) contando pessoas dentro de cada mesa. O modelo é baixado uma vez ao ligar a demo e roda localmente: nenhuma imagem sai do seu computador. Distinguir garçom de cliente exige um modelo treinado na fase 2; aqui o botão <b>"Garçom atendeu"</b> representa esse sinal.</p>
+        </div>
+        <div>
+          <div class="ctrl"><span>Alerta de atendimento após <output id="thrOut">2,0</output> min</span><input id="thr" type="range" min="0.5" max="5" step="0.5" value="2"></div>
+          <div class="ctrl"><span>Mesa suja sem limpar após <output id="dirtyOut">5</output> min</span><input id="dirty" type="range" min="2" max="15" step="1" value="5"></div>
+          <div class="ctrl"><span>Velocidade do relógio da demo <output id="speedOut">30</output>×</span><input id="speed" type="range" min="1" max="120" step="1" value="30"></div>
+          <div class="zones" id="zones"></div>
+          <div class="alerts" id="alerts"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO FILA -->
+<section id="fila" style="background:var(--bg-2)">
+  <div class="wrap">
+    <span class="eyebrow reveal">Módulo 2 · simulador</span>
+    <h2 class="reveal">A fila, <span class="grad">antes de virar fila.</span></h2>
+    <p class="lead reveal">TI não muda o layout do buffet, mas pode prever o pico e mostrar a lotação. Mexa nos parâmetros e veja a espera e a ocupação do salão ao longo do almoço.</p>
+    <div class="panel reveal">
+      <div class="demo-grid">
+        <div>
+          <div class="kpis" id="filaKpis"></div>
+          <canvas class="chart" id="chartFila" width="900" height="260"></canvas>
+          <p class="note" style="margin-bottom:10px">Espera média na churrasqueira (laranja) e meta de 2,5 min (tracejado).</p>
+          <canvas class="chart" id="chartOcup" width="900" height="260"></canvas>
+          <p class="note">Ocupação do salão (azul) e capacidade de 450 lugares (tracejado).</p>
+        </div>
+        <div>
+          <span class="pill sim" style="margin-bottom:14px">SIMULADO · não é medição</span>
+          <div class="ctrl"><span>Clientes no dia <output id="fNOut">600</output></span><input id="fN" type="range" min="200" max="900" step="10" value="600"></div>
+          <div class="ctrl"><span>Churrasqueiros atendendo <output id="fCOut">4</output></span><input id="fC" type="range" min="2" max="8" step="1" value="4"></div>
+          <div class="ctrl"><span>Tempo por atendimento <output id="fSOut">50</output> s</span><input id="fS" type="range" min="15" max="90" step="1" value="50"></div>
+          <div class="ctrl"><span>Clientes que vão à churrasqueira <output id="fPOut">80</output>%</span><input id="fP" type="range" min="30" max="100" step="5" value="80"></div>
+          <div class="ctrl"><span>Permanência na mesa <output id="fTOut">40</output> min</span><input id="fT" type="range" min="20" max="75" step="5" value="40"></div>
+          <button id="fRun" class="primary">Recalcular</button>
+          <p class="note">Calibração: o tempo por atendimento foi ajustado para reproduzir os ~4 min de espera relatados no pico. As demais premissas (distribuição de chegadas, permanência) são hipóteses nossas e devem ser medidas na fase 0.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO PRATO -->
+<section id="prato">
+  <div class="wrap">
+    <span class="eyebrow reveal">Módulo 3 · demo</span>
+    <h2 class="reveal">O que o peso <span class="grad">não conta.</span></h2>
+    <p class="lead reveal">Suba a foto de um prato ou gere um prato de exemplo. A página separa as cores do prato em categorias e distribui o peso informado.</p>
+    <div class="panel reveal">
+      <div class="toolbar">
+        <label class="btn" for="pratoFile">Enviar foto do prato</label>
+        <input id="pratoFile" type="file" accept="image/*">
+        <button id="pratoGen" class="primary">Gerar prato de exemplo</button>
+        <span class="pill real">heurística de cor · roda no navegador</span>
+      </div>
+      <div class="demo-grid">
+        <div class="stage" style="aspect-ratio:1/1;max-width:560px"><canvas id="pratoCanvas" width="560" height="560"></canvas></div>
+        <div>
+          <div class="ctrl"><span>Peso na balança <output id="pPesoOut">520</output> g</span><input id="pPeso" type="range" min="200" max="1200" step="10" value="520"></div>
+          <div class="ctrl"><span>Raio do prato considerado <output id="pRaioOut">92</output>%</span><input id="pRaio" type="range" min="50" max="100" step="1" value="92"></div>
+          <div class="ctrl"><span>Alertar se carne passar de <output id="pCarneOut">45</output>%</span><input id="pCarne" type="range" min="20" max="80" step="1" value="45"></div>
+          <div class="mixbar" id="mixbar"></div>
+          <div class="legend" id="mixlegend"></div>
+          <div class="alerts" id="pratoAlert"></div>
+          <p class="note">Limite honesto: a área na foto <b>não é volume nem densidade</b>. Arroz branco em prato branco confunde a heurística. Em produção entra um modelo de segmentação treinado e, de preferência, prato maior e raso para melhorar a leitura. O limite de 45% é um exemplo, não regra da casa.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AVALIAÇÃO -->
+<section id="avaliacao" style="background:var(--bg-2)">
+  <div class="wrap" style="display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center">
+    <div>
+      <span class="eyebrow reveal">Módulo 4</span>
+      <h2 class="reveal">Um QR. <span class="grad">Uma avaliação.</span></h2>
+      <p class="lead reveal">O código fica na mesa, junto aos guardanapos, e abre direto a avaliação no Google. Alternativa: adesivo com QR mais plaquinha NFC. Sem brinde por avaliação.</p>
+      <div class="ctrl" style="max-width:420px"><span>ID do local no Google (Place ID)</span><input type="text" id="placeId" value="SEU_PLACE_ID_AQUI"></div>
+      <p class="note">O ID real da Bovinu's Augusta precisa ser obtido pela própria casa. Cole o seu e o QR se atualiza.</p>
+    </div>
+    <div style="display:grid;place-items:center">
+      <div class="qr-card reveal"><div id="qr"></div><p><b>Gostou do almoço?</b><br>Avalie em 10 segundos</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ARQUITETURA -->
+<section id="arquitetura">
+  <div class="wrap">
+    <span class="eyebrow reveal">Como instalar</span>
+    <h2 class="reveal">Em cima do que <span class="grad">já existe.</span></h2>
+    <p class="lead reveal">Nenhum sistema é trocado. A visão roda ao lado, lê o vídeo das câmeras e entrega alertas e números num painel no celular do metre.</p>
+    <svg class="arch reveal" viewBox="0 0 1100 280" role="img" aria-label="Diagrama: câmeras Intelbras enviam vídeo por RTSP ao nó de IA, que gera eventos para o painel do metre; o JS Softcom contribui com comandas.">
+      <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ff5a1f"/></marker></defs>
+      <g font-size="15" fill="#f4efe8" text-anchor="middle">
+        <rect x="20" y="40" width="200" height="80" rx="14" fill="#1b1714" stroke="#2b2520"/><text x="120" y="76">Câmeras Intelbras</text><text x="120" y="98" fill="#a89f94" font-size="12">já instaladas</text>
+        <rect x="320" y="40" width="220" height="80" rx="14" fill="#1b1714" stroke="#ff5a1f"/><text x="430" y="76">Nó de IA (borda)</text><text x="430" y="98" fill="#a89f94" font-size="12">mini-PC na rede da loja</text>
+        <rect x="640" y="40" width="200" height="80" rx="14" fill="#1b1714" stroke="#2b2520"/><text x="740" y="76">Eventos e regras</text><text x="740" y="98" fill="#a89f94" font-size="12">mesa · prato · cuba</text>
+        <rect x="920" y="40" width="160" height="80" rx="14" fill="#1b1714" stroke="#2b2520"/><text x="1000" y="76">Painel do metre</text><text x="1000" y="98" fill="#a89f94" font-size="12">PWA no celular</text>
+        <rect x="320" y="170" width="220" height="80" rx="14" fill="#1b1714" stroke="#2b2520"/><text x="430" y="206">JS Softcom (local)</text><text x="430" y="228" fill="#a89f94" font-size="12">comandas · peso · CSV</text>
+        <rect x="640" y="170" width="200" height="80" rx="14" fill="#14110f" stroke="#5a4a3a" stroke-dasharray="6 5"/><text x="740" y="206">Nuvem (rota A)</text><text x="740" y="228" fill="#a89f94" font-size="12">API de visão paga</text>
+      </g>
+      <g stroke="#ff5a1f" stroke-width="2" fill="none" marker-end="url(#ar)">
+        <path d="M220 80H318"/><path d="M540 80H638"/><path d="M840 80H918"/><path d="M430 168V122"/><path d="M540 190Q590 190 590 120" stroke-dasharray="5 5"/>
+      </g>
+      <text x="268" y="68" fill="#a89f94" font-size="12" text-anchor="middle">RTSP/ONVIF*</text>
+    </svg>
+    <p class="src">*RTSP/ONVIF é o caminho provável para câmeras IP Intelbras, mas não foi confirmado para o modelo instalado. A fase 0 do plano verifica isso.</p>
+    <div class="compare">
+      <div class="route reveal"><h3><span>Rota A</span> · IA paga na nuvem</h3><ul><li>Integração rápida: manda quadros, recebe resultado.</li><li>Custo por uso, que cresce com o número de câmeras e quadros.</li><li>Imagens saem da loja: exige aviso e cuidado de LGPD.</li><li>Depende da internet da casa.</li></ul></div>
+      <div class="route reveal"><h3><span>Rota B</span> · ML local na loja</h3><ul><li>Sem custo por uso; modelo aberto rodando na rede da casa.</li><li>Imagens nunca saem do salão.</li><li>Servidor do JS Softcom pode não ter GPU: prever um mini-PC dedicado.</li><li>Exige manutenção e atualização do modelo.</li></ul></div>
+    </div>
+    <p class="src reveal">Documento completo: <a href="../docs/instalacao.md">docs/instalacao.md</a> (fases, premissas, LGPD, riscos).</p>
+  </div>
+</section>
+
+<!-- ROI -->
+<section id="roi" style="background:var(--bg-2)">
+  <div class="wrap">
+    <span class="eyebrow reveal">Custo e retorno</span>
+    <h2 class="reveal">Investimento pequeno, <span class="grad">conta na mesa.</span></h2>
+    <p class="lead reveal">A empresa pediu investimento pequeno. Ajuste as hipóteses e veja em quantos meses o módulo se paga.</p>
+    <div class="panel reveal">
+      <span class="pill sim" style="margin-bottom:14px">HIPÓTESES · valores ilustrativos, não da Bovinu's</span>
+      <div class="demo-grid">
+        <div>
+          <div class="ctrl"><span>Ticket médio por cliente <output id="rTOut">50</output> R$</span><input id="rT" type="range" min="30" max="90" step="1" value="50"></div>
+          <div class="ctrl"><span>Clientes por dia (média) <output id="rNOut">500</output></span><input id="rN" type="range" min="300" max="700" step="10" value="500"></div>
+          <div class="ctrl"><span>Margem recuperada pelo mix do prato <output id="rMOut">0,5</output>% do faturamento</span><input id="rM" type="range" min="0" max="3" step="0.1" value="0.5"></div>
+          <div class="ctrl"><span>Clientes que voltam por atendimento melhor <output id="rVOut">0,5</output>%</span><input id="rV" type="range" min="0" max="3" step="0.1" value="0.5"></div>
+          <div class="ctrl"><span>Investimento inicial (mini-PC, instalação, câmeras extras) <output id="rIOut">6000</output> R$</span><input id="rI" type="range" min="2000" max="20000" step="500" value="6000"></div>
+          <div class="ctrl"><span>Custo mensal (energia, manutenção, nuvem) <output id="rCOut">300</output> R$</span><input id="rC" type="range" min="0" max="2000" step="50" value="300"></div>
+        </div>
+        <div>
+          <div class="kpis" id="roiKpis"></div>
+          <p class="note">Faturamento mensal = clientes × ticket × 30 dias. Ganho = (margem do mix + retorno de clientes) × faturamento. Se o payback ficar muito longo, o primeiro módulo a instalar deve ser o de mesas, que não exige câmera nova.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VÍDEO -->
+<section id="video">
+  <div class="wrap">
+    <span class="eyebrow reveal">Em 2 minutos</span>
+    <h2 class="reveal">A proposta <span class="grad">em movimento.</span></h2>
+    <div class="videobox reveal" id="videobox">
+      <video id="pitchVideo" controls preload="metadata" poster="" style="display:none"><source src="../video/apresentacao.mp4" type="video/mp4"></video>
+      <div class="ph" id="videoPh">Vídeo de apresentação (motion graphics) em produção.</div>
+    </div>
+  </div>
+</section>
+
+<!-- LIMITES -->
+<section id="limites" style="background:var(--bg-2)">
+  <div class="wrap">
+    <span class="eyebrow reveal">Transparência</span>
+    <h2 class="reveal">O que <span class="grad">sabemos</span> e o que <span class="grad">assumimos.</span></h2>
+    <div class="limits">
+      <div class="limit reveal"><h3>Privacidade (LGPD)</h3><p>Sem reconhecimento facial. A IA lê mesas e pratos, guarda estados e contagens, não identifica pessoas. Aviso no salão e retenção mínima de imagem.</p></div>
+      <div class="limit reveal"><h3>Dados simulados</h3><p>Fila, ocupação e custos são simulações e hipóteses rotuladas na página. Nenhum número inventado é apresentado como da Bovinu's.</p></div>
+      <div class="limit reveal"><h3>Integrações não confirmadas</h3><p>JS Softcom (API ou CSV) e RTSP das câmeras são premissas. A fase 0 do plano as verifica antes de qualquer compra.</p></div>
+      <div class="limit reveal"><h3>Licenças e patentes</h3><p>Projeto acadêmico e demonstrativo. Uma implantação comercial exige revisar licenças dos modelos (alguns detectores são AGPL) e patentes de classificação de mesa por visão.</p></div>
+      <div class="limit reveal"><h3>Escopo respeitado</h3><p>Sem mexer em pagamento, balança, cozinha, compras ou estoque. O atendimento continua humano: a IA só avisa.</p></div>
+      <div class="limit reveal"><h3>Precisão do prato</h3><p>A foto estima proporção por área, não volume. A leitura melhora com prato maior e raso e com câmera dedicada na balança.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Projeto acadêmico do Hackathon Tech FMU 2026.2 para a Bovinu's Grill &amp; Beer – Augusta. A empresa não endossa nem validou esta proposta. Código aberto no repositório.</div>
+</footer>
+
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="vendor/qrcode.js"></script>
+<script src="js/main.js"></script>
+<script src="js/mesas.js"></script>
+<script src="js/fila-core.js"></script>
+<script src="js/fila.js"></script>
+<script src="js/prato.js"></script>
+<script src="js/roi.js"></script>
+</body>
+</html>
