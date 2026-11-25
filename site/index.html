@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Visão do Salão — Bovinu's Grill & Beer · Hackathon Tech FMU 2026.2</title>
-<meta name="description" content="Câmeras que a casa já tem + visão computacional: mesas atendidas a tempo, mix do prato sob controle e fila previsível. Proposta acadêmica para a Bovinu's Augusta.">
+<title>Vendo o invisível — BIG Tech · Hackathon Tech FMU 2026.2</title>
+<meta name="description" content="Como enxergar respostas ocultas? Visão computacional nas câmeras que a Bovinu's Augusta já tem: mesas, mix do prato e fila. Proposta de análise da equipe BIG Tech.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ff5a1f'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%230b0a09'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <div id="progress"></div>
 <nav class="top">
-  <b>Visão do Salão <span style="color:var(--ember)">·</span> Bovinu's</b>
+  <b>BIG Tech <span style="color:var(--ember)">·</span> Vendo o invisível</b>
   <ul>
     <li><a href="#equipe">Equipe</a></li>
     <li><a href="#video">Vídeo</a></li>
@@ -27,16 +27,29 @@
 
 <!-- HERO -->
 <section id="hero">
-  <div class="glow"></div><div class="glow b"></div>
+  <!-- métricas que hoje ninguém mede: só aparecem onde a "lanterna" passa. São nomes, não números. -->
+  <div class="hidden-metrics" aria-hidden="true">
+    <span style="left:52%;top:14%">tempo até o 1º atendimento</span>
+    <span style="left:60%;top:26%">quanto a mesa espera limpeza</span>
+    <span style="left:74%;top:38%">mix do prato</span>
+    <span style="left:56%;top:48%">fila no pico</span>
+    <span style="left:70%;top:58%">reposição por cuba</span>
+    <span style="left:52%;top:68%">lotação a cada minuto</span>
+    <span style="left:64%;top:78%">o que sobra no prato</span>
+    <span style="left:76%;top:88%">mesa sem garçom</span>
+    <span style="left:84%;top:18%">quem espera mais</span>
+    <span style="left:92%;top:50%">?</span>
+    <span style="left:48%;top:90%">?</span>
+  </div>
   <div class="wrap">
     <span class="pill" id="heroPill">Hackathon Tech FMU 2026.2 · Proposta de análise</span>
-    <h1 style="margin-top:26px">
-      <span class="line"><span>O salão</span></span>
-      <span class="line"><span class="grad">passa a enxergar.</span></span>
+    <p class="ask" id="heroAsk">Como enxergar respostas ocultas?</p>
+    <h1>
+      <span class="line"><span>Vendo o</span></span>
+      <span class="line"><span class="inv" data-t="invisível."><span class="fill">invisível.</span></span></span>
     </h1>
     <p class="lead" style="margin-top:28px" id="heroLead">
-      Usamos as câmeras Intelbras que a Bovinu's Augusta já tem para avisar o metre quando uma mesa espera demais,
-      mostrar o mix real do prato e prever a fila — sem trocar nenhum sistema e sem mexer em pagamento, balança ou cozinha.
+      A Bovinu's já tem câmeras e um sistema de comandas. Nelas estão métricas que ninguém está medindo: quanto a mesa espera, o que vai no prato, quando a fila vira problema. Nossa proposta é fazer essas respostas aparecerem, sem trocar sistema nem mexer em pagamento, cozinha, compras ou estoque.
     </p>
   </div>
   <div class="scroll-cue">role<i></i></div>

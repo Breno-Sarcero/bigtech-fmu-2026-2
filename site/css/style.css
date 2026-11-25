@@ -63,9 +63,23 @@ nav.top a:hover { color: var(--text); }
 /* nome da equipe: as iniciais B, I, G formam "BIG"; o resto do nome fica em letra pequena */
 .wordmark { display: flex; flex-wrap: wrap; align-items: baseline; margin: 8px 0 6px; line-height: .9; }
 .wordmark .w { display: inline-flex; align-items: baseline; margin-right: .06em; }
-.wordmark b { font-size: clamp(5.5rem, 19vw, 14rem); font-weight: 800; letter-spacing: -0.05em; color: var(--text); }
-.wordmark .w:nth-child(2) b { color: var(--ember); }
-.wordmark i { font-style: normal; font-size: clamp(1rem, 2.6vw, 1.9rem); font-weight: 500; color: var(--muted); letter-spacing: .02em; margin-left: .15em; }
+.wordmark b { font-size: clamp(5.5rem, 19vw, 14rem); font-weight: 800; letter-spacing: -0.05em; color: var(--ember); }
+.wordmark i { font-style: normal; font-size: clamp(1rem, 2.6vw, 1.9rem); font-weight: 600; color: var(--text); letter-spacing: .02em; margin-left: .15em; }
+
+/* hero: pergunta, resposta e métricas escondidas reveladas por uma "lanterna" */
+#hero { --mx: 70%; --my: 40%; }
+#hero .wrap { position: relative; z-index: 2; }
+.ask { margin: 28px 0 8px; font-size: clamp(1.1rem, 2.4vw, 1.6rem); color: var(--ember); font-weight: 600; letter-spacing: .01em; }
+#hero h1 { margin-top: 0; }
+#hero .wrap { width: 100%; }
+/* "invisível." tem um contorno fantasma sempre visível; o preenchimento é revelado por cima */
+#hero h1 .inv { position: relative; color: var(--ember); }
+#hero h1 .inv::before { content: attr(data-t); position: absolute; left: 0; top: 0; color: transparent; -webkit-text-stroke: 1.5px rgba(255, 90, 31, .45); }
+.hidden-metrics { position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  -webkit-mask-image: radial-gradient(circle 210px at var(--mx) var(--my), #000 0%, rgba(0,0,0,.85) 35%, transparent 100%);
+          mask-image: radial-gradient(circle 210px at var(--mx) var(--my), #000 0%, rgba(0,0,0,.85) 35%, transparent 100%); }
+.hidden-metrics span { position: absolute; font-size: clamp(.8rem, 1.5vw, 1.05rem); letter-spacing: .12em; text-transform: uppercase; color: var(--ember-2); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { .hidden-metrics { -webkit-mask-image: none; mask-image: none; opacity: .22; } }
 .cta { display: flex; flex-wrap: wrap; gap: 24px; align-items: center; justify-content: space-between; margin-top: 28px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 30px; }
 .cta p { margin: 6px 0 0; max-width: 560px; font-size: .95rem; }
 .cta-btns { display: flex; gap: 10px; flex-wrap: wrap; }
