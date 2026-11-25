@@ -89,7 +89,7 @@
     const c = CAMERAS[key];
     stopMedia(); resetZones(); calibrated = true;
     video.src = c.src; video.loop = true; await video.play().catch(() => {});
-    setMode('video', c.label); ensureModel();
+    setMode('video', c.label); ensureModel(); ensureYolo();
     c.mesas.forEach(m => addZone(m[0], m[1], m[2], m[3], null, 'calibrada'));
     hint.textContent = 'Mesas calibradas nesta câmera. O modelo conta clientes, garçom e objetos dentro de cada uma.';
   }
@@ -155,11 +155,55 @@
     for (let i = 0; i < d.length; i += 16) { R += d[i]; G += d[i + 1]; B += d[i + 2]; n++; }
     return n ? [R / n, G / n, B / n] : null;
   }
+  // ---------- detector de pessoas treinado nas câmeras da Bovinu's (YOLOv8 nano, ONNX no navegador) ----------
+  // Ajustado (fine-tune) com quadros dos vídeos cedidos; roda localmente, sem enviar nada a servidor.
+  const YOLO_SIZE = 960, YOLO_CONF = 0.35, YOLO_IOU = 0.5;
+  let yolo = null, yoloLoading = false;
+  const lc = document.createElement('canvas'); lc.width = lc.height = YOLO_SIZE;
+  const lctx = lc.getContext('2d', { willReadFrequently: true });
+  async function ensureYolo() {
+    if (yolo || yoloLoading) return;
+    yoloLoading = true;
+    try {
+      await loadScript('vendor/ort/ort.wasm.min.js');
+      ort.env.wasm.wasmPaths = new URL('vendor/ort/', location.href).href; ort.env.wasm.numThreads = 1; ort.env.wasm.proxy = true;   // proxy: a inferência roda num worker e não trava a página
+      yolo = await ort.InferenceSession.create('models/mesas-yolov8n.onnx', { executionProviders: ['wasm'] });
+    } catch (e) { console.warn('YOLO indisponível, usando COCO-SSD', e); }
+    yoloLoading = false;
+  }
+  async function yoloPersons(el, vw, vh) {
+    const s = Math.min(YOLO_SIZE / vw, YOLO_SIZE / vh), ox = (YOLO_SIZE - vw * s) / 2, oy = (YOLO_SIZE - vh * s) / 2;
+    lctx.fillStyle = 'rgb(114,114,114)'; lctx.fillRect(0, 0, YOLO_SIZE, YOLO_SIZE);
+    lctx.drawImage(el, ox, oy, vw * s, vh * s);
+    const px = lctx.getImageData(0, 0, YOLO_SIZE, YOLO_SIZE).data, n = YOLO_SIZE * YOLO_SIZE, inp = new Float32Array(3 * n);
+    for (let i = 0; i < n; i++) { inp[i] = px[i * 4] / 255; inp[n + i] = px[i * 4 + 1] / 255; inp[2 * n + i] = px[i * 4 + 2] / 255; }
+    const out = (await yolo.run({ [yolo.inputNames[0]]: new ort.Tensor('float32', inp, [1, 3, YOLO_SIZE, YOLO_SIZE]) }))[yolo.outputNames[0]];
+    const N = out.dims[2], d = out.data, boxes = [];
+    for (let i = 0; i < N; i++) {                       // saída [1, 5, N]: cx, cy, w, h, confiança
+      const sc = d[4 * N + i]; if (sc < YOLO_CONF) continue;
+      const cx = d[i], cy = d[N + i], w = d[2 * N + i], h = d[3 * N + i];
+      boxes.push({ class: 'person', score: sc, bbox: [(cx - w / 2 - ox) / s, (cy - h / 2 - oy) / s, w / s, h / s] });
+    }
+    boxes.sort((a, b) => b.score - a.score);            // supressão de caixas repetidas (NMS)
+    const keep = [];
+    for (const b of boxes) if (keep.every(k => iouXYWH(k.bbox, b.bbox) < YOLO_IOU)) keep.push(b);
+    return keep;
+  }
+  function iouXYWH(a, b) {
+    const x1 = Math.max(a[0], b[0]), y1 = Math.max(a[1], b[1]), x2 = Math.min(a[0] + a[2], b[0] + b[2]), y2 = Math.min(a[1] + a[3], b[1] + b[3]);
+    const i = Math.max(0, x2 - x1) * Math.max(0, y2 - y1); return i / (a[2] * a[3] + b[2] * b[3] - i || 1);
+  }
+  let detecting = false;
   async function detect(el, vw, vh) {
-    if (!model) return;
+    if (!model || detecting) return;
+    detecting = true;
+    try { await detectInner(el, vw, vh); } finally { detecting = false; }
+  }
+  async function detectInner(el, vw, vh) {
     const t = fit(vw, vh);
     sctx.drawImage(el, t.ox, t.oy, vw * t.s, vh * t.s);      // congela o quadro que será analisado
-    const preds = await model.detect(el, 40, 0.4);
+    let preds = await model.detect(el, 40, 0.4);
+    if (calibrated && yolo) preds = preds.filter(p => p.class !== 'person').concat(await yoloPersons(el, vw, vh));
     const now = performance.now(), dtReal = lastDetectTs ? (now - lastDetectTs) / 1000 : 0.5; lastDetectTs = now;
     const raw = preds.filter(p => p.class === 'person' || p.class === 'dining table' || M.ITEMS.has(p.class)).map(p => ({ cls: p.class, x: p.bbox[0] * t.s + t.ox, y: p.bbox[1] * t.s + t.oy, w: p.bbox[2] * t.s, h: p.bbox[3] * t.s, score: p.score }));
     // mesas novas aparecem sozinhas (a marcação à mão é só ajuste)
