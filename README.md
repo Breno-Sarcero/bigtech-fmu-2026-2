@@ -1,4 +1,4 @@
-# Visão do Salão — Bovinu's Grill & Beer (Augusta)
+# Vendo o invisível — BIG Tech × Bovinu's (Augusta)
 
 Projeto do **Hackathon Tech FMU 2026.2**. Usamos as câmeras Intelbras que a casa já tem, mais visão computacional, para:
 
