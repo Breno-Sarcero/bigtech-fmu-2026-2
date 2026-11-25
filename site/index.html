@@ -28,17 +28,17 @@
 <section id="hero">
   <!-- métricas que hoje ninguém mede: só aparecem onde a "lanterna" passa. São nomes, não números. -->
   <div class="hidden-metrics" aria-hidden="true">
-    <span style="left:52%;top:14%">tempo até o 1º atendimento</span>
-    <span style="left:60%;top:26%">quanto a mesa espera limpeza</span>
-    <span style="left:74%;top:38%">mix do prato</span>
-    <span style="left:56%;top:48%">fila no pico</span>
-    <span style="left:70%;top:58%">reposição por cuba</span>
-    <span style="left:52%;top:68%">lotação a cada minuto</span>
-    <span style="left:64%;top:78%">o que sobra no prato</span>
-    <span style="left:76%;top:88%">mesa sem garçom</span>
-    <span style="left:84%;top:18%">quem espera mais</span>
-    <span style="left:92%;top:50%">?</span>
-    <span style="left:48%;top:90%">?</span>
+    <span style="left:0;top:2%">tempo até o 1º atendimento</span>
+    <span style="left:12%;top:14%">quanto a mesa espera limpeza</span>
+    <span style="left:46%;top:26%">mix do prato</span>
+    <span style="left:4%;top:38%">fila no pico</span>
+    <span style="left:28%;top:50%">reposição por cuba</span>
+    <span style="left:0;top:62%">lotação a cada minuto</span>
+    <span style="left:20%;top:74%">o que sobra no prato</span>
+    <span style="left:34%;top:86%">mesa sem garçom</span>
+    <span style="left:58%;top:6%">quem espera mais</span>
+    <span style="left:84%;top:44%">?</span>
+    <span style="left:70%;top:94%">?</span>
   </div>
   <div class="wrap">
     <span class="pill" id="heroPill">Hackathon Tech FMU 2026.2 · Proposta de análise</span>
@@ -48,7 +48,7 @@
       <span class="line"><span class="inv" data-t="invisível."><span class="fill">invisível.</span></span></span>
     </h1>
     <p class="lead" style="margin-top:28px" id="heroLead">
-      A Bovinu's já tem uma rede de câmeras, mas hoje não se extrai dado nenhum delas. A mina de ouro está aqui: câmeras com IA mostram o que está escondido, como o tempo da mesa suja, o gargalo e o tempo da fila. Assim começamos a ter métricas e gravações para estudar e definir a solução definitiva, sem trocar sistema nem fazer grandes investimentos.
+      A Bovinu's já tem uma rede de câmeras, mas hoje não se extrai dado nenhum delas. A mina de ouro está aqui: câmeras com IA mostram o que está escondido, como <span class="hl">o tempo da mesa suja</span>, <span class="hl">o gargalo</span> e <span class="hl">o tempo da fila</span>. Nossa entrega é a análise: com o que a Bovinu's compartilhou já sabemos onde medir, e com as câmeras as respostas que faltam viram dado. É o primeiro passo firme rumo à solução definitiva, sem trocar sistema nem fazer grandes investimentos.
     </p>
   </div>
   <div class="scroll-cue">role<i></i></div>
@@ -57,8 +57,8 @@
 <!-- EQUIPE -->
 <section id="equipe">
   <div class="wrap">
-    <h2 class="wordmark" aria-label="BIG Tech: Breno, Igor e Giovana">
-      <span class="w" aria-hidden="true"><b>B</b><i>reno</i></span><span class="w" aria-hidden="true"><b>I</b><i>gor</i></span><span class="w" aria-hidden="true"><b>G</b><i>iovana</i></span>
+    <h2 class="wordmark" aria-label="BIG Tech: Breno, Igor e Giovanna">
+      <span class="w" aria-hidden="true"><b>B</b><i>reno</i></span><span class="w" aria-hidden="true"><b>I</b><i>gor</i></span><span class="w" aria-hidden="true"><b>G</b><i>iovanna</i></span><span class="w tech" aria-hidden="true"><em>Tech</em></span>
     </h2>
     <p class="lead reveal">Somos a BIG Tech, equipe do Hackathon Tech FMU 2026.2. Olhamos para o almoço da Bovinu's Augusta como um problema de dados e montamos uma proposta que cabe no que a casa já tem.</p>
   </div>
@@ -137,18 +137,29 @@
   <div class="wrap">
     <h2 class="reveal">Um quilo que <span class="grad">roda no limite</span> no horário de pico.</h2>
     <div class="stats">
-      <div class="stat reveal"><div class="n" data-count="600">0</div><div class="l">clientes por dia, de segunda a sexta</div></div>
+      <div class="stat reveal"><div class="n" data-count="600">0</div><div class="l">refeições por dia, de segunda a sexta</div></div>
       <div class="stat reveal"><div class="n" data-count="450">0</div><div class="l">lugares no salão</div></div>
-      <div class="stat reveal"><div class="n"><span data-count="4">0</span> min</div><div class="l">fila da churrasqueira — o ideal é 2,5 min</div></div>
+      <div class="stat reveal"><div class="n"><span data-count="4">0</span> min</div><div class="l">é a fila que a churrasqueira já chegou a ter; o ideal para a casa é 2,5 min</div></div>
       <div class="stat reveal"><div class="n">11h50</div><div class="l">às 13h30: o pico que decide a experiência</div></div>
     </div>
-    <p class="src reveal">Números informados pela empresa durante o evento do hackathon. Nada aqui foi medido por nós.</p>
+    <p class="src reveal">Números ditos pela equipe da Bovinu's na sessão de perguntas e respostas do hackathon (movimento diário, 450 lugares, horário de pico e fila da churrasqueira). Nada aqui foi medido por nós.</p>
 
-    <div class="pains">
-      <div class="pain reveal"><span class="tag">Dor 1 · a mais crítica</span><h3>Mix do prato</h3><p>O peso sozinho esconde o que está no prato: o cliente troca peso por calda e água e a margem some.</p></div>
-      <div class="pain reveal"><span class="tag">Dor 2</span><h3>Filas e tempo</h3><p>Fila da churrasqueira acima do ideal e mesa sem atendimento no meio do pico.</p></div>
-      <div class="pain reveal"><span class="tag">Dor 3</span><h3>Limpeza do salão</h3><p>Mesa que sai e demora a ser limpa trava a próxima família e piora a avaliação.</p></div>
-      <div class="pain reveal"><span class="tag">Dor 4</span><h3>Qualidade da comida</h3><p>A reposição das cubas é feita no olho; falta dado de qual item acaba e quando.</p></div>
+    <div class="dores">
+      <div class="dores-head reveal"><b>As 4 maiores dores da Bovinu's</b><span>segundo a própria empresa</span></div>
+      <div class="dores-grid">
+        <div class="dor reveal"><i class="num">1</i><h3>Mix do prato</h3><p>O sistema sabe o peso, mas não o que está no prato. A margem some sem ninguém ver.</p><em>a mais crítica</em></div>
+        <div class="dor reveal"><i class="num">2</i><h3>Filas e tempo</h3><p>Fila da churrasqueira acima do ideal e mesa esperando no meio do pico.</p></div>
+        <div class="dor reveal"><i class="num">3</i><h3>Limpeza do salão</h3><p>Mesa que sai e demora a ser limpa trava a próxima família e piora a avaliação.</p></div>
+        <div class="dor reveal"><i class="num">4</i><h3>Qualidade da comida</h3><p>Falta dado de qual item acaba, quando e quanto tempo fica na cuba.</p></div>
+      </div>
+      <div class="seta reveal" aria-hidden="true">
+        <svg viewBox="0 0 60 90" width="56" height="84"><path d="M30 4 V62 M10 44 L30 70 L50 44" fill="none" stroke="#3ddc84" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="solucao-card reveal">
+        <span class="sol-tag">Nossa solução</span>
+        <h3>Câmeras que a casa já tem, com IA, transformam o salão em dados</h3>
+        <p>Mesas atendidas e limpas no tempo certo, o mix real do prato, a fila prevista e as cubas acompanhadas. Primeiro medir, depois decidir.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -162,7 +173,13 @@
       <div class="step"><div class="big">03</div><h3>Buffet que se avisa</h3><p>Câmera sobre as cubas conta reposições e mostra o que mais sai e o que acaba cedo, hora a hora.</p></div>
       <div class="step"><div class="big">04</div><h3>Avaliação sem atrito</h3><p>QR code na mesa, junto aos guardanapos, abre direto a avaliação no Google. Sem brinde, como a política do Google exige.</p></div>
     </div>
-    <div class="visual">
+    <div class="visual" title="Ilustração gerada por IA">
+      <span class="ia-badge" aria-hidden="true">ilustração gerada por IA</span>
+      <!-- imagens geradas por IA (docs/prompts-imagens.md). Enquanto o arquivo não existir, o desenho em SVG abaixo aparece no lugar. -->
+      <img class="vis vis-img" id="i1" src="img/passo-1-mesas.webp" alt="Salão visto do alto com mesas marcadas em verde, amarelo e vermelho conforme o tempo de espera" onload="document.querySelector('.ia-badge').style.display='block'" onerror="this.remove()">
+      <img class="vis vis-img" id="i2" src="img/passo-2-prato.webp" alt="Prato de buffet por quilo fotografado do alto, dividido por cores em carne, carboidrato, salada e sobremesa" onload="document.querySelector('.ia-badge').style.display='block'" onerror="this.remove()">
+      <img class="vis vis-img" id="i3" src="img/passo-3-cubas.webp" alt="Buffet visto do alto, com as cubas e o nível de cada uma indicado por uma câmera" onload="document.querySelector('.ia-badge').style.display='block'" onerror="this.remove()">
+      <img class="vis vis-img" id="i4" src="img/passo-4-avaliacao.webp" alt="Mesa com adesivo de QR code e cartão de aproximação convidando a avaliar a visita no Google" onload="document.querySelector('.ia-badge').style.display='block'" onerror="this.remove()">
       <svg viewBox="0 0 400 300" aria-hidden="true">
         <g class="vis" id="v1">
           <rect x="40" y="70" width="90" height="60" rx="8" fill="none" stroke="#3ddc84" stroke-width="3"/>
@@ -199,7 +216,7 @@
 <section id="fila" style="background:var(--bg-2)">
   <div class="wrap">
     <h2 class="reveal">A fila, <span class="grad">antes de virar fila.</span></h2>
-    <p class="lead reveal">TI não muda o layout do buffet, mas pode prever o pico e mostrar a lotação. A simulação usa os números informados pela empresa e mostra o efeito de um atendente a mais na churrasqueira.</p>
+    <p class="lead reveal">TI não muda o layout do buffet, mas pode prever o pico e mostrar a lotação. A simulação parte dos números ditos pela empresa e mostra o efeito de um atendente a mais na churrasqueira.</p>
     <div class="panel reveal">
       <div class="demo-grid">
         <div>
@@ -212,13 +229,13 @@
         <div>
           <span class="pill sim" style="margin-bottom:14px">SIMULADO · não é medição</span>
           <ul class="facts">
-            <li><b>600</b> clientes no dia <span>(empresa)</span></li>
-            <li><b>4</b> churrasqueiros <span>(empresa)</span></li>
-            <li><b>50 s</b> por atendimento <span>(calibrado para dar ~4 min de espera)</span></li>
+            <li><b>600</b> refeições no dia <span>(empresa)</span></li>
+            <li><b>3</b> churrasqueiros atendendo <span>(empresa: são 4, um cuida do fogo)</span></li>
+            <li><b>34 s</b> por atendimento <span>(calibrado para o pico chegar a ~4 min)</span></li>
             <li><b>80%</b> passam pela churrasqueira <span>(hipótese)</span></li>
             <li><b>40 min</b> de permanência na mesa <span>(hipótese)</span></li>
           </ul>
-          <p class="note">Linha laranja: situação atual. Linha verde: com um churrasqueiro a mais. As hipóteses devem ser medidas na fase 0.</p>
+          <p class="note">Linha laranja: situação atual (3 atendendo). Linha verde: com 1 atendente a mais. É o que o modelo mostra com essas hipóteses; só medindo na fase 0 dá para confirmar o efeito real.</p>
         </div>
       </div>
     </div>
