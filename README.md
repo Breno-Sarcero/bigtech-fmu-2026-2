@@ -7,7 +7,11 @@ Projeto do **Hackathon Tech FMU 2026.2**. Usamos as câmeras Intelbras que a cas
 - **Fila e lotação:** simular o pico do almoço e mostrar a ocupação do salão.
 - **Buffet e avaliação:** reposição das cubas e QR code na mesa que abre a avaliação no Google.
 
-Nada de pagamento, balança, cozinha, compras ou estoque é alterado. O atendimento continua humano; a IA só avisa.
+Nada de pagamento, cozinha, compras ou estoque é alterado, e a balança não é o foco. O atendimento continua humano; a IA só avisa.
+
+**Isto é uma proposta de análise, não a solução definitiva.** Ao estudar o caso percebemos que faltam dados e métricas para apontar com certeza onde está o problema; só a fila tem número informado pela empresa (4 min contra 2,5 ideais). O protótipo mostra como medir o salão com o que a casa já tem, e o plano propõe uma fase 0 de coleta para confirmar onde está o ganho antes de qualquer compra.
+
+Equipe **BIG Tech**: **B**reno, **I**gor e **G**iovana.
 
 ## Ver funcionando
 

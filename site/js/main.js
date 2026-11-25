@@ -12,6 +12,10 @@
     gsap.from(['#heroPill', '#heroLead'], { opacity: 0, y: 24, duration: 1, delay: 0.7, stagger: 0.15 });
     gsap.to('#hero .glow', { yPercent: 30, ease: 'none', scrollTrigger: { trigger: '#hero', scrub: true, start: 'top top', end: 'bottom top' } });
 
+    // Nome da equipe: as iniciais entram primeiro e o resto do nome aparece depois
+    gsap.from('.wordmark b', { yPercent: 60, opacity: 0, duration: 0.9, ease: 'power4.out', stagger: 0.12, scrollTrigger: { trigger: '.wordmark', start: 'top 85%', once: true } });
+    gsap.from('.wordmark i', { opacity: 0, x: -14, duration: 0.7, ease: 'power2.out', stagger: 0.12, delay: 0.5, scrollTrigger: { trigger: '.wordmark', start: 'top 85%', once: true } });
+
     // Revelação ao rolar
     ScrollTrigger.batch('.reveal', {
       start: 'top 88%', once: true,
