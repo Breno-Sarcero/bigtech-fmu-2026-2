@@ -1,0 +1,23 @@
+# Segredos (nunca commitar)
+.env
+.env.*
+*.key
+*.pem
+
+# Dependências e caches
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Dados locais e mídia pesada
+*.sqlite
+*.wav
+*.m4a
+video/render/
+video/node_modules/
+
+# Sistema
+.DS_Store
+Thumbs.db
