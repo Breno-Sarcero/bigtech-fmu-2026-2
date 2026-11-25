@@ -252,3 +252,4 @@ footer { padding: 60px 0 90px; border-top: 1px solid var(--line); color: var(--m
 .lg { display: inline-block; width: 22px; height: 4px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
 .lg.pico { background: #ff7a1a; } .lg.apos { background: #5ab0ff; }
 .stats-2 { margin-top: 18px; }
+.stats-2 .stat .n { font-size: clamp(1.7rem, 3.2vw, 2.5rem); white-space: nowrap; }
