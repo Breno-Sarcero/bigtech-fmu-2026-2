@@ -62,7 +62,7 @@
 
   $('mesaFile').addEventListener('change', async e => {
     const f = e.target.files[0]; if (!f) return;
-    stopMedia(); resetZones();
+    stopMedia(); resetZones(); calibrated = false;
     const url = URL.createObjectURL(f);
     if (f.type.startsWith('image/')) { imageEl = new Image(); imageEl.onload = () => { setMode('image', 'foto · detecção real'); ensureModel(); }; imageEl.src = url; }
     else { video.src = url; video.loop = true; await video.play().catch(() => {}); setMode('video', 'vídeo · detecção real'); ensureModel(); }
@@ -73,6 +73,28 @@
     catch (e) { hint.textContent = 'Webcam indisponível ou negada.'; }
   });
   $('mesaSim').addEventListener('click', () => { stopMedia(); resetZones(); startSim(); });
+
+  // Câmeras reais do salão (cortes de 2 min cedidos pela Bovinu's no material do hackathon; rostos já borrados na origem).
+  // Câmera fixa = mesas calibradas uma vez por câmera (caixas em coordenadas 960x540). A IA só olha dentro delas:
+  // assim a bancada do buffet nunca vira "mesa". Em produção isso é a calibração da fase 0.
+  const CAMERAS = {
+    b1: { src: 'video/bovinus-buffet1.mp4', label: 'Câmera real · buffet 1', mesas: [
+      [560, 115, 80, 60], [690, 130, 75, 60], [800, 125, 95, 60], [608, 185, 140, 70],
+      [785, 280, 170, 85], [600, 270, 180, 95], [690, 430, 260, 110]] },
+    b2: { src: 'video/bovinus-buffet2.mp4', label: 'Câmera real · buffet 2', mesas: [
+      [40, 130, 75, 60], [90, 235, 100, 70], [135, 430, 250, 110], [35, 445, 95, 95]] }
+  };
+  let calibrated = false;
+  async function loadCamera(key) {
+    const c = CAMERAS[key];
+    stopMedia(); resetZones(); calibrated = true;
+    video.src = c.src; video.loop = true; await video.play().catch(() => {});
+    setMode('video', c.label); ensureModel();
+    c.mesas.forEach(m => addZone(m[0], m[1], m[2], m[3], null, 'calibrada'));
+    hint.textContent = 'Mesas calibradas nesta câmera. O modelo conta clientes, garçom e objetos dentro de cada uma.';
+  }
+  $('mesaB1').addEventListener('click', () => loadCamera('b1'));
+  $('mesaB2').addEventListener('click', () => loadCamera('b2'));
   $('mesaClear').addEventListener('click', resetZones);
 
   // ---------- mouse: marcar mesas ou pegar a cor do uniforme ----------
@@ -117,7 +139,7 @@
     if (z.state === 'wait' && z.alerted) { txt = 'sem atendimento'; cls = 'late'; }
     if (z.state === 'dirty' && z.alerted) { txt = 'limpar já'; cls = 'late'; }
     z.chip.textContent = txt; z.chip.className = 'chip ' + cls;
-    const origem = z.auto === 'mesa' ? 'mesa detectada' : z.auto === 'inferida' ? 'mesa inferida pelos clientes' : z.script ? 'roteiro' : 'marcada à mão';
+    const origem = z.auto === 'calibrada' ? 'mesa calibrada na câmera' : z.auto === 'mesa' ? 'mesa detectada' : z.auto === 'inferida' ? 'mesa inferida pelos clientes' : z.script ? 'roteiro' : 'marcada à mão';
     z.sm.textContent = z.persons + ' cliente(s) · ' + z.items + ' objeto(s) · ' + origem + ' · há ' + M.mmss(vt - z.tSince);
     z.b1.disabled = z.state !== 'wait'; z.b2.disabled = z.state !== 'dirty'; z.cls = cls;
   }
@@ -141,7 +163,7 @@
     const now = performance.now(), dtReal = lastDetectTs ? (now - lastDetectTs) / 1000 : 0.5; lastDetectTs = now;
     const raw = preds.filter(p => p.class === 'person' || p.class === 'dining table' || M.ITEMS.has(p.class)).map(p => ({ cls: p.class, x: p.bbox[0] * t.s + t.ox, y: p.bbox[1] * t.s + t.oy, w: p.bbox[2] * t.s, h: p.bbox[3] * t.s, score: p.score }));
     // mesas novas aparecem sozinhas (a marcação à mão é só ajuste)
-    M.autoZones(zones, raw, track, W, H).forEach(b => addZone(b.x, b.y, b.w, b.h, null, b.auto));
+    if (!calibrated) M.autoZones(zones, raw, track, W, H).forEach(b => addZone(b.x, b.y, b.w, b.h, null, b.auto));
     const s = M.split(raw, avgColor, uniform, tol);
     s.waiters.forEach(d => d.role = 'garçom'); s.customers.forEach(d => d.role = 'cliente');
     dets = raw;
@@ -214,6 +236,14 @@
       ctx.lineWidth = 4; ctx.strokeStyle = c; ctx.strokeRect(z.x, z.y, z.w, z.h);
       ctx.fillStyle = c + '22'; ctx.fillRect(z.x, z.y, z.w, z.h);
       ctx.fillStyle = c; ctx.font = 'bold 15px system-ui'; ctx.fillText(z.name + ' · ' + M.mmss(vt - z.tSince), z.x + 8, z.y + 20);
+      // ícone sobre a mesa: ✓ atendida, … aguardando, ! sem atendimento / limpar já, ✕ suja, vazio = livre
+      const glyph = { served: '✓', wait: '…', late: '!', dirty: '✕' }[z.cls];
+      if (glyph) {
+        const gx = z.x + z.w / 2, gy = z.y + z.h / 2, r = Math.max(11, Math.min(20, z.w / 6));
+        ctx.fillStyle = c; ctx.beginPath(); ctx.arc(gx, gy, r, 0, 7); ctx.fill();
+        ctx.fillStyle = '#0d0b09'; ctx.font = 'bold ' + Math.round(r * 1.3) + 'px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(glyph, gx, gy + 1); ctx.textAlign = 'start'; ctx.textBaseline = 'alphabetic';
+      }
     });
     if (drag) { ctx.setLineDash([6, 4]); ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.strokeRect(Math.min(drag.a.x, drag.b.x), Math.min(drag.a.y, drag.b.y), Math.abs(drag.a.x - drag.b.x), Math.abs(drag.a.y - drag.b.y)); ctx.setLineDash([]); }
     if (source === 'sim') { ctx.fillStyle = 'rgba(255,176,46,.9)'; ctx.font = 'bold 13px system-ui'; ctx.fillText('SIMULADO', W - 92, 24); }

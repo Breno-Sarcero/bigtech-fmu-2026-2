@@ -113,11 +113,18 @@ nav.top a:hover { color: var(--text); }
 .dor h3 { margin: 8px 0 8px; color: #ffe3dd; }
 .dor p { margin: 0; font-size: .93rem; color: #c9aaa4; }
 .dor em { display: inline-block; margin-top: 12px; font-style: normal; font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #ffb3a6; border: 1px solid rgba(255,77,77,.5); border-radius: 999px; padding: 3px 10px; }
-.seta { display: grid; place-items: center; margin: 10px 0 4px; }
-.solucao-card { background: linear-gradient(135deg, rgba(61,220,132,.16), rgba(61,220,132,.04)); border: 1px solid rgba(61,220,132,.55); border-left: 6px solid var(--ok); border-radius: var(--radius); padding: 28px 32px; }
-.sol-tag { display: inline-block; background: var(--ok); color: #06230f; font-weight: 800; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; border-radius: 999px; padding: 4px 14px; }
-.solucao-card h3 { font-size: clamp(1.3rem, 2.8vw, 1.9rem); margin: 14px 0 8px; color: #e6fff0; }
-.solucao-card p { margin: 0; color: #a8d9bb; max-width: 720px; }
+/* cada dor tem a sua resposta logo abaixo (balão verde) */
+.dores-grid { grid-template-rows: repeat(3, auto); row-gap: 0; }
+.par { display: grid; grid-row: span 3; grid-template-rows: subgrid; }
+.seta-mini { justify-self: center; align-self: center; margin: 8px 0 4px; }
+.sol { flex: 1; position: relative; background: linear-gradient(135deg, rgba(61,220,132,.18), rgba(61,220,132,.05)); border: 1px solid rgba(61,220,132,.55); border-radius: 18px; padding: 18px 20px 20px; }
+.sol::before { content: ""; position: absolute; top: -8px; left: 50%; margin-left: -8px; width: 14px; height: 14px; background: #123222; border-left: 1px solid rgba(61,220,132,.55); border-top: 1px solid rgba(61,220,132,.55); transform: rotate(45deg); }
+.sol p { margin: 10px 0 0; color: #bfeccf; font-size: .93rem; }
+.sol-tag { display: inline-block; background: var(--ok); color: #06230f; font-weight: 800; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; border-radius: 999px; padding: 3px 12px; }
+
+/* proposta: bloco centralizado e mais enxuto */
+#proposta h2, #proposta .lead { text-align: center; margin-left: auto; margin-right: auto; }
+#proposta .lead { max-width: 640px; }
 
 /* solução pinada */
 #solucao { padding: 0; background: var(--bg-2); }
@@ -132,7 +139,7 @@ nav.top a:hover { color: var(--text); }
 .visual { position: relative; aspect-ratio: 4 / 3; border-radius: 24px; border: 1px solid var(--line); background: #0f0d0b; overflow: hidden; }
 .visual svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .visual .vis { opacity: 0; }
-.ia-badge { display: none; position: absolute; right: 12px; bottom: 10px; z-index: 3; font-size: .68rem; letter-spacing: .06em; color: #d8cfc3; background: rgba(0,0,0,.55); border-radius: 999px; padding: 3px 10px; }
+.ia-badge { position: absolute; right: 12px; bottom: 10px; z-index: 3; font-size: .68rem; letter-spacing: .06em; color: #d8cfc3; background: rgba(0,0,0,.55); border-radius: 999px; padding: 3px 10px; }
 .visual .vis-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
 
 /* painéis de demo */
