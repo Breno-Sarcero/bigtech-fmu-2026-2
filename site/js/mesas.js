@@ -24,11 +24,12 @@
   let zones = [], vt = 0, lastTs = performance.now(), lastDetect = 0, lastDetectTs = 0;
   let dets = [];              // detecções desenhadas: {cls, x, y, w, h, score, role}
   let drag = null, nextId = 1, picking = false;
-  let uniform = hexToRgb($('uni').value), tol = UNI_TOL;
+  let uniform = null, tol = UNI_TOL;          // sem cor escolhida, o garçom é reconhecido pela postura (em pé)
+  const track = {};                            // candidatas a mesa entre quadros (mesas inferidas)
 
   function hexToRgb(h) { return [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)); }
   const rgbToHex = c => '#' + c.map(v => Math.round(v).toString(16).padStart(2, '0')).join('');
-  $('uni').addEventListener('input', e => { uniform = hexToRgb(e.target.value); });
+  $('uni').addEventListener('input', e => { uniform = hexToRgb(e.target.value); $('uniState').textContent = 'usando a cor do uniforme'; });
   $('uniPick').addEventListener('click', () => { picking = true; hint.textContent = 'Clique sobre a camisa de um garçom no vídeo para copiar a cor do uniforme.'; });
 
   const hooks = { log };
@@ -46,7 +47,7 @@
     try {
       await loadScript('vendor/tf.min.js'); await loadScript('vendor/coco-ssd.min.js');
       model = await cocoSsd.load({ base: 'lite_mobilenet_v2' });
-      hint.textContent = 'Modelo pronto. Arraste sobre a imagem para marcar cada mesa.';
+      hint.textContent = 'Modelo pronto. As mesas são detectadas sozinhas; arraste sobre a imagem só para ajustar.';
     } catch (e) { hint.textContent = 'Não consegui carregar o modelo (precisa de internet na primeira vez). Use o modo simulado.'; }
     modelLoading = false;
   }
@@ -57,7 +58,7 @@
     if (video.srcObject) { video.srcObject.getTracks().forEach(t => t.stop()); video.srcObject = null; }
     video.pause(); video.removeAttribute('src'); video.load(); imageEl = null; dets = [];
   }
-  function resetZones() { zones.forEach(z => z.row.remove()); zones = []; alertsBox.textContent = ''; vt = 0; dets = []; }
+  function resetZones() { zones.forEach(z => z.row.remove()); zones = []; alertsBox.textContent = ''; vt = 0; dets = []; track.pending = []; }
 
   $('mesaFile').addEventListener('change', async e => {
     const f = e.target.files[0]; if (!f) return;
@@ -65,7 +66,7 @@
     const url = URL.createObjectURL(f);
     if (f.type.startsWith('image/')) { imageEl = new Image(); imageEl.onload = () => { setMode('image', 'foto · detecção real'); ensureModel(); }; imageEl.src = url; }
     else { video.src = url; video.loop = true; await video.play().catch(() => {}); setMode('video', 'vídeo · detecção real'); ensureModel(); }
-    hint.textContent = 'Arraste sobre a imagem para marcar cada mesa.';
+    hint.textContent = 'As mesas são detectadas sozinhas. Se alguma falhar, arraste sobre a imagem para ajustar.';
   });
   $('mesaCam').addEventListener('click', async () => {
     try { const st = await navigator.mediaDevices.getUserMedia({ video: true }); stopMedia(); resetZones(); video.srcObject = st; await video.play(); setMode('cam', 'webcam · detecção real'); ensureModel(); }
@@ -82,7 +83,7 @@
     if (picking) {
       picking = false;
       const c = avgColor({ x: p.x - 6, y: p.y - 6, w: 12, h: 12 });
-      if (c) { uniform = c; $('uni').value = rgbToHex(c); hint.textContent = 'Cor do uniforme definida. Arraste para marcar as mesas.'; }
+      if (c) { uniform = c; $('uni').value = rgbToHex(c); $('uniState').textContent = 'usando a cor do uniforme'; hint.textContent = 'Cor do uniforme definida.'; }
       return;
     }
     drag = { a: p, b: p }; canvas.setPointerCapture(ev.pointerId);
@@ -95,8 +96,8 @@
   });
 
   // ---------- mesas ----------
-  function addZone(x, y, w, h, script) {
-    const z = { id: nextId++, name: 'Mesa ' + (zones.length + 1), x, y, w, h, script: script || null };
+  function addZone(x, y, w, h, script, auto) {
+    const z = { id: nextId++, name: 'Mesa ' + (zones.length + 1), x, y, w, h, script: script || null, auto: auto || null };
     M.init(z, vt);
     const row = document.createElement('div'); row.className = 'zone';
     const chip = document.createElement('span'); chip.className = 'chip free'; chip.textContent = 'livre';
@@ -116,7 +117,8 @@
     if (z.state === 'wait' && z.alerted) { txt = 'sem atendimento'; cls = 'late'; }
     if (z.state === 'dirty' && z.alerted) { txt = 'limpar já'; cls = 'late'; }
     z.chip.textContent = txt; z.chip.className = 'chip ' + cls;
-    z.sm.textContent = z.persons + ' cliente(s) · ' + z.items + ' objeto(s) · há ' + M.mmss(vt - z.tSince);
+    const origem = z.auto === 'mesa' ? 'mesa detectada' : z.auto === 'inferida' ? 'mesa inferida pelos clientes' : z.script ? 'roteiro' : 'marcada à mão';
+    z.sm.textContent = z.persons + ' cliente(s) · ' + z.items + ' objeto(s) · ' + origem + ' · há ' + M.mmss(vt - z.tSince);
     z.b1.disabled = z.state !== 'wait'; z.b2.disabled = z.state !== 'dirty'; z.cls = cls;
   }
   const COLORS = { free: '#3ddc84', wait: '#ffb02e', late: '#ff4d4d', served: '#5ab0ff', dirty: '#ff9a6b' };
@@ -137,8 +139,10 @@
     sctx.drawImage(el, t.ox, t.oy, vw * t.s, vh * t.s);      // congela o quadro que será analisado
     const preds = await model.detect(el, 40, 0.4);
     const now = performance.now(), dtReal = lastDetectTs ? (now - lastDetectTs) / 1000 : 0.5; lastDetectTs = now;
-    const raw = preds.filter(p => p.class === 'person' || M.ITEMS.has(p.class)).map(p => ({ cls: p.class, x: p.bbox[0] * t.s + t.ox, y: p.bbox[1] * t.s + t.oy, w: p.bbox[2] * t.s, h: p.bbox[3] * t.s, score: p.score }));
-    const s = M.split(raw, avgColor, source === 'image' ? null : uniform, tol);
+    const raw = preds.filter(p => p.class === 'person' || p.class === 'dining table' || M.ITEMS.has(p.class)).map(p => ({ cls: p.class, x: p.bbox[0] * t.s + t.ox, y: p.bbox[1] * t.s + t.oy, w: p.bbox[2] * t.s, h: p.bbox[3] * t.s, score: p.score }));
+    // mesas novas aparecem sozinhas (a marcação à mão é só ajuste)
+    M.autoZones(zones, raw, track, W, H).forEach(b => addZone(b.x, b.y, b.w, b.h, null, b.auto));
+    const s = M.split(raw, avgColor, uniform, tol);
     s.waiters.forEach(d => d.role = 'garçom'); s.customers.forEach(d => d.role = 'cliente');
     dets = raw;
     M.assign(zones, s, Math.min(dtReal, 2));
@@ -199,7 +203,7 @@
     } else { ctx.fillStyle = '#0d0b09'; ctx.fillRect(0, 0, W, H); }
     // caixas: cliente (branco), garçom (azul), objeto (amarelo)
     ctx.lineWidth = 2; ctx.font = '13px system-ui';
-    dets.forEach(d => {
+    dets.filter(d => d.cls !== 'dining table').forEach(d => {
       const c = d.role === 'garçom' ? '#4fd1ff' : d.cls === 'person' ? 'rgba(255,255,255,.8)' : '#f2c94c';
       ctx.strokeStyle = c; ctx.fillStyle = c; ctx.strokeRect(d.x, d.y, d.w, d.h);
       ctx.fillText((d.role || d.cls) + ' ' + Math.round(d.score * 100) + '%', d.x + 4, d.y + 14);
