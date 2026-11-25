@@ -20,6 +20,7 @@
     <li><a href="#solucao">Solução</a></li>
     <li><a href="#fila">Fila</a></li>
     <li><a href="#prato">Prato</a></li>
+    <li><a href="#cubas">Cubas</a></li>
     <li><a href="#arquitetura">Instalação</a></li>
   </ul>
 </nav>
@@ -268,6 +269,35 @@
   </div>
 </section>
 
+<!-- CUBAS -->
+<section id="cubas">
+  <div class="wrap">
+    <h2 class="reveal">Cuba quase no fim? <span class="grad">A câmera avisa.</span></h2>
+    <p class="lead reveal">Uma câmera sobre o buffet acompanha o nível de cada cuba. A página estima quanto cada uma está cheia, avisa a hora de repor e, ao longo do almoço, conta as reposições para mostrar o que mais sai e o que acaba cedo.</p>
+    <div class="panel reveal">
+      <div class="toolbar">
+        <label class="btn" for="cubaFile">Enviar foto de uma cuba</label>
+        <input id="cubaFile" type="file" accept="image/*">
+        <button id="cubaGen" class="primary">Gerar buffet de exemplo</button>
+        <span class="pill real">heurística de cor · roda no navegador</span>
+      </div>
+      <div class="demo-grid">
+        <div>
+          <div class="stage" style="aspect-ratio:16/9"><canvas id="cubaCanvas" width="960" height="540"></canvas></div>
+          <div class="cuba-list" id="cubaList"></div>
+        </div>
+        <div>
+          <span class="pill sim" style="margin-bottom:14px">SIMULADO · uma cuba ao longo do almoço</span>
+          <div class="kpis" id="cubaKpis"></div>
+          <canvas class="chart" id="chartCuba" width="900" height="260"></canvas>
+          <p class="note">Linha azul: nível da cuba lido a cada 5 min. Pontos verdes: reposições que o algoritmo detectou sozinho (uma subida brusca do nível). Tracejado vermelho: abaixo de 25% é hora de repor. A série é simulada; o algoritmo é o mesmo que rodaria nas leituras reais.</p>
+        </div>
+      </div>
+      <p class="note">Limite honesto: o nível vem da <b>área visível com comida</b> numa câmera de cima, não do volume. Arroz branco puro se confunde com o inox. Na instalação, cada cuba teria sua zona marcada uma única vez e um modelo de segmentação treinado com imagens do próprio buffet. O buffet de exemplo é uma ilustração sintética.</p>
+    </div>
+  </div>
+</section>
+
 <!-- AVALIAÇÃO -->
 <section id="avaliacao" style="background:var(--bg-2)">
   <div class="wrap" style="display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center">
@@ -339,5 +369,7 @@
 <script src="js/fila-core.js"></script>
 <script src="js/fila.js"></script>
 <script src="js/prato.js"></script>
+<script src="js/cubas-core.js"></script>
+<script src="js/cubas.js"></script>
 </body>
 </html>
