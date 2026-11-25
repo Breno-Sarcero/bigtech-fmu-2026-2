@@ -3,8 +3,10 @@
 (function () {
   const $ = id => document.getElementById(id);
   const SEATS = 450, META = 2.5;
-  const BASE = { clientes: 600, servidores: 4, servSeg: 50, pctChurras: 0.8, permMin: 40 };
-  const MAIS_UM = Object.assign({}, BASE, { servidores: 5 });
+  // Empresa: 4 churrasqueiros no pico, mas só 3 atendem o público (1 cuida do fogo). 34 s por atendimento foi calibrado
+  // para o pico da fila chegar a ~4 min, como a empresa relatou. O resto são hipóteses.
+  const BASE = { clientes: 600, servidores: 3, servSeg: 34, pctChurras: 0.8, permMin: 40 };
+  const MAIS_UM = Object.assign({}, BASE, { servidores: 4 });
   const hhmm = m => { const t = 11 * 60 + m; return String(Math.floor(t / 60)).padStart(2, '0') + 'h' + String(Math.round(t % 60)).padStart(2, '0'); };
   const min = v => v.toFixed(1).replace('.', ',') + ' min';
 
@@ -35,9 +37,9 @@
   const a = FilaCore.simulate(BASE, 40), b = FilaCore.simulate(MAIS_UM, 40);
   const box = $('filaKpis');
   box.append(
-    kpi('espera média no pico, hoje (4 churrasqueiros)', min(a.mediaPico), a.mediaPico <= META ? 'good' : 'bad'),
-    kpi('espera média no pico, com 5 churrasqueiros', min(b.mediaPico), b.mediaPico <= META ? 'good' : 'bad'),
-    kpi('90% esperam até (hoje)', min(a.p90Pico)),
+    kpi('pico da espera hoje (3 atendendo)', min(Math.max(...a.espera)), Math.max(...a.espera) <= META ? 'good' : 'bad'),
+    kpi('pico da espera com 1 atendente a mais', min(Math.max(...b.espera)), Math.max(...b.espera) <= META ? 'good' : 'bad'),
+    kpi('espera média no horário de pico, hoje', min(a.mediaPico)),
     kpi('maior lotação: ' + hhmm(a.ocupMaxEm), Math.round(a.ocupMax) + ' de ' + SEATS + ' lugares')
   );
   chart($('chartFila'), [{ ys: a.espera, color: '#ff5a1f' }, { ys: b.espera, color: '#3ddc84', dashed: true }],
