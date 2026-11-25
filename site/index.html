@@ -86,7 +86,7 @@
 <section id="mesas">
   <div class="wrap">
     <h2 class="reveal">Mesa esperando? <span class="grad">O metre sabe.</span></h2>
-    <p class="lead reveal">Suba um vídeo ou foto do salão e desenhe as mesas com o mouse. O modelo roda <b>no seu navegador</b>, sem enviar o vídeo a nenhum servidor, e a regra de estados mostra o resultado. Sem vídeo? Use o modo simulado.</p>
+    <p class="lead reveal">Suba um vídeo ou foto do salão. O modelo roda <b>no seu navegador</b>, sem enviar o vídeo a nenhum servidor: ele encontra as mesas sozinho e mostra quais foram atendidas. Sem vídeo? Use o modo simulado.</p>
 
     <div class="panel reveal">
       <div class="toolbar">
@@ -104,10 +104,10 @@
             <canvas id="mesaCanvas" width="960" height="540"></canvas>
             <div class="hint" id="mesaHint">Escolha uma fonte e arraste sobre a imagem para marcar cada mesa.</div>
           </div>
-          <p class="note">Detecção real: modelo COCO-SSD (TensorFlow.js) contando pessoas dentro de cada mesa. O modelo é baixado uma vez ao ligar a demo e roda localmente: nenhuma imagem sai do seu computador. O <b>garçom</b> é reconhecido pela cor do uniforme (você escolhe a cor ou clica na camisa dele) e a <b>mesa suja</b> é a que fica com copo, prato ou garrafa depois que os clientes saem. Os botões manuais corrigem falhas do detector. Limite: câmera de teto ou pessoas muito pequenas reduzem a precisão; em produção o modelo seria afinado com imagens do próprio salão.</p>
+          <p class="note">Detecção real: modelo COCO-SSD (TensorFlow.js), baixado uma vez e executado no seu computador. <b>Mesa:</b> o modelo reconhece a mesa; se a câmera não a enxerga, clientes sentados juntos formam uma mesa inferida. <b>Atendida:</b> alguém em pé junto à mesa por alguns segundos (a cor do uniforme afina isso). <b>Suja:</b> copo, prato ou garrafa sobrando depois que os clientes saem. Arrastar sobre a imagem e os botões manuais servem só para corrigir falhas. Limite: câmera de teto ou pessoas muito pequenas reduzem a precisão; em produção o modelo seria afinado com imagens do próprio salão.</p>
         </div>
         <div>
-          <div class="ctrl"><span>Cor do uniforme do garçom (vídeo real)</span>
+          <div class="ctrl"><span>Ajuste opcional: cor do uniforme do garçom <em id="uniState" style="color:#8a8176;font-style:normal">(sem ajuste: reconhece quem está em pé junto à mesa)</em></span>
             <div style="display:flex;gap:10px;align-items:center"><input id="uni" type="color" value="#1c3f9e" style="width:46px;height:34px;border:0;background:none;padding:0"><button id="uniPick" type="button">Pegar cor no vídeo</button></div>
           </div>
           <p class="rules">Regras da demo: alerta se a mesa ficar <b>2 min</b> sem atendimento e se ficar <b>5 min</b> suja. O relógio roda acelerado para caber no vídeo.</p>
