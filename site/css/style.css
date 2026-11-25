@@ -57,6 +57,17 @@ nav.top a:hover { color: var(--text); }
 .pill.sim { border-color: rgba(255,176,46,.5); color: var(--ember-2); }
 .pill.real { border-color: rgba(61,220,132,.5); color: var(--ok); }
 
+/* equipe e chamada para o teste */
+#equipe { padding: 100px 0 30px; }
+#video { padding-top: 70px; }
+.team { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 40px; }
+.member { display: flex; align-items: center; gap: 16px; background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 12px 28px 12px 12px; }
+.member b { font-size: 1.15rem; }
+.avatar { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 1.3rem; background: linear-gradient(135deg, var(--ember), var(--ember-2)); color: #1a0e05; }
+.cta { display: flex; flex-wrap: wrap; gap: 24px; align-items: center; justify-content: space-between; margin-top: 28px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 30px; }
+.cta p { margin: 6px 0 0; max-width: 560px; font-size: .95rem; }
+.cta-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+
 /* números */
 .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-top: 56px; }
 .stat { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; }
