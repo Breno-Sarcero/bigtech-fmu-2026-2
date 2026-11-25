@@ -31,5 +31,6 @@
       const go = () => draw(cvs[cam], ss, d.passo_s);
       go(); window.addEventListener('resize', go);
     });
+    if (window.refreshScroll) window.refreshScroll();   // o texto das legendas mudou a altura da seção
   }).catch(() => { document.getElementById('medido').style.display = 'none'; });
 })();
