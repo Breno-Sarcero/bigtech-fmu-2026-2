@@ -294,6 +294,11 @@
           <p class="note">Linha azul: nível da cuba lido a cada 5 min. Pontos verdes: reposições que o algoritmo detectou sozinho (uma subida brusca do nível). Tracejado vermelho: abaixo de 25% é hora de repor. A série é simulada; o algoritmo é o mesmo que rodaria nas leituras reais.</p>
         </div>
       </div>
+      <div class="limit sensor-card">
+        <h3>Ideia da equipe, fase 2 e opcional: um sensor de peso sob cada cuba</h3>
+        <p>A cuba é padrão Gastronorm 1/1 (530 × 325 mm), então a tara é conhecida. Um sensor sob ela conta cada reposição como um salto de peso e estima o consumo em gramas por minuto, sem depender da área visível. Não dá o peso exato de cada porção, mas dá uma boa estimativa do que sobra em cada cuba. A câmera diz qual alimento é; o sensor diz quanto há.</p>
+        <p>Só entra se a câmera sozinha não bastar, porque a empresa pediu investimento pequeno. Sugestão: piloto em 2 ou 3 cubas de maior saída na fase 0. Cuidados: calor e vapor do banho-maria, peça própria para alimentos e calibração por tipo de cuba e de alimento.</p>
+      </div>
       <p class="note">Limite honesto: o nível vem da <b>área visível com comida</b> numa câmera de cima, não do volume. Arroz branco puro se confunde com o inox. Na instalação, cada cuba teria sua zona marcada uma única vez e um modelo de segmentação treinado com imagens do próprio buffet. O buffet de exemplo é uma ilustração sintética.</p>
     </div>
   </div>

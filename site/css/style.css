@@ -200,6 +200,9 @@ input[type=number], input[type=text] { width: 100%; background: #120f0d; border:
 .cchip.atencao { background: rgba(255,176,46,.15); color: var(--warn); }
 .cchip.repor { background: rgba(255,77,77,.18); color: var(--bad); animation: blink 1s infinite; }
 
+.sensor-card { margin-top: 22px; border-left: 4px solid var(--info); }
+.sensor-card h3 { color: #cfe6ff; }
+
 /* QR */
 .qr-card { background: #fff; color: #111; border-radius: 18px; padding: 22px; width: 230px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
 .qr-card p { color: #333; margin: 8px 0 0; font-size: .8rem; }
