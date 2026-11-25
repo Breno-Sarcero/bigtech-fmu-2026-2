@@ -127,9 +127,13 @@
             <canvas id="mesaCanvas" width="960" height="540"></canvas>
             <div class="hint" id="mesaHint">Escolha uma fonte e arraste sobre a imagem para marcar cada mesa.</div>
           </div>
-          <p class="note">Detecção real: modelo COCO-SSD (TensorFlow.js) contando pessoas dentro de cada mesa. O modelo é baixado uma vez ao ligar a demo e roda localmente: nenhuma imagem sai do seu computador. Distinguir garçom de cliente exige um modelo treinado na fase 2; aqui o botão <b>"Garçom atendeu"</b> representa esse sinal.</p>
+          <p class="note">Detecção real: modelo COCO-SSD (TensorFlow.js) contando pessoas dentro de cada mesa. O modelo é baixado uma vez ao ligar a demo e roda localmente: nenhuma imagem sai do seu computador. O <b>garçom</b> é reconhecido pela cor do uniforme (você escolhe a cor ou clica na camisa dele) e a <b>mesa suja</b> é a que fica com copo, prato ou garrafa depois que os clientes saem. Os botões manuais corrigem falhas do detector. Limite: câmera de teto ou pessoas muito pequenas reduzem a precisão; em produção o modelo seria afinado com imagens do próprio salão.</p>
         </div>
         <div>
+          <div class="ctrl"><span>Cor do uniforme do garçom (vídeo real)</span>
+            <div style="display:flex;gap:10px;align-items:center"><input id="uni" type="color" value="#1c3f9e" style="width:46px;height:34px;border:0;background:none;padding:0"><button id="uniPick" type="button">Pegar cor no vídeo</button></div>
+          </div>
+          <div class="ctrl"><span>Tolerância da cor <output id="uniTolOut">60</output></span><input id="uniTol" type="range" min="20" max="140" step="5" value="60"></div>
           <div class="ctrl"><span>Alerta de atendimento após <output id="thrOut">2,0</output> min</span><input id="thr" type="range" min="0.5" max="5" step="0.5" value="2"></div>
           <div class="ctrl"><span>Mesa suja sem limpar após <output id="dirtyOut">5</output> min</span><input id="dirty" type="range" min="2" max="15" step="1" value="5"></div>
           <div class="ctrl"><span>Velocidade do relógio da demo <output id="speedOut">30</output>×</span><input id="speed" type="range" min="1" max="120" step="1" value="30"></div>
@@ -308,6 +312,7 @@
 <script src="vendor/ScrollTrigger.min.js"></script>
 <script src="vendor/qrcode.js"></script>
 <script src="js/main.js"></script>
+<script src="js/mesas-core.js"></script>
 <script src="js/mesas.js"></script>
 <script src="js/fila-core.js"></script>
 <script src="js/fila.js"></script>
