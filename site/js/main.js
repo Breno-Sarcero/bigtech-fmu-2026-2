@@ -13,21 +13,11 @@
     // "invisível." começa só como contorno e é preenchida da esquerda para a direita: a resposta é revelada
     gsap.fromTo('#hero .inv .fill', { clipPath: 'inset(-10% 100% -10% 0)' }, { clipPath: 'inset(-10% 0% -10% 0)', duration: 1.6, delay: 1, ease: 'power2.inOut' });
 
-    // Lanterna: o círculo que revela as métricas escondidas segue o mouse; sem mouse (ou no celular), passeia sozinho
-    const hero = document.getElementById('hero');
-    const pos = { x: hero.clientWidth * 0.7, y: hero.clientHeight * 0.42 };
-    const paint = () => { hero.style.setProperty('--mx', pos.x + 'px'); hero.style.setProperty('--my', pos.y + 'px'); };
-    let wander, idle;
-    const startWander = () => {
-      wander = gsap.to(pos, { x: () => gsap.utils.random(0.08, 0.92) * hero.clientWidth, y: () => gsap.utils.random(0.12, 0.88) * hero.clientHeight, duration: 3.4, ease: 'sine.inOut', repeat: -1, repeatRefresh: true, onUpdate: paint });
-    };
-    paint(); startWander();
-    hero.addEventListener('pointermove', e => {
-      if (e.pointerType === 'touch') return;
-      if (wander) { wander.kill(); wander = null; }
-      const r = hero.getBoundingClientRect();
-      gsap.to(pos, { x: e.clientX - r.left, y: e.clientY - r.top, duration: 0.35, ease: 'power3.out', overwrite: true, onUpdate: paint });
-      clearTimeout(idle); idle = setTimeout(startWander, 4000);
+    // Métricas escondidas: cada uma acende aos poucos, fica um instante e apaga, em tempos diferentes
+    gsap.utils.toArray('.hidden-metrics span').forEach((el, i) => {
+      gsap.timeline({ repeat: -1, delay: 1.6 + i * 0.5, repeatDelay: 1.5 + (i % 4) })
+        .to(el, { opacity: 0.8, duration: 1.8, ease: 'sine.inOut' })
+        .to(el, { opacity: 0, duration: 1.8, ease: 'sine.inOut' }, '+=1.4');
     });
 
     // Nome da equipe: as iniciais entram primeiro e o resto do nome aparece depois
@@ -73,18 +63,12 @@
     });
   });
 
-  // QR code da avaliação (gerado no navegador; Place ID editável)
+  // QR code da avaliação (gerado no navegador)
   const qrBox = document.getElementById('qr');
-  const placeInput = document.getElementById('placeId');
-  function drawQR() {
-    const url = 'https://search.google.com/local/writereview?placeid=' + encodeURIComponent(placeInput.value.trim());
-    const qr = qrcode(0, 'M');
-    qr.addData(url);
-    qr.make();
-    qrBox.innerHTML = qr.createSvgTag({ scalable: true, margin: 0 });
-  }
-  placeInput.addEventListener('input', drawQR);
-  drawQR();
+  const qr = qrcode(0, 'M');
+  qr.addData('https://search.google.com/local/writereview?placeid=SEU_PLACE_ID_AQUI');   // exemplo: o ID real vem da casa
+  qr.make();
+  qrBox.innerHTML = qr.createSvgTag({ scalable: true, margin: 0 });
 
   // Chamadas para o teste: depois de enviar o vídeo ou pedir o exemplo, leva o usuário ao painel de mesas
   const goMesas = () => document.getElementById('mesas').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
