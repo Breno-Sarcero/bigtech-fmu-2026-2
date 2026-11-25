@@ -68,11 +68,7 @@
     else { video.src = url; video.loop = true; await video.play().catch(() => {}); setMode('video', 'vídeo · detecção real'); ensureModel(); }
     hint.textContent = 'As mesas são detectadas sozinhas. Se alguma falhar, arraste sobre a imagem para ajustar.';
   });
-  $('mesaCam').addEventListener('click', async () => {
-    try { const st = await navigator.mediaDevices.getUserMedia({ video: true }); stopMedia(); resetZones(); video.srcObject = st; await video.play(); setMode('cam', 'webcam · detecção real'); ensureModel(); }
-    catch (e) { hint.textContent = 'Webcam indisponível ou negada.'; }
-  });
-  $('mesaSim').addEventListener('click', () => { stopMedia(); resetZones(); startSim(); });
+  $('mesaSim').addEventListener('click', () => { stopMedia(); resetZones(); calibrated = false; startSim(); });
 
   // Câmeras reais do salão (cortes de 2 min cedidos pela Bovinu's no material do hackathon; rostos já borrados na origem).
   // Câmera fixa = mesas calibradas uma vez por câmera (caixas em coordenadas 960x540). A IA só olha dentro delas:
@@ -95,7 +91,6 @@
   }
   $('mesaB1').addEventListener('click', () => loadCamera('b1'));
   $('mesaB2').addEventListener('click', () => loadCamera('b2'));
-  $('mesaClear').addEventListener('click', resetZones);
 
   // ---------- mouse: marcar mesas ou pegar a cor do uniforme ----------
   function pos(ev) { const r = canvas.getBoundingClientRect(); return { x: (ev.clientX - r.left) * W / r.width, y: (ev.clientY - r.top) * H / r.height }; }

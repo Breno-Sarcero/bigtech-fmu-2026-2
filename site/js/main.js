@@ -32,7 +32,7 @@
 
     // Seção pinada: 4 passos da solução trocam conforme a rolagem
     const steps = gsap.utils.toArray('.step');
-    const vis = ['#v1,#i1,#b1', '#v2,#i2,#b2', '#v3,#i3,#b3', '#v4,#i4,#b4'];   // desenho SVG + imagem (se existir)
+    const vis = ['#i1', '#v2,#i2,#b2', '#i3', '#v4,#i4,#b4'];   // desenho SVG + imagem (se existir)
     const mm = gsap.matchMedia();
     mm.add('(min-width: 861px)', () => {
       const tl = gsap.timeline({
@@ -63,12 +63,6 @@
     });
   });
 
-  // QR code da avaliação (gerado no navegador)
-  const qrBox = document.getElementById('qr');
-  const qr = qrcode(0, 'M');
-  qr.addData('https://search.google.com/local/writereview?placeid=SEU_PLACE_ID_AQUI');   // exemplo: o ID real vem da casa
-  qr.make();
-  qrBox.innerHTML = qr.createSvgTag({ scalable: true, margin: 0 });
 
   // Chamadas para o teste: depois de enviar o vídeo ou pedir o exemplo, leva o usuário ao painel de mesas
   const goMesas = () => document.getElementById('mesas').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });

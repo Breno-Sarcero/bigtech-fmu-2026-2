@@ -69,7 +69,18 @@
     desenharBuffet(niveis);
     analisar(ITENS.map((_, i) => regiao(i)), ITENS.map(i => i.nome));
   }
-  $('cubaGen').addEventListener('click', exemplo);
+  // Foto hiper-realista de exemplo com 4 cubas lado a lado (gerada por IA, ver docs/prompts-imagens.md).
+  // Se o arquivo existir, a demo usa a foto; se não, cai no buffet desenhado acima.
+  const real = new Image(); let realOk = false;
+  const colunas = () => [0, 1, 2, 3].map(i => ({ x: 40 + i * 225, y: 60, w: 185, h: 400 }));
+  function exemploReal() {
+    const s = Math.max(W / real.width, H / real.height), w = real.width * s, h = real.height * s;
+    sctx.fillStyle = '#000'; sctx.fillRect(0, 0, W, H); sctx.drawImage(real, (W - w) / 2, (H - h) / 2, w, h);
+    analisar(colunas(), ITENS.map(i => i.nome));
+  }
+  real.onload = () => { realOk = true; exemploReal(); };
+  real.src = 'img/cubas-exemplo.webp?v=1';
+  $('cubaGen').addEventListener('click', () => realOk ? exemploReal() : exemplo());
 
   // Foto enviada: analisa a parte central da imagem como uma única cuba.
   $('cubaFile').addEventListener('change', e => {
