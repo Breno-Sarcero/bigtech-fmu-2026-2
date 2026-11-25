@@ -6,7 +6,7 @@
 <title>Vendo o invisível — BIG Tech · Hackathon Tech FMU 2026.2</title>
 <meta name="description" content="Como enxergar respostas ocultas? Visão computacional nas câmeras que a Bovinu's Augusta já tem: mesas, mix do prato e fila. Proposta de análise da equipe BIG Tech.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ff5a1f'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%230b0a09'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="css/style.css?v=2">
+<link rel="stylesheet" href="css/style.css?v=3">
 </head>
 <body>
 <div id="progress"></div>
@@ -18,6 +18,7 @@
     <li><a href="#mesas">Teste</a></li>
     <li><a href="#problema">Problema</a></li>
     <li><a href="#solucao">Solução</a></li>
+    <li><a href="#medido">Medido</a></li>
     <li><a href="#fila">Fila</a></li>
     <li><a href="#prato">Prato</a></li>
     <li><a href="#cubas">Cubas</a></li>
@@ -118,6 +119,22 @@
           <div class="alerts" id="alerts"></div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEDIDO NOS CORTES REAIS -->
+<section id="medido" style="background:var(--bg-2)">
+  <div class="wrap">
+    <h2 class="reveal">Medido nas câmeras <span class="grad">de verdade.</span></h2>
+    <p class="lead reveal">O modelo contou as pessoas e as mesas ocupadas em dois trechos de cada câmera do buffet: <b>2 minutos do pico (13h14)</b> e <b>2 minutos depois do pico (13h54)</b>. O vídeo inteiro não foi processado, só esses quatro cortes.</p>
+    <div class="panel reveal">
+      <div class="medido-grid">
+        <figure><figcaption>Buffet 1 · <span id="mdSub1"></span></figcaption><canvas class="chart" id="mdC1"></canvas></figure>
+        <figure><figcaption>Buffet 2 · <span id="mdSub2"></span></figcaption><canvas class="chart" id="mdC2"></canvas></figure>
+      </div>
+      <div class="legend"><span class="lg pico"></span> pico (13h14 a 13h16) <span class="lg apos"></span> depois do pico (13h54 a 13h56)</div>
+      <p class="note">Linhas: quantas mesas calibradas tinham alguém sentado ou junto delas, a cada 5 segundos. É uma <b>medição nossa</b> com o modelo treinado nos vídeos cedidos pela Bovinu's (quadros de treino e de teste de minutos diferentes), não um número da empresa. Limite: pessoa passando perto de uma mesa também conta, e o modelo ainda erra de vez em quando.</p>
     </div>
   </div>
 </section>
@@ -385,6 +402,7 @@
 <script src="js/main.js?v=2"></script>
 <script src="js/mesas-core.js"></script>
 <script src="js/mesas.js?v=5"></script>
+<script src="js/medido.js?v=1"></script>
 <script src="js/fila-core.js"></script>
 <script src="js/fila.js"></script>
 <script src="js/prato.js"></script>

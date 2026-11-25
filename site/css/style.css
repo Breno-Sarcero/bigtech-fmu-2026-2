@@ -243,3 +243,11 @@ footer { padding: 60px 0 90px; border-top: 1px solid var(--line); color: var(--m
   .steps { min-height: 0; }
   #solucao .pin { height: auto; padding: 90px 24px; }
 }
+
+/* medido nos cortes reais */
+.medido-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; }
+.medido-grid figure { margin: 0; }
+.medido-grid figcaption { font-size: .88rem; color: var(--muted); margin-bottom: 8px; }
+.legend { margin-top: 12px; font-size: .88rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; }
+.lg { display: inline-block; width: 22px; height: 4px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+.lg.pico { background: #ff7a1a; } .lg.apos { background: #5ab0ff; }
