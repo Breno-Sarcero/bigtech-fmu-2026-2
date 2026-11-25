@@ -4,11 +4,12 @@
    - GARÇOM: pessoa cuja cor do tronco é parecida com a cor de uniforme escolhida pelo gerente.
    - CLIENTE: qualquer outra pessoa dentro da mesa.
    - MESA SUJA: objetos de mesa (copo, prato/tigela, garrafa, talher) sobrando depois que os clientes saem.
-   - ATENDIDA: garçom por perto da mesa por alguns segundos enquanto há cliente sem atendimento. */
+   - ATENDIDA: alguém em pé junto da mesa por alguns segundos (sem só passar) depois que os clientes já sentaram e assentaram. */
 (function (root) {
   const ITEMS = new Set(['cup', 'bowl', 'bottle', 'wine glass', 'fork', 'knife', 'spoon']);
   const ABSENT_SECS = 8;           // tolera falha de detecção antes de dar a pessoa/objeto como ausente
   const WAITER_MARGIN = 40;        // o garçom conta como "na mesa" um pouco antes da borda
+  const SETTLE_SECS = 12;          // cliente que acabou de chegar ainda está de pé arrumando a cadeira: só vale atendimento depois que a mesa assentou
 
   const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
 
@@ -118,7 +119,7 @@
         if (present) { z.state = 'wait'; z.tOcc = vt; z.tSince = vt; z.alerted = false; }
         break;
       case 'wait':
-        if (z.waiterSecs >= cfg.waiterSecs) { serve(z, vt, hooks, true); break; }
+        if (z.waiterSecs >= cfg.waiterSecs && vt - z.tOcc >= SETTLE_SECS) { serve(z, vt, hooks, true); break; }
         if (absent) { leave(z, vt, itemsOn, hooks); break; }
         if (!z.alerted && vt - z.tSince > cfg.thr * 60) { z.alerted = true; hooks.log('ALERTA ' + z.name + ': ' + fmt(cfg.thr) + ' min sem atendimento. Avisar o metre da praça.'); }
         break;

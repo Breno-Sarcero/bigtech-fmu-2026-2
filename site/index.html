@@ -6,7 +6,7 @@
 <title>Vendo o invisível — BIG Tech · Hackathon Tech FMU 2026.2</title>
 <meta name="description" content="Como enxergar respostas ocultas? Visão computacional nas câmeras que a Bovinu's Augusta já tem: mesas, mix do prato e fila. Proposta de análise da equipe BIG Tech.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ff5a1f'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%230b0a09'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=5">
 </head>
 <body>
 <div id="progress"></div>
@@ -18,6 +18,7 @@
     <li><a href="#mesas">Teste</a></li>
     <li><a href="#problema">Problema</a></li>
     <li><a href="#solucao">Solução</a></li>
+    <li><a href="#medido">Medido</a></li>
     <li><a href="#fila">Fila</a></li>
     <li><a href="#prato">Prato</a></li>
     <li><a href="#cubas">Cubas</a></li>
@@ -94,6 +95,8 @@
         <label class="btn" for="mesaFile">Enviar vídeo ou foto</label>
         <input id="mesaFile" type="file" accept="video/*,image/*">
         <button id="mesaCam">Usar webcam</button>
+        <button id="mesaB1">Câmera real: buffet 1</button>
+        <button id="mesaB2">Câmera real: buffet 2</button>
         <button id="mesaSim" class="primary">Modo simulado</button>
         <button id="mesaClear">Limpar mesas</button>
         <span class="pill" id="mesaMode">nenhuma fonte</span>
@@ -120,14 +123,30 @@
   </div>
 </section>
 
+<!-- MEDIDO NOS CORTES REAIS -->
+<section id="medido" style="background:var(--bg-2)">
+  <div class="wrap">
+    <h2 class="reveal">Medido nas câmeras <span class="grad">de verdade.</span></h2>
+    <p class="lead reveal">O modelo contou as pessoas e as mesas ocupadas em dois trechos de cada câmera do buffet: <b>2 minutos do pico (13h14)</b> e <b>2 minutos depois do pico (13h54)</b>. O vídeo inteiro não foi processado, só esses quatro cortes.</p>
+    <div class="panel reveal">
+      <div class="medido-grid">
+        <figure><figcaption>Buffet 1 · <span id="mdSub1"></span></figcaption><canvas class="chart" id="mdC1"></canvas></figure>
+        <figure><figcaption>Buffet 2 · <span id="mdSub2"></span></figcaption><canvas class="chart" id="mdC2"></canvas></figure>
+      </div>
+      <div class="legend"><span class="lg pico"></span> pico (13h14 a 13h16) <span class="lg apos"></span> depois do pico (13h54 a 13h56)</div>
+      <p class="note">Linhas: quantas mesas calibradas tinham alguém sentado ou junto delas, a cada 5 segundos. É uma <b>medição nossa</b> com o modelo treinado nos vídeos cedidos pela Bovinu's (quadros de treino e de teste de minutos diferentes), não um número da empresa. Limite: pessoa passando perto de uma mesa também conta, e o modelo ainda erra de vez em quando.</p>
+    </div>
+  </div>
+</section>
+
 <!-- PROPOSTA -->
 <section id="proposta">
   <div class="wrap">
     <h2 class="reveal">Uma proposta de análise, <span class="grad">não a solução definitiva.</span></h2>
-    <p class="lead reveal">Ao estudar o caso, percebemos que faltam dados e métricas para apontar com certeza onde está o problema. Só a fila tem número informado pela empresa (4 min contra 2,5 ideais). Por isso este projeto mostra, com um protótipo funcionando, como medir o salão com o que a casa já tem, e propõe uma fase 0 de coleta para confirmar onde está o ganho antes de qualquer compra.</p>
+    <p class="lead reveal">Faltam dados para apontar com certeza onde está o problema: só a fila tem número da empresa (4 min contra 2,5 ideais). Mostramos, com um protótipo funcionando, como medir o salão com o que a casa já tem, e propomos uma fase 0 de coleta antes de qualquer compra.</p>
     <div class="pains">
-      <div class="pain reveal"><span class="tag">O que entregamos</span><h3>Um caminho, não um veredito</h3><p>Análise das 4 dores, protótipo que roda no navegador, plano de instalação com custo e as premissas declaradas.</p></div>
-      <div class="pain reveal"><span class="tag">O que ainda não sabemos</span><h3>Faltam métricas</h3><p>Tempo real de atendimento por mesa, mix dos pratos, reposição por cuba e se câmeras e sistema entregam esses dados. Sem isso não dá para cravar o tamanho de cada problema.</p></div>
+      <div class="pain reveal"><span class="tag">O que entregamos</span><h3>Um caminho, não um veredito</h3><p>Análise das 4 dores, protótipo que roda no navegador e um modelo de pessoas treinado nos vídeos da Bovinu's, medido em cortes reais, mais o plano de instalação e as premissas declaradas.</p></div>
+      <div class="pain reveal"><span class="tag">O que ainda não sabemos</span><h3>Faltam métricas</h3><p>Tempo real de atendimento por mesa, mix dos pratos, quantas cubas o buffet tem e se câmeras e sistema entregam esses dados. Medimos só 4 cortes de 2 minutos; sem a fase 0 não dá para cravar o tamanho de cada problema.</p></div>
       <div class="pain reveal"><span class="tag">Fora do escopo, como pedido</span><h3>Não mexemos nisso</h3><p>Pagamento, cozinha, compras e estoque ficaram de fora a pedido da empresa, e a balança não é o foco. Também não trocamos nenhum sistema.</p></div>
     </div>
   </div>
@@ -138,28 +157,42 @@
   <div class="wrap">
     <h2 class="reveal">Um quilo que <span class="grad">roda no limite</span> no horário de pico.</h2>
     <div class="stats">
-      <div class="stat reveal"><div class="n" data-count="600">0</div><div class="l">refeições por dia, de segunda a sexta</div></div>
+      <div class="stat reveal"><div class="n" data-count="618">0</div><div class="l">clientes por dia, em média, de segunda a sexta</div></div>
       <div class="stat reveal"><div class="n" data-count="450">0</div><div class="l">lugares no salão</div></div>
       <div class="stat reveal"><div class="n"><span data-count="4">0</span> min</div><div class="l">é a fila que a churrasqueira já chegou a ter; o ideal para a casa é 2,5 min</div></div>
       <div class="stat reveal"><div class="n">11h50</div><div class="l">às 13h30: o pico que decide a experiência</div></div>
     </div>
-    <p class="src reveal">Números ditos pela equipe da Bovinu's na sessão de perguntas e respostas do hackathon (movimento diário, 450 lugares, horário de pico e fila da churrasqueira). Nada aqui foi medido por nós.</p>
+    <div class="stats stats-2">
+      <div class="stat reveal"><div class="n"><span data-count="482">0</span> g</div><div class="l">consumo médio por cliente na semana</div></div>
+      <div class="stat reveal"><div class="n">R$ 119,90</div><div class="l">o quilo (R$ 113,00 no buffet livre, por pessoa)</div></div>
+      <div class="stat reveal"><div class="n">≈ <span data-count="298">0</span> kg</div><div class="l">de comida por dia: conta nossa, 618 clientes × 0,482 kg</div></div>
+      <div class="stat reveal"><div class="n">≈ R$ 57,80</div><div class="l">num prato médio de 482 g: conta nossa, a R$ 119,90/kg</div></div>
+    </div>
+    <p class="src reveal">Números informados pela Bovinu's no hackathon (clientes por dia, consumo médio, preço do quilo, 450 lugares, horário de pico e fila da churrasqueira). As linhas "conta nossa" são multiplicações simples, não dados da casa. Nada aqui foi medido por nós.</p>
 
     <div class="dores">
       <div class="dores-head reveal"><b>As 4 maiores dores da Bovinu's</b><span>segundo a própria empresa</span></div>
       <div class="dores-grid">
-        <div class="dor reveal"><i class="num">1</i><h3>Mix do prato</h3><p>O sistema sabe o peso, mas não o que está no prato. A margem some sem ninguém ver.</p><em>a mais crítica</em></div>
-        <div class="dor reveal"><i class="num">2</i><h3>Filas e tempo</h3><p>Fila da churrasqueira acima do ideal e mesa esperando no meio do pico.</p></div>
-        <div class="dor reveal"><i class="num">3</i><h3>Limpeza do salão</h3><p>Mesa que sai e demora a ser limpa trava a próxima família e piora a avaliação.</p></div>
-        <div class="dor reveal"><i class="num">4</i><h3>Qualidade da comida</h3><p>Falta dado de qual item acaba, quando e quanto tempo fica na cuba.</p></div>
-      </div>
-      <div class="seta reveal" aria-hidden="true">
-        <svg viewBox="0 0 60 90" width="56" height="84"><path d="M30 4 V62 M10 44 L30 70 L50 44" fill="none" stroke="#3ddc84" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-      <div class="solucao-card reveal">
-        <span class="sol-tag">Nossa solução</span>
-        <h3>Câmeras que a casa já tem, com IA, transformam o salão em dados</h3>
-        <p>Mesas atendidas e limpas no tempo certo, o mix real do prato, a fila prevista e as cubas acompanhadas. Primeiro medir, depois decidir.</p>
+        <div class="par reveal">
+          <div class="dor"><i class="num">1</i><h3>Mix do prato</h3><p>O sistema sabe o peso, mas não o que está no prato. A margem some sem ninguém ver.</p><em>a mais crítica</em></div>
+          <svg class="seta-mini" viewBox="0 0 40 44" width="28" height="30" aria-hidden="true"><path d="M20 3 V30 M8 20 L20 34 L32 20" fill="none" stroke="#3ddc84" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>Uma foto na hora da pesagem estima a proporção de carne, carboidrato, salada e sobremesa, junto do peso que o sistema já registra.</p></div>
+        </div>
+        <div class="par reveal">
+          <div class="dor"><i class="num">2</i><h3>Filas e tempo</h3><p>Fila da churrasqueira acima do ideal e mesa esperando no meio do pico.</p></div>
+          <svg class="seta-mini" viewBox="0 0 40 44" width="28" height="30" aria-hidden="true"><path d="M20 3 V30 M8 20 L20 34 L32 20" fill="none" stroke="#3ddc84" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>Mesas com relógio avisam o metre quando alguém espera, e a previsão de fila mostra onde está o gargalo antes de ele se formar.</p></div>
+        </div>
+        <div class="par reveal">
+          <div class="dor"><i class="num">3</i><h3>Limpeza do salão</h3><p>Mesa que sai e demora a ser limpa trava a próxima família e piora a avaliação.</p></div>
+          <svg class="seta-mini" viewBox="0 0 40 44" width="28" height="30" aria-hidden="true"><path d="M20 3 V30 M8 20 L20 34 L32 20" fill="none" stroke="#3ddc84" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>A câmera vê a mesa vazia com louça e avisa a limpeza em minutos, com o tempo de cada mesa registrado.</p></div>
+        </div>
+        <div class="par reveal">
+          <div class="dor"><i class="num">4</i><h3>Qualidade da comida</h3><p>Falta dado de qual item acaba, quando e quanto tempo fica na cuba.</p></div>
+          <svg class="seta-mini" viewBox="0 0 40 44" width="28" height="30" aria-hidden="true"><path d="M20 3 V30 M8 20 L20 34 L32 20" fill="none" stroke="#3ddc84" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>A câmera sobre as cubas conta as reposições e mostra o que mais sai e o que acaba cedo, hora a hora.</p></div>
+        </div>
       </div>
     </div>
   </div>
@@ -174,13 +207,16 @@
       <div class="step"><div class="big">03</div><h3>Buffet que se avisa</h3><p>Câmera sobre as cubas conta reposições e mostra o que mais sai e o que acaba cedo, hora a hora.</p></div>
       <div class="step"><div class="big">04</div><h3>Avaliação sem atrito</h3><p>QR code na mesa, junto aos guardanapos, abre direto a avaliação no Google. Sem brinde, como a política do Google exige.</p></div>
     </div>
-    <div class="visual" title="Ilustração gerada por IA">
-      <span class="ia-badge" aria-hidden="true">ilustração gerada por IA</span>
+    <div class="visual" title="Imagens reais da câmera (passos 1 e 3) e ilustrações (passos 2 e 4)">
+      <span class="ia-badge vis" id="b1">imagem real · câmera do salão cedida pela Bovinu's (rostos já borrados na origem)</span>
+      <span class="ia-badge vis" id="b2">ilustração · proporção por cor no prato</span>
+      <span class="ia-badge vis" id="b3">imagem real · buffet visto pela câmera (rostos já borrados na origem)</span>
+      <span class="ia-badge vis" id="b4">ilustração gerada por IA</span>
       <!-- imagens geradas por IA (docs/prompts-imagens.md). Enquanto o arquivo não existir, o desenho em SVG abaixo aparece no lugar. -->
-      <img class="vis vis-img" id="i1" src="img/passo-1-mesas.webp" alt="Salão visto do alto com mesas marcadas em verde, amarelo e vermelho conforme o tempo de espera" onload="document.querySelector('.ia-badge').style.display='block'" onerror="this.remove()">
-      <img class="vis vis-img" id="i2" src="img/passo-2-prato.webp" alt="Prato de buffet por quilo fotografado do alto, dividido por cores em carne, carboidrato, salada e sobremesa" onload="document.querySelector('.ia-badge').style.display='block'" onerror="this.remove()">
-      <img class="vis vis-img" id="i3" src="img/passo-3-cubas.webp" alt="Buffet visto do alto, com as cubas e o nível de cada uma indicado por uma câmera" onload="document.querySelector('.ia-badge').style.display='block'" onerror="this.remove()">
-      <img class="vis vis-img" id="i4" src="img/passo-4-avaliacao.webp" alt="Mesa com adesivo de QR code e cartão de aproximação convidando a avaliar a visita no Google" onload="document.querySelector('.ia-badge').style.display='block'" onerror="this.remove()">
+      <img class="vis vis-img" id="i1" src="img/passo-1-mesas.webp" alt="Salão visto do alto com mesas marcadas em verde, amarelo e vermelho conforme o tempo de espera" onerror="this.remove()">
+      <img class="vis vis-img" id="i2" src="img/passo-2-prato.webp" alt="Prato de buffet por quilo fotografado do alto, dividido por cores em carne, carboidrato, salada e sobremesa" onerror="this.remove()">
+      <img class="vis vis-img" id="i3" src="img/passo-3-cubas.webp" alt="Buffet visto do alto, com as cubas e o nível de cada uma indicado por uma câmera" onerror="this.remove()">
+      <img class="vis vis-img" id="i4" src="img/passo-4-avaliacao.webp" alt="Mesa com adesivo de QR code e cartão de aproximação convidando a avaliar a visita no Google" onerror="this.remove()">
       <svg viewBox="0 0 400 300" aria-hidden="true">
         <g class="vis" id="v1">
           <rect x="40" y="70" width="90" height="60" rx="8" fill="none" stroke="#3ddc84" stroke-width="3"/>
@@ -230,7 +266,7 @@
         <div>
           <span class="pill sim" style="margin-bottom:14px">SIMULADO · não é medição</span>
           <ul class="facts">
-            <li><b>600</b> refeições no dia <span>(empresa)</span></li>
+            <li><b>618</b> clientes por dia, em média <span>(empresa)</span></li>
             <li><b>3</b> churrasqueiros atendendo <span>(empresa: são 4, um cuida do fogo)</span></li>
             <li><b>~76%</b> das refeições entre 11h50 e 13h30 <span>(estimativa da equipe: 70 a 80%)</span></li>
             <li><b>44 s</b> por atendimento <span>(calibrado para o pico chegar a ~4 min)</span></li>
@@ -259,7 +295,7 @@
       <div class="demo-grid">
         <div class="stage" style="aspect-ratio:1/1;max-width:560px"><canvas id="pratoCanvas" width="560" height="560"></canvas></div>
         <div>
-          <p class="rules">Peso na balança (exemplo): <b>520 g</b>. Alerta de mix de exemplo: carne acima de <b>45%</b> do prato.</p>
+          <p class="rules">Peso na balança (exemplo): <b>482 g</b>, o consumo médio informado pela casa; a R$ 119,90/kg são cerca de <b>R$ 57,80</b> por prato. O peso mostra o valor; o mix mostra a margem. Alerta de mix de exemplo: carne acima de <b>45%</b> do prato.</p>
           <div class="mixbar" id="mixbar"></div>
           <div class="legend" id="mixlegend"></div>
           <div class="alerts" id="pratoAlert"></div>
@@ -353,9 +389,10 @@
     <h2 class="reveal">O que <span class="grad">sabemos</span> e o que <span class="grad">assumimos.</span></h2>
     <div class="limits">
       <div class="limit reveal"><h3>Privacidade (LGPD)</h3><p>Sem reconhecimento facial. A IA lê mesas e pratos, guarda estados e contagens, não identifica pessoas. Aviso no salão e retenção mínima de imagem.</p></div>
-      <div class="limit reveal"><h3>Dados simulados</h3><p>Fila, ocupação e custos são simulações e hipóteses rotuladas na página. Nenhum número inventado é apresentado como da Bovinu's.</p></div>
+      <div class="limit reveal"><h3>O que veio da Bovinu's</h3><p>618 clientes por dia, 482 g de consumo médio, R$ 119,90 o quilo, 450 lugares, pico das 11h50 às 13h30, fila de até 4 min e 2 vídeos de câmeras do buffet (12h49 às 13h59). Usamos 4 cortes de 2 minutos, rostos já borrados na origem.</p></div>
+      <div class="limit reveal"><h3>O que simulamos e o que medimos</h3><p>Fila, cubas e demo de mesas simulada são simulações, rotuladas na página. O gráfico "Medido" vem do nosso modelo nos cortes reais. Nenhum número inventado é apresentado como da Bovinu's.</p></div>
       <div class="limit reveal"><h3>Integrações não confirmadas</h3><p>JS Softcom (API ou CSV) e RTSP das câmeras são premissas. A fase 0 do plano as verifica antes de qualquer compra.</p></div>
-      <div class="limit reveal"><h3>Licenças e patentes</h3><p>Projeto acadêmico e demonstrativo. Uma implantação comercial exige revisar licenças dos modelos (alguns detectores são AGPL) e patentes de classificação de mesa por visão.</p></div>
+      <div class="limit reveal"><h3>Licenças e patentes</h3><p>Projeto acadêmico e demonstrativo. Uma implantação comercial exige revisar licenças dos modelos (nosso detector de pessoas é um YOLOv8 ajustado, licença AGPL-3.0, e o código que o treina está neste repositório) e patentes de classificação de mesa por visão.</p></div>
       <div class="limit reveal"><h3>Escopo respeitado</h3><p>Sem mexer em pagamento, balança, cozinha, compras ou estoque. O atendimento continua humano: a IA só avisa.</p></div>
       <div class="limit reveal"><h3>Precisão do prato</h3><p>A foto estima proporção por área, não volume. A leitura melhora com prato maior e raso e com câmera dedicada na balança.</p></div>
     </div>
@@ -369,12 +406,13 @@
 <script src="vendor/gsap.min.js"></script>
 <script src="vendor/ScrollTrigger.min.js"></script>
 <script src="vendor/qrcode.js"></script>
-<script src="js/main.js"></script>
-<script src="js/mesas-core.js"></script>
-<script src="js/mesas.js"></script>
+<script src="js/main.js?v=3"></script>
+<script src="js/mesas-core.js?v=2"></script>
+<script src="js/mesas.js?v=5"></script>
+<script src="js/medido.js?v=1"></script>
 <script src="js/fila-core.js"></script>
-<script src="js/fila.js"></script>
-<script src="js/prato.js"></script>
+<script src="js/fila.js?v=2"></script>
+<script src="js/prato.js?v=2"></script>
 <script src="js/cubas-core.js"></script>
 <script src="js/cubas.js"></script>
 </body>

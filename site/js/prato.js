@@ -5,7 +5,7 @@
   const $ = id => document.getElementById(id);
   const S = 560;
   // Valores fixos de exemplo (não ajustáveis na página): peso lido na balança, parte do prato analisada e limite de carne.
-  const PESO_G = 520, RAIO_PCT = 92, LIMITE_CARNE = 45;
+  const PESO_G = 482, RAIO_PCT = 92, LIMITE_CARNE = 45;
   const canvas = $('pratoCanvas'), ctx = canvas.getContext('2d', { willReadFrequently: true });
   const base = document.createElement('canvas'); base.width = base.height = S;
   const bctx = base.getContext('2d', { willReadFrequently: true });

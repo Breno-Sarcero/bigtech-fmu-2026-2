@@ -20,7 +20,9 @@ Dados abaixo foram ditos pela equipe da Bovinu's na sessão de perguntas e respo
 
 | Fato | Valor | Fonte |
 |---|---|---|
-| Refeições por dia | ~600 de segunda a sexta; ~250 no sábado e ~250 no domingo | Empresa |
+| Clientes por dia | ~618 em média de segunda a sexta (a equipe da casa citou ~600 na sessão de perguntas); ~250 no sábado e ~250 no domingo | Empresa |
+| Consumo médio e preço | 482 g por cliente na semana; R$ 119,90/kg (R$ 113,00 no buffet livre, por pessoa) | Empresa (material do hackathon) |
+| Vídeos das câmeras do buffet | 2 vídeos de ~70 min (12h49 às 13h59), rostos borrados na origem; usamos só 4 cortes de 2 min (pico e depois do pico) | Empresa |
 | Lugares | ~450 (cerca de 90 mesas) | Empresa |
 | Horário de pico | 11h50 às 13h30 | Empresa |
 | Fila da churrasqueira | "Chegou a bater 4 minutos"; o ideal seria 2,5 | Empresa |

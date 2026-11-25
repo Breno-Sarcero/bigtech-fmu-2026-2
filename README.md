@@ -41,7 +41,7 @@ video/     vídeo de apresentação
 
 ## Limites e transparência
 
-- Números da empresa (600 clientes/dia, 450 lugares, fila de 4 min, pico 11h50–13h30) foram informados no evento. Não os medimos.
+- Números da empresa (618 clientes/dia, 482 g de consumo médio, R$ 119,90/kg, 450 lugares, fila de 4 min, pico 11h50–13h30) foram informados no evento. Não os medimos.
 - Integração com JS Softcom e RTSP/ONVIF das câmeras são **premissas** a verificar numa fase 0.
 - Sem reconhecimento facial. A IA lê mesas e pratos, não pessoas.
 - Projeto acadêmico. Uma implantação comercial exige revisar licenças dos modelos e patentes.

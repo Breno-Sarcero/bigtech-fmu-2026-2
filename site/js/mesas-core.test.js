@@ -118,4 +118,16 @@ assert.strictEqual(z.state, 'wait');
 for (let i = 0; i < 6; i++) { vt++; run([seated(130, 130), standing(240, 120)]); }
 assert.strictEqual(z.state, 'served', 'garçom em pé deveria atender: ' + z.state);
 
+// 15) cliente que acabou de chegar e ainda está de pé junto da mesa NÃO conta como atendimento
+logs.length = 0; z = mk(); M.init(z, 0); vt = 0;
+run([seated(130, 130)]); vt++;                                   // mesa passa a ter cliente
+for (let i = 0; i < 6; i++) { vt += 1; run([seated(130, 130), standing(240, 120)]); }   // alguém em pé logo em seguida (< 12 s)
+assert.strictEqual(z.state, 'wait', 'chegada recente não deve marcar atendimento: ' + z.state);
+// 16) quem só passa pela mesa (menos que o tempo mínimo de permanência) também não conta
+logs.length = 0; z = mk(); M.init(z, 0); vt = 0;
+for (; vt < 30; vt++) run([seated(130, 130)]);
+run([seated(130, 130), standing(240, 120)]); vt++; run([seated(130, 130)]); vt++;   // um quadro só e sumiu
+for (let i = 0; i < 20; i++) { vt++; run([seated(130, 130)]); }
+assert.strictEqual(z.state, 'wait', 'quem só passa não deve atender: ' + z.state);
+
 console.log('mesas-core: todos os testes passaram');
