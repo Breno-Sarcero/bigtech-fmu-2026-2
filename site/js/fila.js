@@ -5,7 +5,7 @@
   const SEATS = 450, META = 2.5;
   // Empresa: 4 churrasqueiros no pico, mas só 3 atendem o público (1 cuida do fogo). 44 s por atendimento foi calibrado
   // para o pico da fila chegar a ~4 min, como a empresa relatou. O resto são hipóteses (ver fila-core.test.js).
-  const BASE = { clientes: 600, servidores: 3, servSeg: 44, pctChurras: 0.8, permMin: 40 };
+  const BASE = { clientes: 618, servidores: 3, servSeg: 44, pctChurras: 0.8, permMin: 40 };
   const MAIS_UM = Object.assign({}, BASE, { servidores: 4 });
   const hhmm = m => { const t = 11 * 60 + m; return String(Math.floor(t / 60)).padStart(2, '0') + 'h' + String(Math.round(t % 60)).padStart(2, '0'); };
   const min = v => v.toFixed(1).replace('.', ',') + ' min';

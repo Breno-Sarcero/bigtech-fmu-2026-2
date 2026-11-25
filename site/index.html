@@ -6,7 +6,7 @@
 <title>Vendo o invisível — BIG Tech · Hackathon Tech FMU 2026.2</title>
 <meta name="description" content="Como enxergar respostas ocultas? Visão computacional nas câmeras que a Bovinu's Augusta já tem: mesas, mix do prato e fila. Proposta de análise da equipe BIG Tech.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ff5a1f'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%230b0a09'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="css/style.css?v=3">
+<link rel="stylesheet" href="css/style.css?v=4">
 </head>
 <body>
 <div id="progress"></div>
@@ -145,8 +145,8 @@
     <h2 class="reveal">Uma proposta de análise, <span class="grad">não a solução definitiva.</span></h2>
     <p class="lead reveal">Faltam dados para apontar com certeza onde está o problema: só a fila tem número da empresa (4 min contra 2,5 ideais). Mostramos, com um protótipo funcionando, como medir o salão com o que a casa já tem, e propomos uma fase 0 de coleta antes de qualquer compra.</p>
     <div class="pains">
-      <div class="pain reveal"><span class="tag">O que entregamos</span><h3>Um caminho, não um veredito</h3><p>Análise das 4 dores, protótipo que roda no navegador, plano de instalação com custo e as premissas declaradas.</p></div>
-      <div class="pain reveal"><span class="tag">O que ainda não sabemos</span><h3>Faltam métricas</h3><p>Tempo real de atendimento por mesa, mix dos pratos, reposição por cuba e se câmeras e sistema entregam esses dados. Sem isso não dá para cravar o tamanho de cada problema.</p></div>
+      <div class="pain reveal"><span class="tag">O que entregamos</span><h3>Um caminho, não um veredito</h3><p>Análise das 4 dores, protótipo que roda no navegador e um modelo de pessoas treinado nos vídeos da Bovinu's, medido em cortes reais, mais o plano de instalação e as premissas declaradas.</p></div>
+      <div class="pain reveal"><span class="tag">O que ainda não sabemos</span><h3>Faltam métricas</h3><p>Tempo real de atendimento por mesa, mix dos pratos, quantas cubas o buffet tem e se câmeras e sistema entregam esses dados. Medimos só 4 cortes de 2 minutos; sem a fase 0 não dá para cravar o tamanho de cada problema.</p></div>
       <div class="pain reveal"><span class="tag">Fora do escopo, como pedido</span><h3>Não mexemos nisso</h3><p>Pagamento, cozinha, compras e estoque ficaram de fora a pedido da empresa, e a balança não é o foco. Também não trocamos nenhum sistema.</p></div>
     </div>
   </div>
@@ -157,12 +157,18 @@
   <div class="wrap">
     <h2 class="reveal">Um quilo que <span class="grad">roda no limite</span> no horário de pico.</h2>
     <div class="stats">
-      <div class="stat reveal"><div class="n" data-count="600">0</div><div class="l">refeições por dia, de segunda a sexta</div></div>
+      <div class="stat reveal"><div class="n" data-count="618">0</div><div class="l">clientes por dia, em média, de segunda a sexta</div></div>
       <div class="stat reveal"><div class="n" data-count="450">0</div><div class="l">lugares no salão</div></div>
       <div class="stat reveal"><div class="n"><span data-count="4">0</span> min</div><div class="l">é a fila que a churrasqueira já chegou a ter; o ideal para a casa é 2,5 min</div></div>
       <div class="stat reveal"><div class="n">11h50</div><div class="l">às 13h30: o pico que decide a experiência</div></div>
     </div>
-    <p class="src reveal">Números ditos pela equipe da Bovinu's na sessão de perguntas e respostas do hackathon (movimento diário, 450 lugares, horário de pico e fila da churrasqueira). Nada aqui foi medido por nós.</p>
+    <div class="stats stats-2">
+      <div class="stat reveal"><div class="n"><span data-count="482">0</span> g</div><div class="l">consumo médio por cliente na semana</div></div>
+      <div class="stat reveal"><div class="n">R$ 119,90</div><div class="l">o quilo (R$ 113,00 no buffet livre, por pessoa)</div></div>
+      <div class="stat reveal"><div class="n">≈ <span data-count="298">0</span> kg</div><div class="l">de comida por dia: conta nossa, 618 clientes × 0,482 kg</div></div>
+      <div class="stat reveal"><div class="n">≈ R$ 57,80</div><div class="l">num prato médio de 482 g: conta nossa, a R$ 119,90/kg</div></div>
+    </div>
+    <p class="src reveal">Números informados pela Bovinu's no hackathon (clientes por dia, consumo médio, preço do quilo, 450 lugares, horário de pico e fila da churrasqueira). As linhas "conta nossa" são multiplicações simples, não dados da casa. Nada aqui foi medido por nós.</p>
 
     <div class="dores">
       <div class="dores-head reveal"><b>As 4 maiores dores da Bovinu's</b><span>segundo a própria empresa</span></div>
@@ -260,7 +266,7 @@
         <div>
           <span class="pill sim" style="margin-bottom:14px">SIMULADO · não é medição</span>
           <ul class="facts">
-            <li><b>600</b> refeições no dia <span>(empresa)</span></li>
+            <li><b>618</b> clientes por dia, em média <span>(empresa)</span></li>
             <li><b>3</b> churrasqueiros atendendo <span>(empresa: são 4, um cuida do fogo)</span></li>
             <li><b>~76%</b> das refeições entre 11h50 e 13h30 <span>(estimativa da equipe: 70 a 80%)</span></li>
             <li><b>44 s</b> por atendimento <span>(calibrado para o pico chegar a ~4 min)</span></li>
@@ -289,7 +295,7 @@
       <div class="demo-grid">
         <div class="stage" style="aspect-ratio:1/1;max-width:560px"><canvas id="pratoCanvas" width="560" height="560"></canvas></div>
         <div>
-          <p class="rules">Peso na balança (exemplo): <b>520 g</b>. Alerta de mix de exemplo: carne acima de <b>45%</b> do prato.</p>
+          <p class="rules">Peso na balança (exemplo): <b>482 g</b>, o consumo médio informado pela casa; a R$ 119,90/kg são cerca de <b>R$ 57,80</b> por prato. O peso mostra o valor; o mix mostra a margem. Alerta de mix de exemplo: carne acima de <b>45%</b> do prato.</p>
           <div class="mixbar" id="mixbar"></div>
           <div class="legend" id="mixlegend"></div>
           <div class="alerts" id="pratoAlert"></div>
@@ -383,9 +389,10 @@
     <h2 class="reveal">O que <span class="grad">sabemos</span> e o que <span class="grad">assumimos.</span></h2>
     <div class="limits">
       <div class="limit reveal"><h3>Privacidade (LGPD)</h3><p>Sem reconhecimento facial. A IA lê mesas e pratos, guarda estados e contagens, não identifica pessoas. Aviso no salão e retenção mínima de imagem.</p></div>
-      <div class="limit reveal"><h3>Dados simulados</h3><p>Fila, ocupação e custos são simulações e hipóteses rotuladas na página. Nenhum número inventado é apresentado como da Bovinu's.</p></div>
+      <div class="limit reveal"><h3>O que veio da Bovinu's</h3><p>618 clientes por dia, 482 g de consumo médio, R$ 119,90 o quilo, 450 lugares, pico das 11h50 às 13h30, fila de até 4 min e 2 vídeos de câmeras do buffet (12h49 às 13h59). Usamos 4 cortes de 2 minutos, rostos já borrados na origem.</p></div>
+      <div class="limit reveal"><h3>O que simulamos e o que medimos</h3><p>Fila, cubas e demo de mesas simulada são simulações, rotuladas na página. O gráfico "Medido" vem do nosso modelo nos cortes reais. Nenhum número inventado é apresentado como da Bovinu's.</p></div>
       <div class="limit reveal"><h3>Integrações não confirmadas</h3><p>JS Softcom (API ou CSV) e RTSP das câmeras são premissas. A fase 0 do plano as verifica antes de qualquer compra.</p></div>
-      <div class="limit reveal"><h3>Licenças e patentes</h3><p>Projeto acadêmico e demonstrativo. Uma implantação comercial exige revisar licenças dos modelos (alguns detectores são AGPL) e patentes de classificação de mesa por visão.</p></div>
+      <div class="limit reveal"><h3>Licenças e patentes</h3><p>Projeto acadêmico e demonstrativo. Uma implantação comercial exige revisar licenças dos modelos (nosso detector de pessoas é um YOLOv8 ajustado, licença AGPL-3.0, e o código que o treina está neste repositório) e patentes de classificação de mesa por visão.</p></div>
       <div class="limit reveal"><h3>Escopo respeitado</h3><p>Sem mexer em pagamento, balança, cozinha, compras ou estoque. O atendimento continua humano: a IA só avisa.</p></div>
       <div class="limit reveal"><h3>Precisão do prato</h3><p>A foto estima proporção por área, não volume. A leitura melhora com prato maior e raso e com câmera dedicada na balança.</p></div>
     </div>
@@ -399,13 +406,13 @@
 <script src="vendor/gsap.min.js"></script>
 <script src="vendor/ScrollTrigger.min.js"></script>
 <script src="vendor/qrcode.js"></script>
-<script src="js/main.js?v=2"></script>
+<script src="js/main.js?v=3"></script>
 <script src="js/mesas-core.js"></script>
 <script src="js/mesas.js?v=5"></script>
 <script src="js/medido.js?v=1"></script>
 <script src="js/fila-core.js"></script>
-<script src="js/fila.js"></script>
-<script src="js/prato.js"></script>
+<script src="js/fila.js?v=2"></script>
+<script src="js/prato.js?v=2"></script>
 <script src="js/cubas-core.js"></script>
 <script src="js/cubas.js"></script>
 </body>
