@@ -64,6 +64,11 @@
   placeInput.addEventListener('input', drawQR);
   drawQR();
 
+  // Chamadas para o teste: depois de enviar o vídeo ou pedir o exemplo, leva o usuário ao painel de mesas
+  const goMesas = () => document.getElementById('mesas').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+  document.getElementById('mesaFile').addEventListener('change', goMesas);
+  document.getElementById('ctaSim').addEventListener('click', () => { document.getElementById('mesaSim').click(); goMesas(); });
+
   // Vídeo de apresentação: só aparece se o arquivo existir
   const v = document.getElementById('pitchVideo');
   v.addEventListener('loadedmetadata', () => {
