@@ -21,6 +21,7 @@
 
   let source = 'none';       // none | video | image | cam | sim
   let imageEl = null, model = null, modelLoading = false;
+  let epoch = 0;                // muda a cada troca de fonte: descarta detecções que ainda estavam em andamento
   let zones = [], vt = 0, lastTs = performance.now(), lastDetect = 0, lastDetectTs = 0;
   let dets = [];              // detecções desenhadas: {cls, x, y, w, h, score, role}
   let drag = null, nextId = 1, picking = false;
@@ -55,10 +56,12 @@
   // ---------- fontes ----------
   function setMode(m, label) { source = m; modePill.textContent = label; modePill.className = 'pill ' + (m === 'sim' ? 'sim' : m === 'none' ? '' : 'real'); cfg.speed = m === 'sim' ? SPEED_SIM : SPEED_REAL; }
   function stopMedia() {
+    epoch++;
     if (video.srcObject) { video.srcObject.getTracks().forEach(t => t.stop()); video.srcObject = null; }
     video.pause(); video.removeAttribute('src'); video.load(); imageEl = null; dets = [];
   }
-  function resetZones() { zones.forEach(z => z.row.remove()); zones = []; alertsBox.textContent = ''; vt = 0; dets = []; track.pending = []; }
+  const relayout = () => { if (window.refreshScroll) window.refreshScroll(); };
+  function resetZones() { zones.forEach(z => z.row.remove()); zones = []; alertsBox.textContent = ''; vt = 0; dets = []; track.pending = []; relayout(); }
 
   $('mesaFile').addEventListener('change', async e => {
     const f = e.target.files[0]; if (!f) return;
@@ -126,7 +129,7 @@
     b1.addEventListener('click', () => M.serve(z, vt, hooks, false));
     b2.addEventListener('click', () => { if (z.state === 'dirty') { M.init(z, vt); z.lastSeen = z.lastItem = -999; log(z.name + ' limpa e liberada.', true); } });
     acts.append(b1, b2); row.append(chip, info, acts); zonesBox.appendChild(row);
-    Object.assign(z, { row, chip, sm, b1, b2 }); zones.push(z); return z;
+    Object.assign(z, { row, chip, sm, b1, b2 }); zones.push(z); relayout(); return z;
   }
   const LABEL = { free: ['livre', 'free'], wait: ['aguardando', 'wait'], served: ['atendida', 'served'], dirty: ['suja', 'dirty'] };
   function paintRow(z) {
@@ -192,13 +195,15 @@
   async function detect(el, vw, vh) {
     if (!model || detecting) return;
     detecting = true;
-    try { await detectInner(el, vw, vh); } finally { detecting = false; }
+    const my = epoch;
+    try { await detectInner(el, vw, vh, my); } finally { detecting = false; }
   }
-  async function detectInner(el, vw, vh) {
+  async function detectInner(el, vw, vh, my) {
     const t = fit(vw, vh);
     sctx.drawImage(el, t.ox, t.oy, vw * t.s, vh * t.s);      // congela o quadro que será analisado
     let preds = await model.detect(el, 40, 0.4);
     if (calibrated && yolo) preds = preds.filter(p => p.class !== 'person').concat(await yoloPersons(el, vw, vh));
+    if (my !== epoch) return;                     // a fonte foi trocada durante a análise: não mostrar nada deste quadro
     const now = performance.now(), dtReal = lastDetectTs ? (now - lastDetectTs) / 1000 : 0.5; lastDetectTs = now;
     const raw = preds.filter(p => p.class === 'person' || p.class === 'dining table' || M.ITEMS.has(p.class)).map(p => ({ cls: p.class, x: p.bbox[0] * t.s + t.ox, y: p.bbox[1] * t.s + t.oy, w: p.bbox[2] * t.s, h: p.bbox[3] * t.s, score: p.score }));
     // mesas novas aparecem sozinhas (a marcação à mão é só ajuste)
@@ -264,7 +269,7 @@
     } else { ctx.fillStyle = '#0d0b09'; ctx.fillRect(0, 0, W, H); }
     // caixas: cliente (branco), garçom (azul), objeto (amarelo)
     ctx.lineWidth = 2; ctx.font = '13px system-ui';
-    dets.filter(d => d.cls !== 'dining table').forEach(d => {
+    (source === 'sim' || source === 'none' ? [] : dets).filter(d => d.cls !== 'dining table').forEach(d => {
       const c = d.role === 'garçom' ? '#4fd1ff' : d.cls === 'person' ? 'rgba(255,255,255,.8)' : '#f2c94c';
       ctx.strokeStyle = c; ctx.fillStyle = c; ctx.strokeRect(d.x, d.y, d.w, d.h);
       ctx.fillText((d.role || d.cls) + ' ' + Math.round(d.score * 100) + '%', d.x + 4, d.y + 14);

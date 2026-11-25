@@ -48,6 +48,16 @@
       });
     });
     mm.add('(max-width: 860px)', () => { gsap.set('.vis', { opacity: 1 }); });
+    // posições do pin são medidas no carregamento; recalcula quando fontes e imagens terminam e quando o layout acima muda
+    const refresh = () => ScrollTrigger.refresh();
+    window.addEventListener('load', refresh);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(refresh);
+    window.refreshScroll = (() => { let t; return () => { clearTimeout(t); t = setTimeout(refresh, 150); }; })();
+    // qualquer mudança de altura acima da seção pinada (lista de mesas, textos, imagens) recalcula as posições
+    if (window.ResizeObserver) {
+      let ultima = document.documentElement.scrollHeight;
+      new ResizeObserver(() => { const h = document.documentElement.scrollHeight; if (Math.abs(h - ultima) > 2) { ultima = h; window.refreshScroll(); } }).observe(document.body);
+    }
   } else {
     gsap.set('.vis', { opacity: 1 });
   }

@@ -17,7 +17,8 @@
   --maxw: 1180px;
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+/* sem scroll-behavior: smooth no html: conflita com o pin do ScrollTrigger e desalinha a seção da solução */
+html { scroll-behavior: auto; }
 body {
   margin: 0; background: var(--bg); color: var(--text);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -263,3 +264,6 @@ footer { padding: 60px 0 90px; border-top: 1px solid var(--line); color: var(--m
 .limit li { margin: 4px 0; }
 .limit.ok { border-top: 4px solid #3ddc84; } .limit.real { border-top: 4px solid #5ab0ff; }
 .limit.sim { border-top: 4px solid #ffb02e; } .limit.ass { border-top: 4px solid #ff7a1a; }
+
+/* lista de mesas com altura limitada: não empurra o resto da página (e o pin da solução) quando mesas são criadas */
+.zones { max-height: 420px; overflow-y: auto; }
