@@ -8,7 +8,7 @@ Projeto da equipe **BIG Tech** (**B**reno, **I**gor e **G**iovanna) no **Hackath
 |---|---|
 | 🌐 **Site com as demos** | https://breno-sarcero.github.io/bigtech-fmu-2026-2/ |
 | 🎬 **Vídeo (até 2 min)** | _link será adicionado aqui_ |
-| 📑 **Slides (até 5)** | [`slides/apresentacao.pdf`](slides/apresentacao.pdf) |
+| 📑 **Slides (5)** | [PDF](slides/apresentacao.pdf) · [PPTX](slides/apresentacao.pptx) |
 | 📋 **Plano de instalação, rotas e custo** | [`docs/instalacao.md`](docs/instalacao.md) |
 
 ## O problema e a nossa resposta
@@ -22,7 +22,7 @@ Projeto da equipe **BIG Tech** (**B**reno, **I**gor e **G**iovanna) no **Hackath
 
 O atendimento continua humano: a IA só avisa. Pagamento, cozinha, compras e estoque não são tocados.
 
-![Como funciona](docs/imagens/arquitetura.svg)
+![Como funciona](docs/arquitetura.svg)
 
 ## O que o protótipo faz
 
@@ -42,9 +42,9 @@ Cinco telas do que criamos (site com as demos rodando no navegador). É um prot�
 
 | | |
 |---|---|
-| ![Mesas com câmera real](docs/prints/1-mesas-camera-real.png) | ![Medido nos cortes reais](docs/prints/2-medido-nos-cortes-reais.png) |
-| ![Fila e lotação](docs/prints/3-fila-e-lotacao.png) | ![Mix do prato](docs/prints/4-mix-do-prato.png) |
-| ![Cubas do buffet](docs/prints/5-cubas-do-buffet.png) | |
+| ![Mesas com câmera real](prints/1-mesas-camera-real.png) | ![Medido nos cortes reais](prints/2-medido-nos-cortes-reais.png) |
+| ![Fila e lotação](prints/3-fila-e-lotacao.png) | ![Mix do prato](prints/4-mix-do-prato.png) |
+| ![Cubas do buffet](prints/5-cubas-do-buffet.png) | |
 
 ## Como rodar
 
@@ -54,15 +54,22 @@ python -m http.server 8765          # na raiz do repositório
 node site/js/mesas-core.test.js     # testes da lógica (também fila-core e cubas-core)
 ```
 
-## Estrutura
+## Estrutura do repositório
 
 ```
-site/      protótipo web (HTML, CSS, JS, modelo ONNX e bibliotecas em vendor/)
-docs/      plano de instalação, transparência, imagens e prints
-ml/        scripts de treino e medição do modelo (veja ml/README.md)
-slides/    apresentação em PDF
-video/     vídeo de 2 minutos
+README.md        esta página: resumo, links e como rodar
+site/            o protótipo (HTML, CSS, JS, modelo ONNX e bibliotecas)
+prints/          as 5 capturas de tela do protótipo
+video/           vídeo de apresentação (até 2 min)
+slides/          apresentação de 5 slides, em PDF e PPTX
+docs/            documentação (veja abaixo)
+ml/              código do modelo: preparo dos quadros, treino e medição
 ```
+
+**O que tem em `docs/`:** os textos de apoio, para quem quiser ir além do README.
+- [`instalacao.md`](docs/instalacao.md): plano para levar a solução à loja (rotas, custo, LGPD, cronograma).
+- [`transparencia.md`](docs/transparencia.md): o que é dado da empresa, medição, simulação e premissa.
+- [`arquitetura.svg`](docs/arquitetura.svg): diagrama da solução.
 
 ## Como o modelo foi feito
 
