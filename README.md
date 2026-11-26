@@ -7,7 +7,7 @@ Projeto da equipe **BIG Tech** (**B**reno, **I**gor e **G**iovanna) no **Hackath
 | | |
 |---|---|
 | 🌐 **Site com as demos** | https://breno-sarcero.github.io/bigtech-fmu-2026-2/ |
-| 🎬 **Vídeo (até 2 min)** | _link será adicionado aqui_ |
+| 🎬 **Vídeo (1 min 48 s)** | [`video/apresentacao.mp4`](video/apresentacao.mp4) |
 | 📑 **Slides (5)** | [PDF](slides/apresentacao.pdf) · [PPTX](slides/apresentacao.pptx) |
 | 📋 **Plano de instalação, rotas e custo** | [`docs/instalacao.md`](docs/instalacao.md) |
 
@@ -60,7 +60,7 @@ node site/js/mesas-core.test.js     # testes da lógica (também fila-core e cub
 README.md        esta página: resumo, links e como rodar
 site/            o protótipo (HTML, CSS, JS, modelo ONNX e bibliotecas)
 prints/          as 5 capturas de tela do protótipo
-video/           vídeo de apresentação (até 2 min)
+video/           vídeo de apresentação (1 min 48 s)
 slides/          apresentação de 5 slides, em PDF e PPTX
 docs/            documentação (veja abaixo)
 ml/              código do modelo: preparo dos quadros, treino e medição
