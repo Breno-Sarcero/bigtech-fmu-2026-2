@@ -102,7 +102,7 @@
     blob(390, 360, 52, 46, ['#d86a9a', '#c85a8c'], 8);                              // sobremesa
     analyze();
   }
-  // Foto hiper-realista de exemplo (gerada por IA, ver docs/prompts-imagens.md). Se o arquivo existir, a demo usa a foto;
+  // Foto hiper-realista de exemplo (gerada por IA). Se o arquivo existir, a demo usa a foto;
   // se não, cai no desenho sintético acima.
   const real = new Image(); let realOk = false;
   real.onload = () => { realOk = true; $('pratoPill').textContent = 'foto de exemplo gerada por IA · heurística de cor'; drawCover(real); };
