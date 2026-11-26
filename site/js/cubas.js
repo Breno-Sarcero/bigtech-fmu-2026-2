@@ -83,16 +83,25 @@
   }
   real.onload = () => { realOk = true; exemploReal(); };
   real.src = 'img/cubas-exemplo.webp?v=1';
-  $('cubaGen').addEventListener('click', () => realOk ? exemploReal() : exemplo());
+  $('cubaGen').addEventListener('click', () => { uploadAtivo = false; realOk ? exemploReal() : exemplo(); });
 
-  // Foto enviada: analisa a parte central da imagem como uma única cuba.
+  // Foto enviada: analisa a parte central da imagem como uma única cuba. Clicar numa área vazia da cuba calibra a cor do inox.
+  const REGIAO_FOTO = { x: W * 0.15, y: H * 0.12, w: W * 0.7, h: H * 0.76 };
+  let uploadAtivo = false;
+  canvas.addEventListener('pointerdown', ev => {
+    if (!uploadAtivo) return;
+    const r = canvas.getBoundingClientRect(), x = (ev.clientX - r.left) * W / r.width, y = (ev.clientY - r.top) * H / r.height;
+    const ref = C.meanColor(sctx.getImageData(0, 0, W, H).data, W, H, { x: x - 8, y: y - 8, w: 16, h: 16 });
+    analisar([REGIAO_FOTO], ['Cuba da foto'], { ref, tol: 60 });
+  });
   $('cubaFile').addEventListener('change', e => {
     const f = e.target.files[0]; if (!f) return;
     const img = new Image();
     img.onload = () => {
       const s = Math.max(W / img.width, H / img.height), w = img.width * s, h = img.height * s;
       sctx.fillStyle = '#000'; sctx.fillRect(0, 0, W, H); sctx.drawImage(img, (W - w) / 2, (H - h) / 2, w, h);
-      analisar([{ x: W * 0.15, y: H * 0.12, w: W * 0.7, h: H * 0.76 }], ['Cuba da foto']);
+      uploadAtivo = true; $('cubaHint') && ($('cubaHint').textContent = 'Foto lida pela regra de saturação. Se o inox tem reflexo quente e o resultado parece errado, clique numa parte VAZIA da cuba para calibrar.');
+      analisar([REGIAO_FOTO], ['Cuba da foto']);
       URL.revokeObjectURL(img.src);
     };
     img.src = URL.createObjectURL(f);

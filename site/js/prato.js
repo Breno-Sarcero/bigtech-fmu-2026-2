@@ -35,12 +35,29 @@
     return s > 0.2 ? (v < 0.7 ? 0 : 3) : -1;
   }
 
+  // Acha o prato na foto: o prato é a maior área clara e pouco saturada. Usa os percentis das posições desses pixels
+  // (ignora guardanapo e copo soltos) para estimar centro e raio. Sem prato claro suficiente, cai no círculo central fixo.
+  function detectPlate(data) {
+    const xs = [], ys = [];
+    for (let y = 0; y < S; y += 2) for (let x = 0; x < S; x += 2) {
+      const i = (y * S + x) * 4, [, sat, v] = rgb2hsv(data[i], data[i + 1], data[i + 2]);
+      if (sat < 0.14 && v > 0.68) { xs.push(x); ys.push(y); }
+    }
+    if (xs.length < (S * S / 4) * 0.04) return null;
+    const q = (a, p) => { a.sort((m, n) => m - n); return a[Math.floor(p * (a.length - 1))]; };
+    const x0 = q(xs, 0.02), x1 = q(xs, 0.98), y0 = q(ys, 0.02), y1 = q(ys, 0.98);
+    const r = Math.min(x1 - x0, y1 - y0) / 2;
+    if (r < S * 0.18) return null;
+    return { cx: (x0 + x1) / 2, cy: (y0 + y1) / 2, r: Math.min(r, S * 0.62) };
+  }
+
   function analyze() {
-    const raio = RAIO_PCT / 100 * S / 2;
     const peso = PESO_G, limCarne = LIMITE_CARNE;
     const img = bctx.getImageData(0, 0, S, S), out = ctx.createImageData(S, S);
     const cnt = [0, 0, 0, 0]; let inside = 0;
-    const cx = S / 2, cy = S / 2;
+    const pl = detectPlate(img.data);
+    const cx = pl ? pl.cx : S / 2, cy = pl ? pl.cy : S / 2;
+    const raio = RAIO_PCT / 100 * (pl ? pl.r : S / 2);
     for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) {
       const i = (y * S + x) * 4, dx = x - cx, dy = y - cy;
       let r = img.data[i], g = img.data[i + 1], b = img.data[i + 2];

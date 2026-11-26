@@ -65,11 +65,11 @@
 
   $('mesaFile').addEventListener('change', async e => {
     const f = e.target.files[0]; if (!f) return;
-    stopMedia(); resetZones(); calibrated = false;
+    stopMedia(); resetZones(); calibrated = true;     // vídeo novo: as mesas são marcadas à mão (calibração da câmera)
     const url = URL.createObjectURL(f);
-    if (f.type.startsWith('image/')) { imageEl = new Image(); imageEl.onload = () => { setMode('image', 'foto · detecção real'); ensureModel(); }; imageEl.src = url; }
-    else { video.src = url; video.loop = true; await video.play().catch(() => {}); setMode('video', 'vídeo · detecção real'); ensureModel(); }
-    hint.textContent = 'As mesas são detectadas sozinhas. Se alguma falhar, arraste sobre a imagem para ajustar.';
+    if (f.type.startsWith('image/')) { imageEl = new Image(); imageEl.onload = () => { setMode('image', 'foto · detecção real'); ensureModel(); ensureYolo(); }; imageEl.src = url; }
+    else { video.src = url; video.loop = true; await video.play().catch(() => {}); setMode('video', 'vídeo · detecção real'); ensureModel(); ensureYolo(); }
+    hint.textContent = 'Arraste sobre a imagem para marcar cada mesa (é a calibração da câmera, feita uma vez). A IA conta clientes, garçom e objetos dentro de cada uma.';
   });
   $('mesaSim').addEventListener('click', () => { stopMedia(); resetZones(); calibrated = false; startSim(); });
 
@@ -202,7 +202,7 @@
     const t = fit(vw, vh);
     sctx.drawImage(el, t.ox, t.oy, vw * t.s, vh * t.s);      // congela o quadro que será analisado
     let preds = await model.detect(el, 40, 0.4);
-    if (calibrated && yolo) preds = preds.filter(p => p.class !== 'person').concat(await yoloPersons(el, vw, vh));
+    if (yolo) preds = preds.filter(p => p.class !== 'person').concat(await yoloPersons(el, vw, vh));
     if (my !== epoch) return;                     // a fonte foi trocada durante a análise: não mostrar nada deste quadro
     const now = performance.now(), dtReal = lastDetectTs ? (now - lastDetectTs) / 1000 : 0.5; lastDetectTs = now;
     const raw = preds.filter(p => p.class === 'person' || p.class === 'dining table' || M.ITEMS.has(p.class)).map(p => ({ cls: p.class, x: p.bbox[0] * t.s + t.ox, y: p.bbox[1] * t.s + t.oy, w: p.bbox[2] * t.s, h: p.bbox[3] * t.s, score: p.score }));
