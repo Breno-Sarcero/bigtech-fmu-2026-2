@@ -3,8 +3,6 @@
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   gsap.registerPlugin(ScrollTrigger);
 
-  // Barra de progresso da página
-  gsap.to('#progress', { scaleX: 1, ease: 'none', scrollTrigger: { scrub: 0.2, start: 0, end: 'max' } });
 
   if (!reduce) {
     // Entrada do hero, linha por linha
