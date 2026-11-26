@@ -221,3 +221,19 @@ footer{border-top:1px solid #c6a46d30;background:#0d0b0a;padding:45px 0 65px;col
 /* linhas do grid das dores dimensionadas pelo conteúdo (respostas longas não vazam) */
 .dores-grid{grid-template-rows:repeat(3,auto)}
 @media(max-width:560px){.dores-grid{grid-template-rows:none}}
+
+/* botão "Enviar vídeo ou foto" em destaque (só depois de "Quero testar com um vídeo") */
+@keyframes pulsa{0%,100%{box-shadow:0 0 0 0 #ed493500}50%{box-shadow:0 0 0 8px #ed493555,0 0 28px #ed4935aa}}
+label.btn.destaque{border-color:#ed4935;background:#b5271f;color:#fff4e8;animation:pulsa 1.2s ease-in-out infinite}
+
+/* títulos e legendas dos gráficos da fila */
+.gtitulo{margin:22px 0 8px;font-size:1rem;color:var(--text);letter-spacing:-.01em}
+.gtitulo:first-of-type{margin-top:0}
+.glegenda{display:flex;flex-wrap:wrap;gap:6px 18px;margin:10px 0 4px;font-size:.84rem;color:var(--muted)}
+.glegenda span{display:inline-flex;align-items:center;gap:8px}
+.glegenda i{display:inline-block;width:24px;height:4px;border-radius:2px}
+.glegenda i.tracej{background:repeating-linear-gradient(90deg,#8a8176 0 6px,transparent 6px 11px)}
+.glegenda i.tracej.verm{background:repeating-linear-gradient(90deg,#ff4d4d 0 6px,transparent 6px 11px)}
+
+/* tabela de custo: linhas de grupo */
+.custo tr.grupo td{padding:18px 10px 8px;border-bottom:1px solid #c6a46d44;color:var(--ember-2);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;width:auto}

@@ -7,7 +7,7 @@
 <meta name="description" content="Como enxergar respostas ocultas? Visão computacional nas câmeras que a Bovinu's Augusta já tem: mesas, mix do prato e fila. Proposta de análise da equipe BIG Tech.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ff5a1f'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%230b0a09'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/style.css?v=12">
-<link rel="stylesheet" href="css/tema-bordo.css?v=5">
+<link rel="stylesheet" href="css/tema-bordo.css?v=6">
 </head>
 <body>
 <nav class="top">
@@ -75,9 +75,9 @@
       <div class="ph" id="videoPh">Vídeo de apresentação (motion graphics) em produção.</div>
     </div>
     <div class="cta reveal">
-      <div><b>Quer ver o modelo trabalhando?</b><p>Envie um vídeo de mesas e a IA mostra, aqui mesmo no seu navegador, quem está sentado, quem é garçom e o que ficou na mesa.</p></div>
+      <div><b>Quer ver o modelo trabalhando?</b><p>Envie um vídeo de mesas e nosso modelo treinado (machine learning) mostra, aqui mesmo no seu navegador, quem está sentado, quem é garçom e o que ficou na mesa.</p></div>
       <div class="cta-btns">
-        <label class="btn primary" for="mesaFile">Quero testar com um vídeo</label>
+        <button class="primary" id="ctaTest" type="button">Quero testar com um vídeo</button>
         <button id="ctaSim" type="button">Ver exemplo simulado</button>
       </div>
     </div>
@@ -151,7 +151,7 @@
 <section id="proposta">
   <div class="wrap">
     <h2 class="reveal">Sem dados concretos, <span class="grad">analisar vem primeiro.</span></h2>
-    <p class="lead reveal">Só a fila tem número da empresa (4 min contra 2,5 ideais). A falta de dados concretos impede apontar onde estão os maiores problemas, e por isso o certo é analisar antes de sair resolvendo erros que podem ser pequenos. Mostramos, com um protótipo funcionando, como medir o salão com o que a casa já tem, e propomos uma fase 0 de coleta antes de qualquer compra.</p>
+    <p class="lead reveal">Só a fila tem número da empresa (4 min contra 2,5 ideais). A falta de dados concretos impede apontar onde estão os maiores problemas, e por isso o certo é analisar antes de sair resolvendo erros que podem ser pequenos. Mostramos, com um protótipo funcionando, como medir o salão com o que a casa já tem, e propomos uma etapa de coleta de dados antes de qualquer compra.</p>
   </div>
 </section>
 
@@ -189,7 +189,7 @@
         <div class="par reveal">
           <div class="dor"><i class="num">3</i><h3>Limpeza do salão</h3><p>Mesa que sai e demora a ser limpa trava a próxima família, derruba o giro do salão e piora a avaliação.</p></div>
           <svg class="seta-mini" viewBox="0 0 40 44" width="28" height="30" aria-hidden="true"><path d="M20 3 V30 M8 20 L20 34 L32 20" fill="none" stroke="#3ddc84" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>O modelo treinado já separa mesa em uso de mesa livre (a precisão exata é medida na fase 0). Com isso saem dados de <b>quais praças demoram mais para limpar</b>, a média por praça, e um alerta ao metre responsável para a limpeza daquela mesa.</p></div>
+          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>O modelo treinado já separa mesa em uso de mesa livre (a precisão exata é medida no levantamento inicial). Com isso saem dados de <b>quais praças demoram mais para limpar</b>, a média por praça, e um alerta ao metre responsável para a limpeza daquela mesa.</p></div>
         </div>
         <div class="par reveal">
           <div class="dor"><i class="num">4</i><h3>Qualidade da comida</h3><p>Ninguém tem dado de qual item acaba primeiro, em que hora e quanto tempo a comida fica na cuba.</p></div>
@@ -231,22 +231,24 @@
       <div class="demo-grid">
         <div>
           <div class="kpis" id="filaKpis"></div>
+          <h4 class="gtitulo">Gráfico 1 · Espera na churrasqueira (em minutos)</h4>
           <canvas class="chart" id="chartFila" width="900" height="260"></canvas>
-          <p class="note" style="margin-bottom:10px">Espera média na churrasqueira e meta de 2,5 min (tracejado cinza).</p>
+          <div class="glegenda"><span><i style="background:#ff5a1f"></i>hoje, 3 atendendo</span><span><i style="background:#3ddc84"></i>com 1 atendente a mais</span><span><i class="tracej"></i>meta da casa: 2,5 min</span></div>
+          <h4 class="gtitulo">Gráfico 2 · Pessoas no salão (em pessoas)</h4>
           <canvas class="chart" id="chartOcup" width="900" height="260"></canvas>
-          <p class="note">Ocupação do salão (azul) e capacidade de 450 lugares (tracejado).</p>
+          <div class="glegenda"><span><i style="background:#5ab0ff"></i>pessoas no salão, ao longo do almoço</span><span><i class="tracej verm"></i>capacidade: 450 lugares</span></div>
         </div>
         <div>
           <span class="pill sim" style="margin-bottom:14px">SIMULADO · não é medição</span>
           <ul class="facts">
-            <li><b>618</b> clientes por dia, em média <span>(empresa)</span></li>
+            <li><b>618</b> clientes por dia, em média</li>
             <li><b>3</b> churrasqueiros atendendo <span>(empresa: são 4, um cuida do fogo)</span></li>
-            <li><b>~76%</b> das refeições entre 11h50 e 13h30 <span>(estimativa da equipe: 70 a 80%)</span></li>
-            <li><b>44 s</b> por atendimento <span>(calibrado para o pico chegar a ~4 min)</span></li>
+            <li><b>~76%</b> das refeições entre 11h50 e 13h30</li>
+            <li><b>42,5 s</b> por atendimento <span>(calibrado para o pico chegar a ~4 min)</span></li>
             <li><b>80%</b> passam pela churrasqueira <span>(hipótese)</span></li>
             <li><b>40 min</b> de permanência na mesa <span>(hipótese)</span></li>
           </ul>
-          <p class="note">Linha laranja: situação atual (3 atendendo). Linha verde: com 1 atendente a mais. É o que o modelo mostra com essas hipóteses; só medindo na fase 0 dá para confirmar o efeito real.</p>
+          <p class="note">Os dois gráficos mostram o mesmo almoço, hora a hora. Perto do limite a fila é muito sensível: com 3 atendendo a casa trabalha quase no limite, e uma pessoa a mais tira a pressão e a espera quase some. É o que o modelo mostra com essas hipóteses; só medindo na prática dá para confirmar o efeito real.</p>
         </div>
       </div>
     </div>
@@ -307,7 +309,7 @@
       <div class="limit sensor-card">
         <h3>Ideia da equipe, fase 2 e opcional: um sensor de peso sob cada cuba</h3>
         <p>A cuba é padrão Gastronorm 1/1 (530 × 325 mm), então a tara é conhecida. Um sensor sob ela conta cada reposição como um salto de peso e estima o consumo em gramas por minuto, sem depender da área visível. Não dá o peso exato de cada porção, mas dá uma boa estimativa do que sobra em cada cuba. A câmera diz qual alimento é; o sensor diz quanto há.</p>
-        <p>Só entra se a câmera sozinha não bastar, porque a empresa pediu investimento pequeno. Sugestão: piloto em 2 ou 3 cubas de maior saída na fase 0. Cuidados: calor e vapor do banho-maria, peça própria para alimentos e calibração por tipo de cuba e de alimento.</p>
+        <p>Só entra se a câmera sozinha não bastar, porque a empresa pediu investimento pequeno. Sugestão: piloto em 2 ou 3 cubas de maior saída. Cuidados: calor e vapor do banho-maria, peça própria para alimentos e calibração por tipo de cuba e de alimento.</p>
       </div>
       <p class="note">Limite honesto: o nível vem da <b>área visível com comida</b> numa câmera de cima, não do volume. Arroz branco puro se confunde com o inox. Na instalação, cada cuba teria sua zona marcada uma única vez e um modelo de segmentação treinado com imagens do próprio buffet. O buffet de exemplo é uma imagem ilustrativa; a leitura dela usa a cor do inox vazio da primeira cuba como calibração (nas fotos enviadas, vale a regra de saturação). "Gerar buffet de exemplo" usa a foto; se ela não carregar, usa um desenho.</p>
     </div>
@@ -318,7 +320,7 @@
 <section id="arquitetura">
   <div class="wrap">
     <h2 class="reveal">Em cima do que <span class="grad">já existe.</span></h2>
-    <p class="lead reveal">A casa continua com o sistema que já usa, sem trocar nada. Ela já tem um servidor local (premissa a confirmar na fase 0), e o nosso modelo foi treinado e testado num computador comum (CPU i5 e placa GTX 1650), então a opção B tende a rodar nele. Se o servidor não aguentar, o esforço é pequeno e o investimento também, e ainda sai mais barato que a opção A, de IA paga na nuvem.</p>
+    <p class="lead reveal">A casa continua com o sistema que já usa, sem trocar nada. Ela já tem um servidor local (premissa a confirmar no levantamento inicial), e o nosso modelo foi treinado e testado num computador comum (CPU i5 e placa GTX 1650), então a opção B tende a rodar nele. Se o servidor não aguentar, o esforço é pequeno e o investimento também, e ainda sai mais barato que a opção A, de IA paga na nuvem.</p>
     <div class="steps3 reveal">
       <div><b>1 · O que já existe</b><p>Câmeras Intelbras no salão e no buffet, e o sistema de comandas e peso (JS Softcom). Não mexemos nisso.</p></div>
       <div><b>2 · O que acrescentamos</b><p>Um programa roda no servidor local da casa (ou num mini-PC, se faltar força), lê o vídeo, acha mesas, pessoas, pratos e cubas e aplica as regras (2 min sem atendimento, 5 min suja, cuba abaixo de 25%).</p></div>
@@ -339,27 +341,30 @@
       </g>
       <text x="268" y="68" fill="#a89f94" font-size="12" text-anchor="middle">RTSP/ONVIF*</text>
     </svg>
-    <p class="src">*RTSP/ONVIF é o caminho provável para câmeras IP Intelbras, mas não foi confirmado para o modelo instalado. A fase 0 do plano verifica isso.</p>
+    <p class="src">*RTSP/ONVIF é o caminho provável para câmeras IP Intelbras, mas não foi confirmado para o modelo instalado. O levantamento inicial verifica isso.</p>
     <div class="compare">
       <div class="route reveal"><h3><span>Rota A</span> · IA paga na nuvem</h3><ul><li>Integração rápida: manda quadros, recebe resultado.</li><li>Custo por uso, que cresce com o número de câmeras e quadros.</li><li>Imagens saem da loja: exige aviso e cuidado de LGPD.</li><li>Depende da internet da casa.</li></ul></div>
       <div class="route reveal"><h3><span>Rota B</span> · ML local na loja</h3><ul><li>Sem custo por uso; modelo aberto rodando na rede da casa.</li><li>Imagens nunca saem do salão.</li><li>Servidor do JS Softcom pode não ter GPU: prever um mini-PC dedicado.</li><li>Exige manutenção e atualização do modelo.</li></ul></div>
     </div>
         <div class="custo reveal">
       <h3>Custo aproximado das nossas mudanças</h3>
-      <p class="src">Ordem de grandeza da equipe, <b>não é cotação</b>. Preços de anúncios consultados em 26/11/2026, sem frete e sujeitos a mudar; o que não tem fonte em reais está dito.</p>
+      <p class="src">Ordem de grandeza da equipe, <b>não é cotação</b>: preços aproximados encontrados na internet em 26/11/2026, sem frete e sujeitos a mudar. O que não tem preço em reais está dito.</p>
       <table>
-        <thead><tr><th>Item</th><th>Faixa</th><th>De onde vem</th></tr></thead>
+        <thead><tr><th>Item</th><th>Faixa</th><th>Como chegamos</th></tr></thead>
         <tbody>
-          <tr><td><b>Servidor do programa</b> (rota B, sem GPU)</td><td>R$ 0 se o servidor da casa aguentar; senão mini-PC de R$ 3.900 a 4.900, uma vez</td><td>Anúncios de mini-PC i5 com 16 GB e SSD de 512 GB: <a href="https://www.kabum.com.br/produto/628217/mini-pc-machenike-mini2-intel-i5-12450h-16gb-ram-ssd-512gb-wifi-6-branco-mini2-3545hd4" target="_blank" rel="noopener">KaBuM, R$ 3.899,99 no Pix</a>; Dell Optiplex Micro, R$ 4.899 (Magazine Luiza). Nosso modelo leu um quadro em 0,17 s em 4 núcleos de CPU (cerca de 6 quadros por segundo): sobra para algumas câmeras, já que a regra trabalha em minutos.</td></tr>
-          <tr><td><b>Câmeras</b></td><td>R$ 0 se as atuais servirem; R$ 260 a 500 cada se faltar ângulo</td><td>Intelbras VIP 1230 Full HD, <a href="https://www.kabum.com.br/produto/729041/camera-vip-1220-d-2mp-full-hd-1080p-ip-full-color-intelbras" target="_blank" rel="noopener">exemplo na KaBuM</a>. Se precisa trocar o ângulo ou comprar novas é uma pergunta da fase 0.</td></tr>
-          <tr><td><b>Rota A</b> (IA na nuvem)</td><td>Por uso, cresce com câmeras e quadros</td><td>Sem preço fixo: 4 câmeras com 1 quadro a cada 5 s por 4 h de pico dão cerca de 11.500 quadros por dia, a multiplicar pelo preço por imagem do serviço escolhido (a consultar).</td></tr>
-          <tr><td><b>Sensores de peso</b> (fase 2, opcional)</td><td>Piloto em 3 cubas: R$ 2,5 a 6 mil. 15 a 20 cubas: R$ 16 a 39 mil</td><td>Estimativa nossa a partir de preços de kits de células de carga e de plataformas inox no exterior, convertidos a R$ 6 por euro; <b>sem cotação em reais</b>. A câmera sozinha pode bastar.</td></tr>
-          <tr><td><b>Implantação</b> (calibrar mesas e cubas, integrar, treinar a equipe)</td><td>Não precificado</td><td>Horas de trabalho que a fase 0 levanta. Software: nosso protótipo é aberto; o detector é YOLOv8 (AGPL-3.0), a revisar para uso comercial.</td></tr>
+          <tr class="grupo"><td colspan="3">Rota B · modelo próprio rodando na casa (recomendada)</td></tr>
+          <tr><td><b>Servidor do programa</b></td><td>R$ 0 se o servidor local da casa aguentar; senão um mini-PC, de R$ 3.900 a 4.900, uma vez</td><td>Preços aproximados de mini-PCs com processador i5, 16 GB de memória e SSD de 512 GB. Nosso modelo leu um quadro em 0,17 s numa CPU comum (cerca de 6 quadros por segundo): sobra para algumas câmeras, já que as regras trabalham em minutos.</td></tr>
+          <tr><td><b>Câmeras</b></td><td>R$ 0 se as atuais servirem; de R$ 260 a 500 cada se faltar ângulo</td><td>Preços aproximados de câmeras IP Full HD da Intelbras. Precisar de câmeras novas é uma pergunta do levantamento inicial.</td></tr>
+          <tr class="grupo"><td colspan="3">Rota A · IA paga na nuvem</td></tr>
+          <tr><td><b>Serviço de IA por uso</b></td><td>Cobrado por imagem: cresce com câmeras e quadros</td><td>Sem preço fixo. 4 câmeras com 1 quadro a cada 5 s por 4 h de pico dão cerca de 11.500 quadros por dia, a multiplicar pelo preço por imagem do serviço escolhido (a consultar).</td></tr>
+          <tr class="grupo"><td colspan="3">Comum às duas rotas</td></tr>
+          <tr><td><b>Sensores de peso nas cubas</b> (opcional)</td><td>Piloto em 3 cubas: R$ 2,5 a 6 mil. 15 a 20 cubas: R$ 16 a 39 mil</td><td>Estimativa nossa a partir de preços de células de carga e plataformas de inox encontrados na internet, em euros, convertidos a R$ 6 por euro. <b>Sem cotação em reais.</b> A câmera sozinha pode bastar.</td></tr>
+          <tr><td><b>Implantação</b></td><td>Não precificado</td><td>Calibrar mesas e cubas, integrar e treinar a equipe: horas de trabalho que o levantamento inicial mede. Nosso protótipo é aberto; o detector é YOLOv8 (AGPL-3.0), a revisar para uso comercial.</td></tr>
         </tbody>
       </table>
-      <p class="note"><b>Resumo do piloto de mesas:</b> usando as câmeras e o servidor que a casa já tem, o custo de equipamento pode ser zero; se o servidor não aguentar, cerca de R$ 4 a 5 mil de um mini-PC. É o que cabe no que a empresa pediu: investimento pequeno e medir antes de ampliar.</p>
+      <p class="note"><b>Resumo do piloto de mesas:</b> usando as câmeras e o servidor que a casa já tem, o custo de equipamento pode ser zero; se o servidor não aguentar, cerca de R$ 4 a 5 mil de um mini-PC.</p>
     </div>
-    <p class="src reveal">Documento completo: <a href="https://github.com/Breno-Sarcero/bigtech-fmu-2026-2/blob/main/docs/instalacao.md" target="_blank" rel="noopener">Documento de instalação</a> (fase 0, duas rotas de IA, premissas, LGPD, riscos e custos).</p>
+    <p class="src reveal">Documento completo: <a href="https://github.com/Breno-Sarcero/bigtech-fmu-2026-2/blob/main/docs/instalacao.md" target="_blank" rel="noopener">Documento de instalação</a> (levantamento inicial, duas rotas de IA, premissas, LGPD, riscos e custos).</p>
   </div>
 </section>
 
@@ -372,7 +377,7 @@
       <article class="sab ok reveal"><header><i>1</i><div><small>informado pela Bovinu's</small><h3>Sabemos</h3></div></header><ul><li>618 clientes por dia de segunda a sexta (cerca de 250 no sábado e no domingo)</li><li>482 g de consumo médio e R$ 119,90 o quilo</li><li>450 lugares; pico das 11h50 às 13h30</li><li>Fila da churrasqueira chegou a 4 min (ideal 2,5); 3 de 4 churrasqueiros atendem</li><li>2 câmeras do buffet, vídeos de 12h49 às 13h59, rostos já borrados</li></ul></article>
       <article class="sab real reveal"><header><i>2</i><div><small>nossa medição</small><h3>Medimos</h3></div></header><ul><li>Pessoas e mesas ocupadas em 4 cortes de 2 min (pico e fora do pico) de cada câmera</li><li>Buffet 1: de 5,5 mesas ocupadas no pico para 3,0 depois, de 7 mesas</li><li>Modelo treinado nos vídeos: 0,88 de acerto nas caixas na validação (concordância com um modelo maior, não verdade absoluta)</li><li>Não processamos os vídeos inteiros</li></ul></article>
       <article class="sab sim reveal"><header><i>3</i><div><small>rotulado na página</small><h3>Simulamos</h3></div></header><ul><li>Fila da churrasqueira, a partir dos números da casa</li><li>Nível das cubas ao longo do almoço</li><li>Modo simulado das mesas</li><li>Mix do prato por cor, que estima área e não volume</li><li>Marcações ilustrativas sobre quadros reais, avisadas na imagem</li></ul></article>
-      <article class="sab ass reveal"><header><i>4</i><div><small>a fase 0 verifica</small><h3>Assumimos</h3></div></header><ul><li>Quantas cubas o buffet tem e se a câmera as enxerga</li><li>Integração com o JS Softcom (API ou CSV)</li><li>Câmeras Intelbras com RTSP/ONVIF e servidor sem GPU (prever mini-PC)</li><li>Que o modelo funcione em outras câmeras e horários além destes cortes</li></ul></article>
+      <article class="sab ass reveal"><header><i>4</i><div><small>o levantamento inicial verifica</small><h3>Assumimos</h3></div></header><ul><li>Quantas cubas o buffet tem e se a câmera as enxerga</li><li>Integração com o JS Softcom (API ou CSV)</li><li>Câmeras Intelbras com RTSP/ONVIF e servidor sem GPU (prever mini-PC)</li><li>Que o modelo funcione em outras câmeras e horários além destes cortes</li></ul></article>
     </div>
     <div class="saber-notas">
       <div class="reveal"><b>Privacidade (LGPD)</b><p>Sem reconhecimento facial. A IA lê mesas, pratos e contagens e não identifica pessoas. Aviso no salão e retenção mínima de imagem.</p></div>
@@ -388,12 +393,12 @@
 
 <script src="vendor/gsap.min.js"></script>
 <script src="vendor/ScrollTrigger.min.js"></script>
-<script src="js/main.js?v=10"></script>
+<script src="js/main.js?v=11"></script>
 <script src="js/mesas-core.js?v=2"></script>
 <script src="js/mesas.js?v=11"></script>
 <script src="js/medido.js?v=2"></script>
 <script src="js/fila-core.js"></script>
-<script src="js/fila.js?v=2"></script>
+<script src="js/fila.js?v=3"></script>
 <script src="js/prato.js?v=7"></script>
 <script src="js/cubas-core.js?v=2"></script>
 <script src="js/cubas.js?v=4"></script>

@@ -73,9 +73,22 @@
 
 
   // Chamadas para o teste: depois de enviar o vídeo ou pedir o exemplo, leva o usuário ao painel de mesas
-  const goMesas = () => document.getElementById('mesas').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
-  document.getElementById('mesaFile').addEventListener('change', goMesas);
-  document.getElementById('ctaSim').addEventListener('click', () => { document.getElementById('mesaSim').click(); goMesas(); });
+  // Os botões do vídeo levam ao painel de mesas (um pouco abaixo do título, para o painel aparecer inteiro)
+  const irAoPainel = () => {
+    const alvo = document.querySelector('#mesas .panel'), y = alvo.getBoundingClientRect().top + window.scrollY - 110;
+    window.scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
+  };
+  document.getElementById('mesaFile').addEventListener('change', irAoPainel);
+  // "Quero testar": vai ao painel e destaca o botão "Enviar vídeo ou foto" (só quando vem deste botão)
+  document.getElementById('ctaTest').addEventListener('click', () => {
+    irAoPainel();
+    const btn = document.querySelector('#mesas label.btn[for="mesaFile"]:not(.primary)');
+    btn.classList.add('destaque');
+    const tira = () => btn.classList.remove('destaque');
+    btn.addEventListener('click', tira, { once: true });
+    setTimeout(tira, 6000);
+  });
+  document.getElementById('ctaSim').addEventListener('click', () => { document.getElementById('mesaSim').click(); irAoPainel(); });
 
   // Vídeo de apresentação: só aparece se o arquivo existir
   const v = document.getElementById('pitchVideo');
