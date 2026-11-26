@@ -7,7 +7,7 @@
 <meta name="description" content="Como enxergar respostas ocultas? Visão computacional nas câmeras que a Bovinu's Augusta já tem: mesas, mix do prato e fila. Proposta de análise da equipe BIG Tech.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ff5a1f'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%230b0a09'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/style.css?v=11">
-<link rel="stylesheet" href="css/tema-bordo.css?v=1">
+<link rel="stylesheet" href="css/tema-bordo.css?v=2">
 </head>
 <body>
 <div id="progress"></div>
@@ -88,8 +88,8 @@
 <!-- DEMO MESAS -->
 <section id="mesas">
   <div class="wrap">
-    <h2 class="reveal">Mesa esperando? <span class="grad">O metre sabe.</span></h2>
-    <p class="lead reveal">Escolha uma das câmeras da Bovinu's, o modo simulado, ou envie um vídeo seu: nesse caso marque as mesas arrastando sobre a imagem (a calibração da câmera). O modelo roda <b>no seu navegador</b>, sem enviar o vídeo a nenhum servidor.</p>
+    <h2 class="reveal">Mesa esperando? <span class="grad">O metre será avisado!</span></h2>
+    <p class="lead reveal">Veja como o salão é lido: escolha uma das câmeras da Bovinu's, o modo simulado, ou envie o seu próprio vídeo. Tudo roda no seu navegador, sem enviar imagem a nenhum servidor.</p>
 
     <div class="panel reveal">
       <div class="toolbar">
@@ -107,12 +107,10 @@
             <canvas id="mesaCanvas" width="960" height="540"></canvas>
             <div class="hint" id="mesaHint">Escolha uma câmera, envie um vídeo ou use o modo simulado. Cada escolha limpa as mesas e carrega a nova fonte.</div>
           </div>
-          <p class="note"><b>Como funciona:</b> as pessoas vêm de um detector YOLOv8 nano ajustado nos vídeos que a Bovinu's cedeu (ONNX, roda no seu navegador); copos, pratos e garrafas vêm do COCO-SSD. <b>Mesa:</b> calibrada por câmera (nas câmeras da Bovinu's já está; em vídeo novo, arraste sobre a imagem). <b>Atendida:</b> alguém em pé junto à mesa por alguns segundos, depois que os clientes sentaram. <b>Suja:</b> copo, prato ou garrafa sobrando depois que os clientes saem. Limite: câmera de teto e pessoas muito pequenas reduzem a precisão, e o modelo foi ajustado só nestas duas câmeras.</p>
+          <p class="note"><b>Como funciona:</b> um modelo treinado com vídeos da Bovinu's enxerga as pessoas, e cada mesa é marcada uma vez por câmera. <b>Atendida:</b> alguém em pé junto à mesa depois que os clientes sentaram. <b>Suja:</b> sobrou louça depois que eles saíram. <b>Limite:</b> pessoas pequenas ou câmera muito alta reduzem a precisão, e só testamos nestas duas câmeras.</p>
         </div>
         <div>
-          <div class="ctrl"><span>Ajuste opcional: cor do uniforme do garçom <em id="uniState" style="color:#8a8176;font-style:normal">(sem ajuste: reconhece quem está em pé junto à mesa)</em></span>
-            <div style="display:flex;gap:10px;align-items:center"><input id="uni" type="color" value="#1c3f9e" style="width:46px;height:34px;border:0;background:none;padding:0"><button id="uniPick" type="button">Pegar cor no vídeo</button></div>
-          </div>
+          
           <p class="rules">Regras da demo: alerta se a mesa ficar <b>2 min</b> sem atendimento e se ficar <b>5 min</b> suja. O relógio roda acelerado para caber no vídeo.</p>
           <div class="zones" id="zones"></div>
           <div class="alerts" id="alerts"></div>
@@ -126,14 +124,20 @@
 <section id="medido" style="background:var(--bg-2)">
   <div class="wrap">
     <h2 class="reveal">Medido nas câmeras <span class="grad">de verdade.</span></h2>
-    <p class="lead reveal">O modelo contou as pessoas e as mesas ocupadas em dois trechos de cada câmera do buffet: <b>2 minutos do pico (13h14)</b> e <b>2 minutos depois do pico (13h54)</b>. O vídeo inteiro não foi processado, só esses quatro cortes.</p>
+    <p class="lead reveal">O modelo de machine learning, treinado com os vídeos da Bovinu's, alimentou os gráficos abaixo. Usamos cortes de 2 minutos de cada câmera: um no pico e outro fora do pico.</p>
+    <ol class="fluxo reveal">
+      <li><b>Vídeos da Bovinu's</b><span>2 câmeras do buffet</span></li>
+      <li><b>Modelo treinado</b><span>machine learning</span></li>
+      <li><b>Cortes de 2 min</b><span>pico 13h14 · fora do pico 13h54</span></li>
+      <li><b>Gráficos</b><span>mesas e pessoas por câmera</span></li>
+    </ol>
     <div class="panel reveal">
       <div class="medido-grid">
         <figure><figcaption>Buffet 1 · <span id="mdSub1"></span></figcaption><canvas class="chart" id="mdC1"></canvas></figure>
         <figure><figcaption>Buffet 2 · <span id="mdSub2"></span></figcaption><canvas class="chart" id="mdC2"></canvas></figure>
       </div>
       <div class="legend"><span class="lg pico"></span> pico (13h14 a 13h16) <span class="lg apos"></span> depois do pico (13h54 a 13h56)</div>
-      <p class="note">Linhas: quantas mesas calibradas tinham alguém sentado ou junto delas, a cada 5 segundos. É uma <b>medição nossa</b> com o modelo treinado nos vídeos cedidos pela Bovinu's (quadros de treino e de teste de minutos diferentes), não um número da empresa. Limite: pessoa passando perto de uma mesa também conta, e o modelo ainda erra de vez em quando.</p>
+      <p class="note">Linhas: quantas mesas calibradas tinham alguém sentado ou junto delas, a cada 5 segundos. É uma <b>medição nossa</b>, feita pelo modelo treinado nos vídeos cedidos pela Bovinu's (treino e teste em minutos diferentes), não um número da empresa. Só estes quatro cortes foram usados, não os vídeos inteiros. Limite: pessoa passando perto de uma mesa também conta, e o modelo ainda erra de vez em quando.</p>
     </div>
   </div>
 </section>
@@ -141,13 +145,8 @@
 <!-- PROPOSTA -->
 <section id="proposta">
   <div class="wrap">
-    <h2 class="reveal">Uma proposta de análise, <span class="grad">não a solução definitiva.</span></h2>
-    <p class="lead reveal">Faltam dados para apontar com certeza onde está o problema: só a fila tem número da empresa (4 min contra 2,5 ideais). Mostramos, com um protótipo funcionando, como medir o salão com o que a casa já tem, e propomos uma fase 0 de coleta antes de qualquer compra.</p>
-    <div class="pains">
-      <div class="pain reveal"><span class="tag">O que entregamos</span><h3>Um caminho, não um veredito</h3><p>Análise das 4 dores, protótipo que roda no navegador e um modelo de pessoas treinado nos vídeos da Bovinu's, medido em cortes reais, mais o plano de instalação e as premissas declaradas.</p></div>
-      <div class="pain reveal"><span class="tag">O que ainda não sabemos</span><h3>Faltam métricas</h3><p>Tempo real de atendimento por mesa, mix dos pratos, quantas cubas o buffet tem e se câmeras e sistema entregam esses dados. Medimos só 4 cortes de 2 minutos; sem a fase 0 não dá para cravar o tamanho de cada problema.</p></div>
-      <div class="pain reveal"><span class="tag">Fora do escopo, como pedido</span><h3>Não mexemos nisso</h3><p>Pagamento, cozinha, compras e estoque ficaram de fora a pedido da empresa, e a balança não é o foco. Também não trocamos nenhum sistema.</p></div>
-    </div>
+    <h2 class="reveal">Sem dados concretos, <span class="grad">analisar vem primeiro.</span></h2>
+    <p class="lead reveal">Só a fila tem número da empresa (4 min contra 2,5 ideais). A falta de dados concretos impede apontar onde estão os maiores problemas, e por isso o certo é analisar antes de sair resolvendo erros que podem ser pequenos. Mostramos, com um protótipo funcionando, como medir o salão com o que a casa já tem, e propomos uma fase 0 de coleta antes de qualquer compra.</p>
   </div>
 </section>
 
@@ -173,24 +172,24 @@
       <div class="dores-head reveal"><b>As 4 maiores dores da Bovinu's</b><span>segundo a própria empresa</span></div>
       <div class="dores-grid">
         <div class="par reveal">
-          <div class="dor"><i class="num">1</i><h3>Mix do prato</h3><p>O sistema sabe o peso, mas não o que está no prato. A margem some sem ninguém ver.</p><em>a mais crítica</em></div>
+          <div class="dor"><i class="num">1</i><h3>Mix do prato</h3><p>A balança sabe o peso, mas não o que está no prato. Carne e arroz custam diferente para a casa, e a margem some sem ninguém ver.</p><em>a mais crítica</em></div>
           <svg class="seta-mini" viewBox="0 0 40 44" width="28" height="30" aria-hidden="true"><path d="M20 3 V30 M8 20 L20 34 L32 20" fill="none" stroke="#3ddc84" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>Uma foto na hora da pesagem estima a proporção de carne, carboidrato, salada e sobremesa, junto do peso que o sistema já registra.</p></div>
+          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>Uma foto na pesagem separa o prato por cor (carne, carboidrato, salada) e cruza com o peso e o preço do quilo. Sai a margem estimada por prato, e um alerta quando o mix foge do padrão da casa.</p></div>
         </div>
         <div class="par reveal">
-          <div class="dor"><i class="num">2</i><h3>Filas e tempo</h3><p>Fila da churrasqueira acima do ideal e mesa esperando no meio do pico.</p></div>
+          <div class="dor"><i class="num">2</i><h3>Filas e tempo</h3><p>Na churrasqueira a fila já chegou a 4 min (o ideal é 2,5), e no pico há mesa esperando sem que ninguém perceba.</p></div>
           <svg class="seta-mini" viewBox="0 0 40 44" width="28" height="30" aria-hidden="true"><path d="M20 3 V30 M8 20 L20 34 L32 20" fill="none" stroke="#3ddc84" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>Mesas com relógio avisam o metre quando alguém espera, e a previsão de fila mostra onde está o gargalo antes de ele se formar.</p></div>
+          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>A previsão da fila mostra o pico antes dele chegar, para reforçar a churrasqueira a tempo. E cada mesa tem um relógio: se passar de 2 minutos sem atendimento, o metre é avisado.</p></div>
         </div>
         <div class="par reveal">
-          <div class="dor"><i class="num">3</i><h3>Limpeza do salão</h3><p>Mesa que sai e demora a ser limpa trava a próxima família e piora a avaliação.</p></div>
+          <div class="dor"><i class="num">3</i><h3>Limpeza do salão</h3><p>Mesa que sai e demora a ser limpa trava a próxima família, derruba o giro do salão e piora a avaliação.</p></div>
           <svg class="seta-mini" viewBox="0 0 40 44" width="28" height="30" aria-hidden="true"><path d="M20 3 V30 M8 20 L20 34 L32 20" fill="none" stroke="#3ddc84" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>A câmera vê a mesa vazia com louça e avisa a limpeza em minutos, com o tempo de cada mesa registrado.</p></div>
+          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>A câmera vê a mesa vaga com louça e avisa a limpeza. O tempo de cada mesa fica registrado, e mostra onde o salão perde giro.</p></div>
         </div>
         <div class="par reveal">
-          <div class="dor"><i class="num">4</i><h3>Qualidade da comida</h3><p>Falta dado de qual item acaba, quando e quanto tempo fica na cuba.</p></div>
+          <div class="dor"><i class="num">4</i><h3>Qualidade da comida</h3><p>Ninguém tem dado de qual item acaba primeiro, em que hora e quanto tempo a comida fica na cuba.</p></div>
           <svg class="seta-mini" viewBox="0 0 40 44" width="28" height="30" aria-hidden="true"><path d="M20 3 V30 M8 20 L20 34 L32 20" fill="none" stroke="#3ddc84" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>A câmera sobre as cubas conta as reposições e mostra o que mais sai e o que acaba cedo, hora a hora.</p></div>
+          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>Uma câmera sobre o buffet mostra onde há mais gente e conta as reposições de cada cuba: o que mais sai e o que acaba cedo, hora a hora. Sensor de peso só entra se a câmera não bastar.</p></div>
         </div>
       </div>
     </div>
@@ -364,14 +363,16 @@
   <div class="wrap">
     <h2 class="reveal">O que <span class="grad">sabemos</span> e o que <span class="grad">assumimos.</span></h2>
     <p class="lead reveal">Quatro categorias, para ninguém confundir o que é da Bovinu's, o que medimos, o que simulamos e o que ainda é premissa.</p>
-    <div class="limits">
-      <div class="limit reveal ok"><h3>Sabemos · informado pela Bovinu's</h3><ul><li>618 clientes por dia de segunda a sexta (cerca de 250 no sábado e no domingo)</li><li>482 g de consumo médio e R$ 119,90 o quilo</li><li>450 lugares; pico das 11h50 às 13h30</li><li>Fila da churrasqueira chegou a 4 min (ideal 2,5); 3 de 4 churrasqueiros atendem</li><li>2 câmeras do buffet, vídeos de 12h49 às 13h59, rostos já borrados</li></ul></div>
-      <div class="limit reveal real"><h3>Medimos · nossa medição</h3><ul><li>Pessoas e mesas ocupadas em 4 cortes de 2 min (pico e depois do pico) de cada câmera</li><li>Buffet 1: de 5,5 mesas ocupadas no pico para 3,0 depois, de 7 mesas</li><li>Detector de pessoas ajustado nos vídeos: 0,89 de mAP50 na validação, comparado às caixas de um modelo maior (concordância, não verdade absoluta)</li><li>Não processamos os vídeos inteiros</li></ul></div>
-      <div class="limit reveal sim"><h3>Simulamos · rotulado na página</h3><ul><li>Fila da churrasqueira, a partir dos números da casa</li><li>Nível das cubas ao longo do almoço</li><li>Demo de mesas em modo simulado</li><li>Mix do prato por cor, que estima área e não volume</li><li>Marcações ilustrativas sobre quadros reais, assim avisadas na imagem</li></ul></div>
-      <div class="limit reveal ass"><h3>Assumimos · a fase 0 verifica</h3><ul><li>Quantas cubas o buffet tem e se a câmera as enxerga</li><li>Integração com o JS Softcom (API ou CSV)</li><li>Câmeras Intelbras com RTSP/ONVIF e servidor sem GPU (prever mini-PC)</li><li>Que o modelo funcione em outras câmeras e horários além destes cortes</li></ul></div>
-      <div class="limit reveal"><h3>Privacidade (LGPD)</h3><p>Sem reconhecimento facial. A IA lê mesas, pratos e contagens e não identifica pessoas. Aviso no salão e retenção mínima de imagem.</p></div>
-      <div class="limit reveal"><h3>Licenças e patentes</h3><p>Projeto acadêmico e demonstrativo. Nosso detector de pessoas é um YOLOv8 ajustado (AGPL-3.0) e o código que o treina está neste repositório. Uma implantação comercial exige revisar licenças e patentes de classificação de mesa por visão.</p></div>
-      <div class="limit reveal"><h3>Escopo respeitado</h3><p>Sem mexer em pagamento, balança, cozinha, compras ou estoque. O atendimento continua humano: a IA só avisa.</p></div>
+    <div class="saber">
+      <article class="sab ok reveal"><header><i>1</i><div><small>informado pela Bovinu's</small><h3>Sabemos</h3></div></header><ul><li>618 clientes por dia de segunda a sexta (cerca de 250 no sábado e no domingo)</li><li>482 g de consumo médio e R$ 119,90 o quilo</li><li>450 lugares; pico das 11h50 às 13h30</li><li>Fila da churrasqueira chegou a 4 min (ideal 2,5); 3 de 4 churrasqueiros atendem</li><li>2 câmeras do buffet, vídeos de 12h49 às 13h59, rostos já borrados</li></ul></article>
+      <article class="sab real reveal"><header><i>2</i><div><small>nossa medição</small><h3>Medimos</h3></div></header><ul><li>Pessoas e mesas ocupadas em 4 cortes de 2 min (pico e fora do pico) de cada câmera</li><li>Buffet 1: de 5,5 mesas ocupadas no pico para 3,0 depois, de 7 mesas</li><li>Modelo treinado nos vídeos: 0,88 de acerto nas caixas na validação (concordância com um modelo maior, não verdade absoluta)</li><li>Não processamos os vídeos inteiros</li></ul></article>
+      <article class="sab sim reveal"><header><i>3</i><div><small>rotulado na página</small><h3>Simulamos</h3></div></header><ul><li>Fila da churrasqueira, a partir dos números da casa</li><li>Nível das cubas ao longo do almoço</li><li>Modo simulado das mesas</li><li>Mix do prato por cor, que estima área e não volume</li><li>Marcações ilustrativas sobre quadros reais, avisadas na imagem</li></ul></article>
+      <article class="sab ass reveal"><header><i>4</i><div><small>a fase 0 verifica</small><h3>Assumimos</h3></div></header><ul><li>Quantas cubas o buffet tem e se a câmera as enxerga</li><li>Integração com o JS Softcom (API ou CSV)</li><li>Câmeras Intelbras com RTSP/ONVIF e servidor sem GPU (prever mini-PC)</li><li>Que o modelo funcione em outras câmeras e horários além destes cortes</li></ul></article>
+    </div>
+    <div class="saber-notas">
+      <div class="reveal"><b>Privacidade (LGPD)</b><p>Sem reconhecimento facial. A IA lê mesas, pratos e contagens e não identifica pessoas. Aviso no salão e retenção mínima de imagem.</p></div>
+      <div class="reveal"><b>Licenças e patentes</b><p>Projeto acadêmico e demonstrativo. Nosso detector de pessoas é um YOLOv8 ajustado (AGPL-3.0) e o código que o treina está neste repositório. Uma implantação comercial exige revisar licenças e patentes.</p></div>
+      <div class="reveal"><b>Escopo respeitado</b><p>Sem mexer em pagamento, balança, cozinha, compras ou estoque. O atendimento continua humano: a IA só avisa.</p></div>
     </div>
   </div>
 </section>
@@ -384,7 +385,7 @@
 <script src="vendor/ScrollTrigger.min.js"></script>
 <script src="js/main.js?v=9"></script>
 <script src="js/mesas-core.js?v=2"></script>
-<script src="js/mesas.js?v=9"></script>
+<script src="js/mesas.js?v=11"></script>
 <script src="js/medido.js?v=2"></script>
 <script src="js/fila-core.js"></script>
 <script src="js/fila.js?v=2"></script>

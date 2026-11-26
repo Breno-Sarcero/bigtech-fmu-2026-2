@@ -24,14 +24,12 @@
   let epoch = 0;                // muda a cada troca de fonte: descarta detecções que ainda estavam em andamento
   let zones = [], vt = 0, lastTs = performance.now(), lastDetect = 0, lastDetectTs = 0;
   let dets = [];              // detecções desenhadas: {cls, x, y, w, h, score, role}
-  let drag = null, nextId = 1, picking = false;
+  let drag = null, nextId = 1;
   let uniform = null, tol = UNI_TOL;          // sem cor escolhida, o garçom é reconhecido pela postura (em pé)
   const track = {};                            // candidatas a mesa entre quadros (mesas inferidas)
 
   function hexToRgb(h) { return [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)); }
   const rgbToHex = c => '#' + c.map(v => Math.round(v).toString(16).padStart(2, '0')).join('');
-  $('uni').addEventListener('input', e => { uniform = hexToRgb(e.target.value); $('uniState').textContent = 'usando a cor do uniforme'; });
-  $('uniPick').addEventListener('click', () => { picking = true; hint.textContent = 'Clique sobre a camisa de um garçom no vídeo para copiar a cor do uniforme.'; });
 
   const hooks = { log };
   function log(msg, ok) {
@@ -100,12 +98,6 @@
   canvas.addEventListener('pointerdown', ev => {
     if (source === 'none' || source === 'sim') return;
     const p = pos(ev);
-    if (picking) {
-      picking = false;
-      const c = avgColor({ x: p.x - 6, y: p.y - 6, w: 12, h: 12 });
-      if (c) { uniform = c; $('uni').value = rgbToHex(c); $('uniState').textContent = 'usando a cor do uniforme'; hint.textContent = 'Cor do uniforme definida.'; }
-      return;
-    }
     drag = { a: p, b: p }; canvas.setPointerCapture(ev.pointerId);
   });
   canvas.addEventListener('pointermove', ev => { if (drag) drag.b = pos(ev); });
@@ -218,15 +210,15 @@
   const SIM_LEN = 720;
   function startSim() {
     setMode('sim', 'SIMULADO · roteiro de exemplo');
-    hint.textContent = 'Modo simulado: clientes, garçom e objetos seguem um roteiro. A regra de alerta é a mesma da detecção real.';
-    const mk = (x, y, s) => addZone(x, y, 200, 130, s);
+    hint.textContent = '';   // o selo SIMULADO já avisa; sem texto por cima da animação
+    const mk = (x, y, s) => addZone(x, y, 240, 160, s);
     //            chegada saída  garçom  clientes  objetos na mesa (de, até)
-    mk(110, 130, { in: 10, out: 300, serve: 70, n: 2, it: [40, 340] });
-    mk(380, 130, { in: 25, out: 330, serve: null, n: 3, it: [45, 670] });   // ninguém atende; objetos esquecidos
-    mk(650, 130, { in: 50, out: 360, serve: 190, n: 4, it: [80, 400] });
-    mk(245, 340, { in: 140, out: 250, serve: 160, n: 2, it: [150, 290] });
-    mk(515, 340, { in: 200, out: 470, serve: 215, n: 1, it: [210, 510] });
-    vt = 0;
+    mk(90, 90, { in: 10, out: 300, serve: 70, n: 2, it: [40, 340] });
+    mk(360, 90, { in: 25, out: 330, serve: null, n: 3, it: [45, 670] });   // ninguém atende; objetos esquecidos
+    mk(630, 90, { in: 50, out: 360, serve: 190, n: 4, it: [80, 400] });
+    mk(225, 310, { in: 140, out: 250, serve: 160, n: 2, it: [150, 290] });
+    mk(495, 310, { in: 200, out: 470, serve: 215, n: 1, it: [210, 510] });
+    vt = 0; simW.x = 46; simW.y = 300;
   }
   function simUpdate() {
     if (vt > SIM_LEN) { zones.forEach(z => M.init(z, 0)); vt = 0; alertsBox.textContent = ''; }
@@ -238,16 +230,50 @@
       z.waiterSecs = z.waiterNear ? cfg.waiterSecs : 0;
     });
   }
+  // Planta do salão vista de cima: mesas com cadeiras, clientes sentados, louça e um garçom que anda até as mesas.
+  const simW = { x: 46, y: 300, alvo: null };         // garçom: sai da cozinha (porta à esquerda), vai até a mesa e volta
+  const CAB = ['#e8b98a', '#d9a273', '#f0c9a0', '#c98f63'], ROUPA = ['#7a5cff', '#e0643a', '#3aa6a0', '#d8a31f'];
+  function pessoa(x, y, i, a) {                        // cliente visto de cima: ombros + cabeça
+    ctx.globalAlpha = a; ctx.fillStyle = ROUPA[i % 4]; ctx.beginPath(); ctx.ellipse(x, y, 15, 11, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = CAB[i % 4]; ctx.beginPath(); ctx.arc(x, y - 1, 8, 0, 7); ctx.fill(); ctx.globalAlpha = 1;
+  }
   function drawSim() {
-    ctx.fillStyle = '#17120e'; ctx.fillRect(0, 0, W, H);
-    ctx.strokeStyle = 'rgba(255,255,255,.04)';
-    for (let x = 0; x < W; x += 60) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+    // piso e porta da cozinha
+    ctx.fillStyle = '#1b1510'; ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = 'rgba(255,255,255,.035)'; ctx.lineWidth = 1;
+    for (let x = 0; x < W; x += 48) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+    for (let y = 0; y < H; y += 48) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+    ctx.fillStyle = '#2a2018'; ctx.fillRect(0, 238, 18, 124);
+    ctx.fillStyle = '#8b8277'; ctx.font = '11px system-ui'; ctx.save(); ctx.translate(34, 300); ctx.rotate(-Math.PI / 2); ctx.textAlign = 'center'; ctx.fillText('COZINHA', 0, 0); ctx.restore();
+    // garçom: caminha até a mesa que vai atender (a partir de 40 s antes do atendimento) e volta
+    const alvoZ = zones.find(z => z.script && z.script.serve !== null && vt >= z.script.serve - 40 && vt < z.script.serve + 12);
+    const tx = alvoZ ? alvoZ.x + alvoZ.w - 34 : 46, ty = alvoZ ? alvoZ.y + alvoZ.h + 6 : 300;
+    simW.x += (tx - simW.x) * 0.07; simW.y += (ty - simW.y) * 0.07;
     zones.forEach(z => {
-      ctx.fillStyle = '#3a2d22'; ctx.beginPath(); ctx.rect(z.x + 40, z.y + 28, z.w - 80, z.h - 56); ctx.fill();
-      for (let i = 0; i < z.persons; i++) { const a = (i / Math.max(z.persons, 1)) * Math.PI * 2; ctx.fillStyle = '#e8d5bf'; ctx.beginPath(); ctx.arc(z.x + z.w / 2 + Math.cos(a) * 62, z.y + z.h / 2 + Math.sin(a) * 38, 11, 0, 7); ctx.fill(); }
-      for (let i = 0; i < z.items; i++) { ctx.fillStyle = '#f2c94c'; ctx.fillRect(z.x + z.w / 2 - 20 + i * 24, z.y + z.h / 2 - 6, 14, 14); }
-      if (z.waiterNear) { ctx.fillStyle = '#4fd1ff'; ctx.beginPath(); ctx.arc(z.x + z.w + 16, z.y + z.h / 2, 12, 0, 7); ctx.fill(); }
+      const cx = z.x + z.w / 2, cy = z.y + z.h / 2, tw = z.w - 70, th = z.h - 70;
+      z.simA = (z.simA === undefined ? 0 : z.simA) + ((z.persons > 0 ? 1 : 0) - (z.simA || 0)) * 0.12;     // clientes entram e saem suavemente
+      // cadeiras
+      ctx.fillStyle = '#4a3828';
+      [[0, -th / 2 - 14], [0, th / 2 + 14], [-tw / 2 - 14, 0], [tw / 2 + 14, 0]].forEach(([dx, dy]) => { ctx.beginPath(); ctx.roundRect(cx + dx - 11, cy + dy - 11, 22, 22, 6); ctx.fill(); });
+      // mesa de madeira com toalha
+      ctx.fillStyle = '#6b4a2f'; ctx.beginPath(); ctx.roundRect(cx - tw / 2, cy - th / 2, tw, th, 14); ctx.fill();
+      ctx.fillStyle = '#f1e7d6'; ctx.beginPath(); ctx.roundRect(cx - tw / 2 + 6, cy - th / 2 + 6, tw - 12, th - 12, 10); ctx.fill();
+      // clientes sentados nas cadeiras
+      const lug = [[0, -th / 2 - 14], [0, th / 2 + 14], [-tw / 2 - 14, 0], [tw / 2 + 14, 0]];
+      for (let i = 0; i < Math.max(z.persons, z.script ? z.script.n : 0); i++) pessoa(cx + lug[i % 4][0], cy + lug[i % 4][1], i, i < z.persons ? Math.max(0, Math.min(1, z.simA)) : 0);
+      // louça: prato com garfo e copo
+      for (let i = 0; i < z.items; i++) {
+        const px = cx - 22 + i * 40, py = cy;
+        ctx.fillStyle = '#fff'; ctx.strokeStyle = '#cfc4b2'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(px, py, 11, 0, 7); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#c9a15a'; ctx.beginPath(); ctx.arc(px, py, 5, 0, 7); ctx.fill();
+        ctx.fillStyle = 'rgba(120,180,230,.55)'; ctx.beginPath(); ctx.arc(px + 15, py - 12, 5, 0, 7); ctx.fill();
+      }
     });
+    // garçom com bandeja
+    ctx.fillStyle = '#2f6fe0'; ctx.beginPath(); ctx.ellipse(simW.x, simW.y, 17, 12, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#e8b98a'; ctx.beginPath(); ctx.arc(simW.x, simW.y - 1, 8, 0, 7); ctx.fill();
+    ctx.fillStyle = '#d9d9d9'; ctx.beginPath(); ctx.arc(simW.x + 18, simW.y + 2, 9, 0, 7); ctx.fill();
+    ctx.fillStyle = '#8b8277'; ctx.font = '11px system-ui'; ctx.textAlign = 'center'; ctx.fillText('garçom', simW.x, simW.y + 28); ctx.textAlign = 'start';
   }
 
   // ---------- laço principal ----------
