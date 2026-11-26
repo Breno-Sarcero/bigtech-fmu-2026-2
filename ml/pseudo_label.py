@@ -4,7 +4,7 @@ import sys, pathlib
 from ultralytics import YOLO
 
 model_name, imgsz, conf = sys.argv[1], int(sys.argv[2]), float(sys.argv[3])
-root = pathlib.Path(r"E:\Codigos\HACKATHON-BOVINUS\ml")
+root = pathlib.Path(__file__).resolve().parent   # frames/ e dataset/ ficam ao lado do script (fora do git)
 model = YOLO(model_name)
 for split in ("train", "val"):
     img_dir = root / "frames" / split

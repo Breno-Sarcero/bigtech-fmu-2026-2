@@ -46,7 +46,7 @@
     try {
       await loadScript('vendor/tf.min.js'); await loadScript('vendor/coco-ssd.min.js');
       model = await cocoSsd.load({ base: 'lite_mobilenet_v2' });
-      hint.textContent = 'Modelo pronto. As mesas são detectadas sozinhas; arraste sobre a imagem só para ajustar.';
+      hint.textContent = zones.length ? '' : 'Modelo pronto. Arraste sobre a imagem para marcar cada mesa (calibração da câmera, feita uma vez).';
     } catch (e) { hint.textContent = 'Não consegui carregar o modelo (precisa de internet na primeira vez). Use o modo simulado.'; }
     modelLoading = false;
   }
@@ -88,7 +88,7 @@
     video.src = c.src; video.loop = true; await video.play().catch(() => {});
     setMode('video', c.label); ensureModel(); ensureYolo();
     c.mesas.forEach(m => addZone(m[0], m[1], m[2], m[3], null, 'calibrada'));
-    hint.textContent = 'Mesas calibradas nesta câmera. O modelo conta clientes, garçom e objetos dentro de cada uma.';
+    hint.textContent = '';
   }
   $('mesaB1').addEventListener('click', () => loadCamera('b1'));
   $('mesaB2').addEventListener('click', () => loadCamera('b2'));
