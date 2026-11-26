@@ -7,9 +7,13 @@ Projeto da equipe **BIG Tech** (**B**reno, **I**gor e **G**iovanna) no **Hackath
 | | |
 |---|---|
 | 🌐 **Site com as demos** | https://breno-sarcero.github.io/bigtech-fmu-2026-2/ |
-| 🎬 **Vídeo (1 min 48 s)** | [`video/apresentacao.mp4`](video/apresentacao.mp4) |
-| 📑 **Slides (5)** | [PDF](slides/apresentacao.pdf) · [PPTX](slides/apresentacao.pptx) |
+| 🎬 **Vídeo (1 min 48 s)** | https://breno-sarcero.github.io/bigtech-fmu-2026-2/video/ |
+| 📑 **Slides (5)** | [PDF (abre no GitHub)](slides/apresentacao.pdf) · [PPTX (baixa o arquivo)](slides/apresentacao.pptx) |
 | 📋 **Plano de instalação, rotas e custo** | [`docs/instalacao.md`](docs/instalacao.md) |
+
+[![Assistir ao vídeo (1 min 48 s)](video/capa.png)](https://breno-sarcero.github.io/bigtech-fmu-2026-2/video/)
+
+*Clique na imagem para assistir ao vídeo.*
 
 ## O problema e a nossa resposta
 
@@ -46,7 +50,9 @@ Cinco telas do que criamos (site com as demos rodando no navegador). É um prot�
 | ![Fila e lotação](prints/3-fila-e-lotacao.png) | ![Mix do prato](prints/4-mix-do-prato.png) |
 | ![Cubas do buffet](prints/5-cubas-do-buffet.png) | |
 
-## Como rodar
+## Rodar na sua máquina (opcional)
+
+Não precisa instalar nada para ver o projeto: abra o site online em https://breno-sarcero.github.io/bigtech-fmu-2026-2/site/. Os comandos abaixo são só para quem quiser executar o código localmente.
 
 ```bash
 python -m http.server 8765          # na raiz do repositório
