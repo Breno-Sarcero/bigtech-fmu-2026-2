@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 220" font-family="Arial, sans-serif" role="img" aria-label="Câmeras que já existem, modelo de IA, painel e alertas">
+  <rect width="960" height="220" fill="#faf5ea"/>
+  <g fill="#fff" stroke="#8c1c1c" stroke-width="2">
+    <rect x="30" y="60" width="250" height="100" rx="14"/>
+    <rect x="355" y="60" width="250" height="100" rx="14"/>
+    <rect x="680" y="60" width="250" height="100" rx="14"/>
+  </g>
+  <g fill="#8c1c1c" text-anchor="middle">
+    <text x="155" y="104" font-size="20" font-weight="bold">Câmeras da casa</text>
+    <text x="480" y="104" font-size="20" font-weight="bold">Modelo de IA</text>
+    <text x="805" y="104" font-size="20" font-weight="bold">Painel e alertas</text>
+  </g>
+  <g fill="#555" text-anchor="middle" font-size="14">
+    <text x="155" y="130">Intelbras, já instaladas</text>
+    <text x="480" y="130">mesas, pessoas, prato, cubas</text>
+    <text x="805" y="130">metre, gerência</text>
+  </g>
+  <g stroke="#8c1c1c" stroke-width="3" fill="#8c1c1c">
+    <line x1="285" y1="110" x2="345" y2="110"/><polygon points="345,102 360,110 345,118"/>
+    <line x1="610" y1="110" x2="670" y2="110"/><polygon points="670,102 685,110 670,118"/>
+  </g>
+  <text x="480" y="30" text-anchor="middle" font-size="16" fill="#8c1c1c" font-weight="bold">A IA só avisa; o atendimento continua humano</text>
+  <text x="480" y="195" text-anchor="middle" font-size="13" fill="#777">Protótipo acadêmico, não é um sistema implantado</text>
+</svg>
