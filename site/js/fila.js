@@ -5,7 +5,7 @@
   const SEATS = 450, META = 2.5;
   // Empresa: 4 churrasqueiros no pico, mas só 3 atendem o público (1 cuida do fogo). 44 s por atendimento foi calibrado
   // para o pico da fila chegar a ~4 min, como a empresa relatou. O resto são hipóteses (ver fila-core.test.js).
-  const BASE = { clientes: 618, servidores: 3, servSeg: 44, pctChurras: 0.8, permMin: 40 };
+  const BASE = { clientes: 618, servidores: 3, servSeg: 42.5, pctChurras: 0.8, permMin: 40 };
   const MAIS_UM = Object.assign({}, BASE, { servidores: 4 });
   const hhmm = m => { const t = 11 * 60 + m; return String(Math.floor(t / 60)).padStart(2, '0') + 'h' + String(Math.round(t % 60)).padStart(2, '0'); };
   const min = v => v.toFixed(1).replace('.', ',') + ' min';
@@ -22,7 +22,7 @@
     for (let m = 0; m <= 210; m += 30) ctx.fillText(hhmm(m), X(m / opts.step) - 14, H - 8);
     const px0 = X(50 / opts.step), px1 = X(150 / opts.step);          // faixa do pico: 11h50–13h30
     ctx.fillStyle = 'rgba(255,90,31,.07)'; ctx.fillRect(px0, T, px1 - px0, H - T - B);
-    ctx.fillStyle = '#8a8176'; ctx.fillText('pico', px0 + 6, T + 14);
+    ctx.fillStyle = '#8a8176'; ctx.fillText('pico', px0 + 6, T + 14); ctx.fillText(opts.unit, L + 6, T + 14);
     ctx.setLineDash([6, 5]); ctx.strokeStyle = opts.refColor; ctx.beginPath(); ctx.moveTo(L, Y(opts.ref)); ctx.lineTo(W - R, Y(opts.ref)); ctx.stroke(); ctx.setLineDash([]);
     series.forEach(s => {
       ctx.strokeStyle = s.color; ctx.lineWidth = 3; ctx.setLineDash(s.dashed ? [8, 5] : []); ctx.beginPath();
@@ -37,14 +37,14 @@
   const a = FilaCore.simulate(BASE, 40), b = FilaCore.simulate(MAIS_UM, 40);
   const box = $('filaKpis');
   box.append(
-    kpi('pico da espera hoje (3 atendendo)', min(Math.max(...a.espera)), Math.max(...a.espera) <= META ? 'good' : 'bad'),
-    kpi('pico da espera com 1 atendente a mais', min(Math.max(...b.espera)), Math.max(...b.espera) <= META ? 'good' : 'bad'),
+    kpi('pico da espera hoje, com 3 atendendo', min(Math.max(...a.espera)), Math.max(...a.espera) <= META ? 'good' : 'bad'),
+    kpi('pico da espera com 1 atendente a mais (4 atendendo)', min(Math.max(...b.espera)), Math.max(...b.espera) <= META ? 'good' : 'bad'),
     kpi('espera média no horário de pico, hoje', min(a.mediaPico)),
     kpi('maior lotação: ' + hhmm(a.ocupMaxEm), Math.round(a.ocupMax) + ' de ' + SEATS + ' lugares')
   );
-  chart($('chartFila'), [{ ys: a.espera, color: '#ff5a1f' }, { ys: b.espera, color: '#3ddc84', dashed: true }],
-    { step: a.BIN, ymax: Math.max(8, Math.ceil(Math.max(...a.espera) + 1)), ref: META, refColor: '#8a8176', fmtY: v => v.toFixed(0) + ' min' });
+  chart($('chartFila'), [{ ys: a.espera, color: '#ff5a1f' }, { ys: b.espera, color: '#3ddc84' }],
+    { step: a.BIN, ymax: Math.max(8, Math.ceil(Math.max(...a.espera) + 1)), ref: META, refColor: '#8a8176', fmtY: v => v.toFixed(0) + ' min', unit: 'minutos' });
   const occ = a.ocup.slice(0, 211);
   chart($('chartOcup'), [{ ys: occ, color: '#5ab0ff' }],
-    { step: 1, ymax: Math.max(500, Math.ceil(a.ocupMax / 50) * 50 + 50), ref: SEATS, refColor: '#ff4d4d', fmtY: v => Math.round(v) + '' });
+    { step: 1, ymax: Math.max(500, Math.ceil(a.ocupMax / 50) * 50 + 50), ref: SEATS, refColor: '#ff4d4d', fmtY: v => Math.round(v) + '', unit: 'pessoas' });
 })();
