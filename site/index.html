@@ -7,6 +7,7 @@
 <meta name="description" content="Como enxergar respostas ocultas? Visão computacional nas câmeras que a Bovinu's Augusta já tem: mesas, mix do prato e fila. Proposta de análise da equipe BIG Tech.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ff5a1f'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%230b0a09'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/style.css?v=11">
+<link rel="stylesheet" href="css/tema-bordo.css?v=1">
 </head>
 <body>
 <div id="progress"></div>
@@ -106,7 +107,7 @@
             <canvas id="mesaCanvas" width="960" height="540"></canvas>
             <div class="hint" id="mesaHint">Escolha uma câmera, envie um vídeo ou use o modo simulado. Cada escolha limpa as mesas e carrega a nova fonte.</div>
           </div>
-          <p class="note">Detecção real: modelo COCO-SSD (TensorFlow.js), baixado uma vez e executado no seu computador. <b>Mesa:</b> o modelo reconhece a mesa; se a câmera não a enxerga, clientes sentados juntos formam uma mesa inferida. <b>Atendida:</b> alguém em pé junto à mesa por alguns segundos (a cor do uniforme afina isso). <b>Suja:</b> copo, prato ou garrafa sobrando depois que os clientes saem. Arrastar sobre a imagem e os botões manuais servem só para corrigir falhas. Limite: câmera de teto ou pessoas muito pequenas reduzem a precisão; em produção o modelo seria afinado com imagens do próprio salão.</p>
+          <p class="note"><b>Como funciona:</b> as pessoas vêm de um detector YOLOv8 nano ajustado nos vídeos que a Bovinu's cedeu (ONNX, roda no seu navegador); copos, pratos e garrafas vêm do COCO-SSD. <b>Mesa:</b> calibrada por câmera (nas câmeras da Bovinu's já está; em vídeo novo, arraste sobre a imagem). <b>Atendida:</b> alguém em pé junto à mesa por alguns segundos, depois que os clientes sentaram. <b>Suja:</b> copo, prato ou garrafa sobrando depois que os clientes saem. Limite: câmera de teto e pessoas muito pequenas reduzem a precisão, e o modelo foi ajustado só nestas duas câmeras.</p>
         </div>
         <div>
           <div class="ctrl"><span>Ajuste opcional: cor do uniforme do garçom <em id="uniState" style="color:#8a8176;font-style:normal">(sem ajuste: reconhece quem está em pé junto à mesa)</em></span>
@@ -387,7 +388,7 @@
 <script src="js/medido.js?v=2"></script>
 <script src="js/fila-core.js"></script>
 <script src="js/fila.js?v=2"></script>
-<script src="js/prato.js?v=5"></script>
+<script src="js/prato.js?v=6"></script>
 <script src="js/cubas-core.js?v=2"></script>
 <script src="js/cubas.js?v=4"></script>
 </body>

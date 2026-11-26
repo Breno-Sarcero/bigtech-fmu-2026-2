@@ -64,8 +64,7 @@
       if (dx * dx + dy * dy <= raio * raio) {
         inside++;
         const c = classify(r, g, b);
-        if (c >= 0) { cnt[c]++; const t = CATS[c].c; r = r * 0.4 + t[0] * 0.6; g = g * 0.4 + t[1] * 0.6; b = b * 0.4 + t[2] * 0.6; }
-        else { r *= 0.55; g *= 0.55; b *= 0.55; }
+        if (c >= 0) cnt[c]++;                    // a foto fica como está: sem camada de cor por cima da comida
       } else { r *= 0.25; g *= 0.25; b *= 0.25; }
       out.data[i] = r; out.data[i + 1] = g; out.data[i + 2] = b; out.data[i + 3] = 255;
     }
