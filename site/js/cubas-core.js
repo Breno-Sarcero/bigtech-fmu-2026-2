@@ -30,6 +30,28 @@
     return { ratio: n ? food / n : 0, pixels: n };
   }
 
+  // Variante calibrada: em vez de supor "inox = cinza", usa a cor do inox daquela cuba vazia (ref = [r,g,b], lida numa área
+  // vazia) e conta como comida o que se afasta dela mais que tol (distância RGB). Serve para fotos reais, em que o inox
+  // tem reflexo quente e a saturação não separa bem. É a calibração de "cuba vazia" que a fase 0 faria uma vez por câmera.
+  function fillRatioRef(data, w, h, region, ref, tol) {
+    const r = region, lim = (tol || 60) * (tol || 60);
+    let food = 0, n = 0;
+    for (let y = Math.max(0, r.y | 0); y < Math.min(h, (r.y + r.h) | 0); y++) {
+      for (let x = Math.max(0, r.x | 0); x < Math.min(w, (r.x + r.w) | 0); x++) {
+        const i = (y * w + x) * 4, dr = data[i] - ref[0], dg = data[i + 1] - ref[1], db = data[i + 2] - ref[2];
+        n++; if (dr * dr + dg * dg + db * db > lim) food++;
+      }
+    }
+    return { ratio: n ? food / n : 0, pixels: n };
+  }
+  // cor média de uma região (para pegar a referência do inox vazio)
+  function meanColor(data, w, h, region) {
+    let R = 0, G = 0, B = 0, n = 0;
+    for (let y = Math.max(0, region.y | 0); y < Math.min(h, (region.y + region.h) | 0); y++)
+      for (let x = Math.max(0, region.x | 0); x < Math.min(w, (region.x + region.w) | 0); x++) { const i = (y * w + x) * 4; R += data[i]; G += data[i + 1]; B += data[i + 2]; n++; }
+    return n ? [R / n, G / n, B / n] : [0, 0, 0];
+  }
+
   // ok / atenção / repor, a partir do nível em % (0..100)
   function status(pct) { return pct < REPOR_ABAIXO ? 'repor' : pct < ATENCAO_ABAIXO ? 'atencao' : 'ok'; }
 
@@ -56,6 +78,6 @@
     };
   }
 
-  const api = { fillRatio, status, detectRefills, summarize, REPOR_ABAIXO, ATENCAO_ABAIXO };
+  const api = { fillRatio, fillRatioRef, meanColor, status, detectRefills, summarize, REPOR_ABAIXO, ATENCAO_ABAIXO };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.CubasCore = api;
 })(typeof window !== 'undefined' ? window : globalThis);

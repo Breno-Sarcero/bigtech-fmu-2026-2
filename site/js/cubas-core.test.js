@@ -46,4 +46,14 @@ assert.ok(r.minToEmptyFromFull > 0 && r.minToEmptyFromFull < 120);
 assert.strictEqual(C.summarize([50, 50, 50], 5).refills, 0);
 assert.strictEqual(C.summarize([50, 50, 50], 5).meanGapMin, null);
 
+// fillRatioRef: inox com tom quente (saturação alta) ainda é lido como inox quando a referência é a cor da cuba vazia
+{
+  const W = 10, H = 10, d = new Uint8ClampedArray(W * H * 4);
+  const inox = [155, 140, 126], comida = [200, 150, 40];
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { const c = y >= 6 ? comida : inox, i = (y * W + x) * 4; d[i] = c[0]; d[i + 1] = c[1]; d[i + 2] = c[2]; d[i + 3] = 255; }
+  const ref = C.meanColor(d, W, H, { x: 0, y: 0, w: W, h: 3 });
+  const r = C.fillRatioRef(d, W, H, { x: 0, y: 0, w: W, h: H }, ref, 40);
+  assert.ok(Math.abs(r.ratio - 0.4) < 0.02, 'com referência do inox, 4 de 10 linhas são comida: ' + r.ratio);
+}
+
 console.log('cubas-core: todos os testes passaram');

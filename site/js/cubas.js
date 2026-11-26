@@ -43,9 +43,9 @@
   const TXT = { ok: 'OK', atencao: 'ATENÇÃO', repor: 'REPOR' };
 
   // Analisa as regiões na cena limpa, depois desenha o resultado por cima.
-  function analisar(regioes, nomes) {
+  function analisar(regioes, nomes, calib) {
     const img = sctx.getImageData(0, 0, W, H).data;
-    const res = regioes.map(r => Math.round(C.fillRatio(img, W, H, r).ratio * 100));
+    const res = regioes.map(r => Math.round((calib ? C.fillRatioRef(img, W, H, r, calib.ref, calib.tol) : C.fillRatio(img, W, H, r)).ratio * 100));
     ctx.drawImage(scene, 0, 0);
     const lista = $('cubaList'); lista.textContent = '';
     regioes.forEach((r, i) => {
@@ -72,11 +72,14 @@
   // Foto hiper-realista de exemplo com 4 cubas lado a lado (gerada por IA, ver docs/prompts-imagens.md).
   // Se o arquivo existir, a demo usa a foto; se não, cai no buffet desenhado acima.
   const real = new Image(); let realOk = false;
-  const colunas = () => [0, 1, 2, 3].map(i => ({ x: 40 + i * 225, y: 60, w: 185, h: 400 }));
+  // 4 colunas iguais (a foto de exemplo tem as 4 cubas ocupando a largura toda); a cor do inox vem do topo da 1ª cuba,
+  // que está vazia nessa foto: é a "calibração de cuba vazia" que a fase 0 faria uma vez por câmera.
+  const colunas = () => [0, 1, 2, 3].map(i => ({ x: i * 240 + 55, y: 60, w: 130, h: 420 }));
   function exemploReal() {
     const s = Math.max(W / real.width, H / real.height), w = real.width * s, h = real.height * s;
     sctx.fillStyle = '#000'; sctx.fillRect(0, 0, W, H); sctx.drawImage(real, (W - w) / 2, (H - h) / 2, w, h);
-    analisar(colunas(), ITENS.map(i => i.nome));
+    const c0 = colunas()[0], ref = C.meanColor(sctx.getImageData(0, 0, W, H).data, W, H, { x: c0.x, y: c0.y, w: c0.w, h: 60 });
+    analisar(colunas(), ITENS.map(i => i.nome), { ref, tol: 70 });
   }
   real.onload = () => { realOk = true; exemploReal(); };
   real.src = 'img/cubas-exemplo.webp?v=1';
