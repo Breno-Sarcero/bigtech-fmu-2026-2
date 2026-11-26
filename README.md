@@ -36,6 +36,16 @@ Tudo roda no navegador, sem enviar imagem a servidor.
 
 Protótipo acadêmico: não é um sistema implantado. Veja o que é dado real, medição, simulação e premissa em [`docs/transparencia.md`](docs/transparencia.md).
 
+## Capturas de tela do protótipo
+
+Cinco telas do que criamos (site com as demos rodando no navegador). É um protótipo acadêmico, não um sistema implantado.
+
+| | |
+|---|---|
+| ![Mesas com câmera real](docs/prints/1-mesas-camera-real.png) | ![Medido nos cortes reais](docs/prints/2-medido-nos-cortes-reais.png) |
+| ![Fila e lotação](docs/prints/3-fila-e-lotacao.png) | ![Mix do prato](docs/prints/4-mix-do-prato.png) |
+| ![Cubas do buffet](docs/prints/5-cubas-do-buffet.png) | |
+
 ## Como rodar
 
 ```bash
@@ -48,7 +58,7 @@ node site/js/mesas-core.test.js     # testes da lógica (também fila-core e cub
 
 ```
 site/      protótipo web (HTML, CSS, JS, modelo ONNX e bibliotecas em vendor/)
-docs/      plano de instalação, transparência e imagens
+docs/      plano de instalação, transparência, imagens e prints
 ml/        scripts de treino e medição do modelo (veja ml/README.md)
 slides/    apresentação em PDF
 video/     vídeo de 2 minutos
