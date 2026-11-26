@@ -267,3 +267,14 @@ footer { padding: 60px 0 90px; border-top: 1px solid var(--line); color: var(--m
 
 /* lista de mesas com altura limitada: não empurra o resto da página (e o pin da solução) quando mesas são criadas */
 .zones { max-height: 420px; overflow-y: auto; }
+
+/* custo aproximado */
+.custo { margin-top: 48px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(18px, 3vw, 32px); }
+.custo h3 { margin: 0 0 6px; }
+.custo table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: .92rem; }
+.custo th { text-align: left; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ember-2); padding: 8px 10px; border-bottom: 1px solid var(--line); }
+.custo td { vertical-align: top; padding: 14px 10px; border-bottom: 1px solid var(--line); color: var(--muted); }
+.custo td:first-child { color: var(--text); width: 22%; }
+.custo td:nth-child(2) { color: var(--text); width: 22%; font-weight: 600; }
+.custo a { color: var(--ember-2); }
+@media (max-width: 860px) { .custo table, .custo thead, .custo tbody, .custo tr, .custo th, .custo td { display: block; width: 100% !important; } .custo thead { display: none; } .custo tr { border-bottom: 1px solid var(--line); padding: 8px 0; } .custo td { border: 0; padding: 4px 0; } }

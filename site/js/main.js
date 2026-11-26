@@ -32,7 +32,7 @@
 
     // Seção pinada: 4 passos da solução trocam conforme a rolagem
     const steps = gsap.utils.toArray('.step');
-    const vis = ['#i1', '#v2,#i2,#b2', '#i3', '#v4,#i4,#b4'];   // desenho SVG + imagem (se existir)
+    const vis = ['#i1', '#i2,#b2', '#i3', '#i4,#b4'];   // desenho SVG + imagem (se existir)
     const mm = gsap.matchMedia();
     mm.add('(min-width: 861px)', () => {
       const tl = gsap.timeline({

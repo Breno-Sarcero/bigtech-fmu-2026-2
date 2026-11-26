@@ -6,7 +6,7 @@
 <title>Vendo o invisível — BIG Tech · Hackathon Tech FMU 2026.2</title>
 <meta name="description" content="Como enxergar respostas ocultas? Visão computacional nas câmeras que a Bovinu's Augusta já tem: mesas, mix do prato e fila. Proposta de análise da equipe BIG Tech.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ff5a1f'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%230b0a09'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="css/style.css?v=10">
+<link rel="stylesheet" href="css/style.css?v=11">
 </head>
 <body>
 <div id="progress"></div>
@@ -88,7 +88,7 @@
 <section id="mesas">
   <div class="wrap">
     <h2 class="reveal">Mesa esperando? <span class="grad">O metre sabe.</span></h2>
-    <p class="lead reveal">Suba um vídeo ou foto do salão. O modelo roda <b>no seu navegador</b>, sem enviar o vídeo a nenhum servidor: ele encontra as mesas sozinho e mostra quais foram atendidas. Sem vídeo? Use o modo simulado.</p>
+    <p class="lead reveal">Escolha uma das câmeras da Bovinu's, o modo simulado, ou envie um vídeo seu: nesse caso marque as mesas arrastando sobre a imagem (a calibração da câmera). O modelo roda <b>no seu navegador</b>, sem enviar o vídeo a nenhum servidor.</p>
 
     <div class="panel reveal">
       <div class="toolbar">
@@ -201,32 +201,18 @@
   <div class="pin">
     <div class="steps">
       <div class="step"><div class="big">01</div><h3>Mesas com relógio</h3><p>A câmera vê a mesa ocupada. Se ninguém atende em 1–2 minutos (configurável), o metre da praça recebe o alerta. Mesa que saiu e não foi limpa também avisa.</p><p class="src">Montagem sobre quadro real da câmera da Bovinu's (rostos já borrados na origem): o estado de cada mesa vem do nosso modelo.</p></div>
-      <div class="step"><div class="big">02</div><h3>Mix do prato</h3><p>Uma foto no momento da pesagem mostra a proporção de carne, carboidrato, salada e sobremesa — junto do peso que o sistema já registra.</p><p class="src">Foto gerada por IA (sem marcações); a camada colorida e as porcentagens saem da nossa regra de cor, a mesma da demo mais abaixo. Limite visível: o feijão cai em "outros", porque a regra separa por cor e não sabe o que é cada alimento.</p></div>
+      <div class="step"><div class="big">02</div><h3>Mix do prato</h3><p>Uma foto no momento da pesagem mostra a proporção de carne, carboidrato, salada e sobremesa — junto do peso que o sistema já registra.</p><p class="src">Foto gerada por IA. A leitura de cores que separa carne, carboidrato e salada está na demo mais abaixo.</p></div>
       <div class="step"><div class="big">03</div><h3>Buffet que se avisa</h3><p>Câmera sobre as cubas conta reposições e mostra o que mais sai e o que acaba cedo, hora a hora.</p><p class="src">Ilustração sobre quadro real: o nível de procura de cada seção foi marcado à mão, para mostrar a ideia. Não é medição.</p></div>
       <div class="step"><div class="big">04</div><h3>Avaliação sem atrito</h3><p>QR code na mesa, junto aos guardanapos, abre direto a avaliação no Google. Sem brinde, como a política do Google exige. O código real depende do ID do local da Bovinu's no Google, que a casa precisa fornecer.</p></div>
     </div>
     <div class="visual" title="Imagens reais da câmera (passos 1 e 3) e ilustrações (passos 2 e 4)">
-      <span class="ia-badge vis" id="b2">foto gerada por IA, com a leitura de cores do nosso algoritmo por cima</span>
+      <span class="ia-badge vis" id="b2">foto gerada por IA</span>
       <span class="ia-badge vis" id="b4">ilustração gerada por IA</span>
       <!-- imagens geradas por IA. Enquanto o arquivo não existir, o desenho em SVG abaixo aparece no lugar. -->
       <img class="vis vis-img" id="i1" src="img/passo-1-mesas.webp?v=3" alt="Quadro real do salão com cada mesa marcada: livre em verde, ocupada em amarelo, atendida em azul" onerror="this.remove()">
-      <img class="vis vis-img" id="i2" src="img/passo-2-prato.webp?v=2" alt="Prato de buffet por quilo fotografado do alto, dividido por cores em carne, carboidrato, salada e sobremesa" onerror="this.remove()">
+      <img class="vis vis-img" id="i2" src="img/passo-2-prato.webp?v=3" alt="Prato de buffet por quilo fotografado do alto, dividido por cores em carne, carboidrato, salada e sobremesa" onerror="this.remove()">
       <img class="vis vis-img" id="i3" src="img/passo-3-cubas.webp?v=3" alt="Quadro real do buffet com quadrados nas seções onde há mais gente, indicando cubas que esvaziam mais rápido" onerror="this.remove()">
       <img class="vis vis-img" id="i4" src="img/passo-4-avaliacao.webp?v=2" alt="Mesa com adesivo de QR code e cartão de aproximação convidando a avaliar a visita no Google" onerror="this.remove()">
-      <svg viewBox="0 0 400 300" aria-hidden="true">
-                <g class="vis" id="v2">
-          <circle cx="200" cy="150" r="100" fill="#1b1714" stroke="#2b2520" stroke-width="3"/>
-          <path d="M200 150 L200 50 A100 100 0 0 1 280 210 Z" fill="#8a4b2a"/>
-          <path d="M200 150 L280 210 A100 100 0 0 1 130 235 Z" fill="#e9c46a"/>
-          <path d="M200 150 L130 235 A100 100 0 0 1 100 110 Z" fill="#3dae6a"/>
-          <path d="M200 150 L100 110 A100 100 0 0 1 200 50 Z" fill="#c05680"/>
-        </g>
-                <g class="vis" id="v4">
-          <rect x="130" y="60" width="140" height="180" rx="14" fill="#fff"/>
-          <g fill="#111"><rect x="150" y="80" width="40" height="40"/><rect x="210" y="80" width="40" height="40"/><rect x="150" y="140" width="40" height="40"/><rect x="210" y="150" width="20" height="20"/><rect x="236" y="176" width="14" height="14"/><rect x="170" y="196" width="60" height="14"/></g>
-          <text x="200" y="262" text-anchor="middle" fill="#f4efe8" font-size="13">★★★★★ avalie a sua visita</text>
-        </g>
-      </svg>
     </div>
   </div>
 </section>
@@ -303,6 +289,7 @@
       <div class="demo-grid">
         <div>
           <div class="stage" style="aspect-ratio:16/9"><canvas id="cubaCanvas" width="960" height="540"></canvas></div>
+          <p class="note" id="cubaHint">Envie a foto de uma cuba vista de cima, ou gere o buffet de exemplo.</p>
           <div class="cuba-list" id="cubaList"></div>
         </div>
         <div>
@@ -352,6 +339,21 @@
       <div class="route reveal"><h3><span>Rota A</span> · IA paga na nuvem</h3><ul><li>Integração rápida: manda quadros, recebe resultado.</li><li>Custo por uso, que cresce com o número de câmeras e quadros.</li><li>Imagens saem da loja: exige aviso e cuidado de LGPD.</li><li>Depende da internet da casa.</li></ul></div>
       <div class="route reveal"><h3><span>Rota B</span> · ML local na loja</h3><ul><li>Sem custo por uso; modelo aberto rodando na rede da casa.</li><li>Imagens nunca saem do salão.</li><li>Servidor do JS Softcom pode não ter GPU: prever um mini-PC dedicado.</li><li>Exige manutenção e atualização do modelo.</li></ul></div>
     </div>
+        <div class="custo reveal">
+      <h3>Custo aproximado das nossas mudanças</h3>
+      <p class="src">Ordem de grandeza da equipe, <b>não é cotação</b>. Preços de anúncios consultados em 26/11/2026, sem frete e sujeitos a mudar; o que não tem fonte em reais está dito.</p>
+      <table>
+        <thead><tr><th>Item</th><th>Faixa</th><th>De onde vem</th></tr></thead>
+        <tbody>
+          <tr><td><b>Nó de IA</b> (mini-PC, rota B, sem GPU)</td><td>R$ 3.900 a 4.900, uma vez</td><td>Anúncios de mini-PC i5 com 16 GB e SSD de 512 GB: <a href="https://www.kabum.com.br/produto/628217/mini-pc-machenike-mini2-intel-i5-12450h-16gb-ram-ssd-512gb-wifi-6-branco-mini2-3545hd4" target="_blank" rel="noopener">KaBuM, R$ 3.899,99 no Pix</a>; Dell Optiplex Micro, R$ 4.899 (Magazine Luiza). Nosso modelo leu um quadro em 0,17 s em 4 núcleos de CPU (cerca de 6 quadros por segundo): sobra para algumas câmeras, já que a regra trabalha em minutos.</td></tr>
+          <tr><td><b>Câmeras</b></td><td>R$ 0 se as atuais servirem; R$ 260 a 500 cada se faltar ângulo</td><td>Intelbras VIP 1230 Full HD, <a href="https://www.kabum.com.br/produto/729041/camera-vip-1220-d-2mp-full-hd-1080p-ip-full-color-intelbras" target="_blank" rel="noopener">exemplo na KaBuM</a>. Se precisa trocar o ângulo ou comprar novas é uma pergunta da fase 0.</td></tr>
+          <tr><td><b>Rota A</b> (IA na nuvem)</td><td>Por uso, cresce com câmeras e quadros</td><td>Sem preço fixo: 4 câmeras com 1 quadro a cada 5 s por 4 h de pico dão cerca de 11.500 quadros por dia, a multiplicar pelo preço por imagem do serviço escolhido (a consultar).</td></tr>
+          <tr><td><b>Sensores de peso</b> (fase 2, opcional)</td><td>Piloto em 3 cubas: R$ 2,5 a 6 mil. 15 a 20 cubas: R$ 16 a 39 mil</td><td>Estimativa nossa a partir de preços de kits de células de carga e de plataformas inox no exterior, convertidos a R$ 6 por euro; <b>sem cotação em reais</b>. A câmera sozinha pode bastar.</td></tr>
+          <tr><td><b>Implantação</b> (calibrar mesas e cubas, integrar, treinar a equipe)</td><td>Não precificado</td><td>Horas de trabalho que a fase 0 levanta. Software: nosso protótipo é aberto; o detector é YOLOv8 (AGPL-3.0), a revisar para uso comercial.</td></tr>
+        </tbody>
+      </table>
+      <p class="note"><b>Resumo do piloto de mesas:</b> cerca de R$ 4 a 5 mil de equipamento, usando as câmeras que a casa já tem. É o que cabe no que a empresa pediu: investimento pequeno e medir antes de ampliar.</p>
+    </div>
     <p class="src reveal">Documento completo: <a href="https://github.com/Breno-Sarcero/bigtech-fmu-2026-2/blob/main/docs/instalacao.md" target="_blank" rel="noopener">Documento de instalação</a> (fase 0, duas rotas de IA, premissas, LGPD, riscos e custos).</p>
   </div>
 </section>
@@ -379,14 +381,14 @@
 
 <script src="vendor/gsap.min.js"></script>
 <script src="vendor/ScrollTrigger.min.js"></script>
-<script src="js/main.js?v=8"></script>
+<script src="js/main.js?v=9"></script>
 <script src="js/mesas-core.js?v=2"></script>
-<script src="js/mesas.js?v=7"></script>
+<script src="js/mesas.js?v=9"></script>
 <script src="js/medido.js?v=2"></script>
 <script src="js/fila-core.js"></script>
 <script src="js/fila.js?v=2"></script>
-<script src="js/prato.js?v=4"></script>
+<script src="js/prato.js?v=5"></script>
 <script src="js/cubas-core.js?v=2"></script>
-<script src="js/cubas.js?v=3"></script>
+<script src="js/cubas.js?v=4"></script>
 </body>
 </html>
