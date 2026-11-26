@@ -11,7 +11,7 @@ Proposta da equipe **BIG Tech** (Breno, Igor e Giovanna) para a Bovinu's Grill &
 | **Ideia** | Câmeras que já existem + IA geram as métricas que hoje ninguém registra: tempo de mesa sem atendimento, mesa suja, fila, mix do prato e nível das cubas. |
 | **O que muda para a equipe** | Nada no atendimento. A IA só avisa; quem atende e limpa continua sendo gente. |
 | **O que não mexemos** | Pagamento, cozinha, compras e estoque (a pedido da empresa). A balança não é o foco. Nenhum sistema é trocado. |
-| **Primeiro passo** | **Fase 0** de levantamento, sem comprar nada. |
+| **Primeiro passo** | **Levantamento inicial**, sem comprar nada. |
 | **Duas rotas de IA** | A) IA paga na nuvem. B) Machine learning local, em um computador dentro da loja. |
 
 ## 2. O que sabemos e o que assumimos
@@ -35,7 +35,7 @@ Dados abaixo foram ditos pela equipe da Bovinu's na sessão de perguntas e respo
 
 Legenda: 🟢 fonte sólida · 🟡 inferência razoável · 🔴 sem informação.
 
-| # | Premissa | Confiança | O que fazer na fase 0 |
+| # | Premissa | Confiança | O que fazer no levantamento inicial |
 |---|---|---|---|
 | 1 | O JS Softcom pode entregar dados por **exportação CSV** ou **leitura somente-leitura do banco local**. Não achamos documentação pública. | 🔴 | Perguntar ao fornecedor. O sistema de IA funciona **com ou sem** essa integração. |
 | 2 | As câmeras IP Intelbras entregam vídeo por **RTSP/ONVIF** (padrão em câmeras IP da marca). A analítica embarcada via RTSP não foi confirmada. | 🟡 | Testar o modelo instalado, com a câmera real. |
@@ -43,11 +43,11 @@ Legenda: 🟢 fonte sólida · 🟡 inferência razoável · 🔴 sem informaç�
 | 4 | Os metres têm celular, já que os garçons usam celulares ligados ao servidor por Wi-Fi. | 🟡 | Alerta por **painel web (PWA)** no celular, sem exigir hardware novo. |
 | 5 | O servidor local do JS Softcom **provavelmente não tem GPU** e talvez não tenha folga para IA. | 🔴 | Prever um computador dedicado (rota B) ou a nuvem (rota A). |
 | 6 | Só investimento pequeno; hardware novo apenas se a métrica justificar. | 🟢 | Piloto mínimo e crescimento por etapa. |
-| 7 | **Número de cubas do buffet: desconhecido.** | 🔴 | Contar na fase 0; define o custo do módulo e do sensor. |
+| 7 | **Número de cubas do buffet: desconhecido.** | 🔴 | Contar no levantamento inicial; define o custo do módulo e do sensor. |
 | 8 | Aceitam trocar para um prato maior e raso (melhora a leitura do mix). | 🔴 | Tratar como ajuste **opcional**; o sistema funciona com o prato atual, com menor precisão. |
 | 9 | Aceitam um aviso de câmera/IA no salão. | 🟡 | Prever o aviso (seção 8). |
 
-## 3. Fase 0 — Levantamento (sem comprar nada)
+## 3. Levantamento inicial (sem comprar nada)
 
 Duração sugerida: 1 a 2 semanas. Resultado: um relatório curto que diz **o que dá para medir hoje**, o que falta e quanto custa cada módulo.
 
@@ -76,7 +76,7 @@ Se algum item falhar, o relatório diz o que corrigir (por exemplo, reposicionar
                                         ▲
  JS Softcom (servidor local) ── CSV / leitura somente-leitura (opcional)
 ```
-\* Caminho provável para câmeras IP Intelbras; a fase 0 confirma.
+\* Caminho provável para câmeras IP Intelbras; o levantamento inicial confirma.
 
 Princípios:
 - **Nada é trocado.** A IA roda ao lado dos sistemas atuais.
@@ -89,13 +89,13 @@ Princípios:
 - **Como funciona:** a loja envia quadros do vídeo para um serviço pago, que devolve o que viu.
 - **Vantagens:** integração rápida; nenhum computador novo para rodar o modelo; modelos mantidos pelo fornecedor.
 - **Desvantagens:** **custo por uso**, que cresce com câmeras × horas × quadros por minuto; **as imagens saem da loja** (exige atenção redobrada de LGPD); depende de internet estável.
-- **Cálculo do custo:** `custo mensal ≈ câmeras × horas por dia × dias × quadros por hora × preço por quadro`. O preço vigente deve ser consultado no fornecedor na fase 0; **não usamos número inventado aqui.**
+- **Cálculo do custo:** `custo mensal ≈ câmeras × horas por dia × dias × quadros por hora × preço por quadro`. O preço vigente deve ser consultado no fornecedor no levantamento inicial; **não usamos número inventado aqui.**
 
 ### Rota B — Machine learning local (modelos abertos)
 - **Como funciona:** um computador dentro da loja roda o modelo. O protótipo desta proposta usa o mesmo tipo de modelo (COCO-SSD) e já roda no navegador de um computador comum.
 - **Vantagens:** **sem custo por uso**; **as imagens nunca saem da casa**; funciona sem internet; custo previsível.
 - **Desvantagens:** exige um computador dedicado (o servidor do JS Softcom provavelmente não tem folga nem GPU), instalação e atualização do modelo.
-- **Requisito de hardware:** depende do número de câmeras e de quadros por segundo; **dimensionar na fase 0** com a amostra real. Um mini-PC dedicado, na rede da loja, é o ponto de partida.
+- **Requisito de hardware:** depende do número de câmeras e de quadros por segundo; **dimensionar no levantamento inicial** com a amostra real. Um mini-PC dedicado, na rede da loja, é o ponto de partida.
 
 ### Como escolher
 
@@ -123,7 +123,7 @@ Princípios:
 
 ### 6.3 Fila e lotação
 - **Precisa de:** nada novo para a simulação; câmera na fila e/ou as comandas abertas para a medição real.
-- **O que o sistema faz:** simula o pico, estima a espera e mostra a lotação. Com dados reais da fase 0, a simulação é calibrada.
+- **O que o sistema faz:** simula o pico, estima a espera e mostra a lotação. Com dados reais do levantamento inicial, a simulação é calibrada.
 - **Observação:** a empresa já oferece 10% de desconto antes das 12h e depois das 13h30 para aliviar o pico; as métricas dizem se isso funciona.
 
 ### 6.4 Cubas do buffet
@@ -147,16 +147,16 @@ Princípios:
 Recomenda-se **validação jurídica** antes da implantação; o que segue são os princípios do projeto.
 
 - **Sem reconhecimento facial.** O sistema distingue cliente de garçom pela **postura e pelo uniforme**, não por quem a pessoa é.
-- **Privacidade por design:** guardar só eventos e contagens; **não armazenar vídeo** por padrão. Se a fase 0 gravar amostras, definir antes quem acessa e por quanto tempo.
+- **Privacidade por design:** guardar só eventos e contagens; **não armazenar vídeo** por padrão. Se o levantamento inicial gravar amostras, definir antes quem acessa e por quanto tempo.
 - **Processamento local** na rota B; na rota A, as imagens saem da loja, o que exige cláusulas com o fornecedor e mais cuidado.
 - **Aviso no salão:** placa visível informando que câmeras com análise de imagem são usadas só para organizar o atendimento, sem identificar pessoas.
 - **Retenção mínima** e acesso restrito à gerência.
 
-## 9. Cronograma sugerido (sujeito à fase 0)
+## 9. Cronograma sugerido (sujeito ao levantamento inicial)
 
 | Etapa | O que acontece | Duração sugerida |
 |---|---|---|
-| Fase 0 | Levantamento, amostras e relatório | 1 a 2 semanas |
+| Levantamento inicial | Levantamento, amostras e relatório | 1 a 2 semanas |
 | Piloto 1 | Mesas em uma praça, com alertas ao metre | 2 a 4 semanas |
 | Piloto 2 | Cubas (2 ou 3) e mix do prato, comparando câmera e sensor | 2 a 4 semanas |
 | Revisão | Métricas, decisão de expandir ou ajustar | 1 semana |
@@ -168,23 +168,23 @@ Os valores dependem do levantamento. A conta do projeto soma:
 | Item | Quando aparece | Observação |
 |---|---|---|
 | Computador dedicado (rota B) | Piloto | Dimensionar pelo nº de câmeras |
-| Câmeras adicionais | Só se a fase 0 achar pontos cegos (buffet, balança) | Recomendação, não obrigação |
+| Câmeras adicionais | Só se o levantamento inicial achar pontos cegos (buffet, balança) | Recomendação, não obrigação |
 | Uso da nuvem (rota A) | Mensal | Fórmula da seção 5 |
 | Sensores de peso (fase 2) | Opcional, após o piloto | Depende do nº de cubas |
 | Instalação e configuração | Piloto | Horas de técnico |
 | Energia e manutenção | Mensal | Baixo |
 
-Para decidir, a gerência compara o custo de cada módulo com o que ele pode evitar: perda de clientes por espera, margem perdida por mix do prato e desperdício por reposição mal feita. **A fase 0 e o piloto servem para medir esses ganhos antes de qualquer expansão.**
+Para decidir, a gerência compara o custo de cada módulo com o que ele pode evitar: perda de clientes por espera, margem perdida por mix do prato e desperdício por reposição mal feita. **O levantamento inicial e o piloto servem para medir esses ganhos antes de qualquer expansão.**
 
 ## 11. Riscos e como reduzi-los
 
 | Risco | Efeito | Mitigação |
 |---|---|---|
-| Câmera sem RTSP ou ângulo ruim | Não há vídeo utilizável | Fase 0 testa antes; recomendar câmera adicional |
+| Câmera sem RTSP ou ângulo ruim | Não há vídeo utilizável | O levantamento inicial testa antes; recomendar câmera adicional |
 | Falso alerta (por exemplo, cliente em pé confundido com garçom) | Metre perde a confiança | Cor do uniforme como ajuste; botão de correção; medir a taxa de acerto no piloto |
 | Pessoas muito pequenas na imagem | Detecção falha | Reposicionar câmera; afinar o modelo com imagens do salão |
 | Servidor sem folga | Lentidão | Computador dedicado (rota B) ou nuvem (rota A) |
-| Wi-Fi fraco no salão | Alerta não chega | Testar na fase 0 |
+| Wi-Fi fraco no salão | Alerta não chega | Testar no levantamento inicial |
 | Resistência da equipe | Alerta ignorado | Alertas poucos e úteis; a IA avisa, não vigia pessoas |
 | LGPD | Problema legal | Sem reconhecimento facial, sem vídeo guardado, aviso, validação jurídica |
 | Licenças e patentes | Impedimento comercial | Ver nota abaixo |
@@ -204,7 +204,7 @@ Para decidir, a gerência compara o custo de cada módulo com o que ele pode evi
 
 **Decisão ao final do piloto:** expandir, ajustar (câmera, parâmetros) ou parar. A solução definitiva nasce desses números.
 
-## 13. Perguntas para a Bovinu's na fase 0
+## 13. Perguntas para a Bovinu's no levantamento inicial
 
 1. Quantas cubas tem o buffet e de que tipo?
 2. Qual o modelo das câmeras, quantas são e quais áreas enxergam?
