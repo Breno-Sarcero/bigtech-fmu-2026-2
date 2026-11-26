@@ -69,7 +69,7 @@
     desenharBuffet(niveis);
     analisar(ITENS.map((_, i) => regiao(i)), ITENS.map(i => i.nome));
   }
-  // Foto hiper-realista de exemplo com 4 cubas lado a lado (gerada por IA, ver docs/prompts-imagens.md).
+  // Foto hiper-realista de exemplo com 4 cubas lado a lado (gerada por IA).
   // Se o arquivo existir, a demo usa a foto; se não, cai no buffet desenhado acima.
   const real = new Image(); let realOk = false;
   // 4 colunas iguais (a foto de exemplo tem as 4 cubas ocupando a largura toda); a cor do inox vem do topo da 1ª cuba,
