@@ -7,7 +7,7 @@
 <meta name="description" content="Como enxergar respostas ocultas? Visão computacional nas câmeras que a Bovinu's Augusta já tem: mesas, mix do prato e fila. Proposta de análise da equipe BIG Tech.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ff5a1f'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%230b0a09'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/style.css?v=11">
-<link rel="stylesheet" href="css/tema-bordo.css?v=2">
+<link rel="stylesheet" href="css/tema-bordo.css?v=4">
 </head>
 <body>
 <div id="progress"></div>
@@ -107,7 +107,13 @@
             <canvas id="mesaCanvas" width="960" height="540"></canvas>
             <div class="hint" id="mesaHint">Escolha uma câmera, envie um vídeo ou use o modo simulado. Cada escolha limpa as mesas e carrega a nova fonte.</div>
           </div>
-          <p class="note"><b>Como funciona:</b> um modelo treinado com vídeos da Bovinu's enxerga as pessoas, e cada mesa é marcada uma vez por câmera. <b>Atendida:</b> alguém em pé junto à mesa depois que os clientes sentaram. <b>Suja:</b> sobrou louça depois que eles saíram. <b>Limite:</b> pessoas pequenas ou câmera muito alta reduzem a precisão, e só testamos nestas duas câmeras.</p>
+          <div class="note topicos"><b>Como funciona</b>
+            <ul>
+              <li><b>Atendida:</b> alguém em pé junto à mesa depois que os clientes sentaram.</li>
+              <li><b>Suja:</b> sobrou louça depois que eles saíram.</li>
+              <li><b>Limite:</b> pessoas pequenas ou câmera muito alta reduzem a precisão, e só testamos nestas duas câmeras.</li>
+            </ul>
+          </div>
         </div>
         <div>
           
@@ -174,22 +180,22 @@
         <div class="par reveal">
           <div class="dor"><i class="num">1</i><h3>Mix do prato</h3><p>A balança sabe o peso, mas não o que está no prato. Carne e arroz custam diferente para a casa, e a margem some sem ninguém ver.</p><em>a mais crítica</em></div>
           <svg class="seta-mini" viewBox="0 0 40 44" width="28" height="30" aria-hidden="true"><path d="M20 3 V30 M8 20 L20 34 L32 20" fill="none" stroke="#3ddc84" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>Uma foto na pesagem separa o prato por cor (carne, carboidrato, salada) e cruza com o peso e o preço do quilo. Sai a margem estimada por prato, e um alerta quando o mix foge do padrão da casa.</p></div>
+          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>A casa já testa balanças automáticas, e é exatamente isso que oferecemos: <b>4 balanças com uma câmera em cima</b> que tira a foto quando o cliente se serve. Dois modelos: 2 automáticas (o cliente se serve sozinho) e 2 manuais (um atendente atrás do balcão ajuda). Uma pessoa fica responsável por auxiliar os clientes e a automática. Se a análise mostrar que o fluxo melhora, as 2 manuais viram automáticas.</p></div>
         </div>
         <div class="par reveal">
           <div class="dor"><i class="num">2</i><h3>Filas e tempo</h3><p>Na churrasqueira a fila já chegou a 4 min (o ideal é 2,5), e no pico há mesa esperando sem que ninguém perceba.</p></div>
           <svg class="seta-mini" viewBox="0 0 40 44" width="28" height="30" aria-hidden="true"><path d="M20 3 V30 M8 20 L20 34 L32 20" fill="none" stroke="#3ddc84" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>A previsão da fila mostra o pico antes dele chegar, para reforçar a churrasqueira a tempo. E cada mesa tem um relógio: se passar de 2 minutos sem atendimento, o metre é avisado.</p></div>
+          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>A resposta mais direta é <b>mais um churrasqueiro atendendo no pico</b> (hoje são 3 atendendo, de 4 na churrasqueira). Na simulação com os números da casa, a espera cai de cerca de 4 min para menos de 1 min. E cada mesa tem um relógio: passou de 2 minutos sem atendimento, o metre é avisado.</p></div>
         </div>
         <div class="par reveal">
           <div class="dor"><i class="num">3</i><h3>Limpeza do salão</h3><p>Mesa que sai e demora a ser limpa trava a próxima família, derruba o giro do salão e piora a avaliação.</p></div>
           <svg class="seta-mini" viewBox="0 0 40 44" width="28" height="30" aria-hidden="true"><path d="M20 3 V30 M8 20 L20 34 L32 20" fill="none" stroke="#3ddc84" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>A câmera vê a mesa vaga com louça e avisa a limpeza. O tempo de cada mesa fica registrado, e mostra onde o salão perde giro.</p></div>
+          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>O modelo treinado já separa mesa em uso de mesa livre (a precisão exata é medida na fase 0). Com isso saem dados de <b>quais praças demoram mais para limpar</b>, a média por praça, e um alerta ao metre responsável para a limpeza daquela mesa.</p></div>
         </div>
         <div class="par reveal">
           <div class="dor"><i class="num">4</i><h3>Qualidade da comida</h3><p>Ninguém tem dado de qual item acaba primeiro, em que hora e quanto tempo a comida fica na cuba.</p></div>
           <svg class="seta-mini" viewBox="0 0 40 44" width="28" height="30" aria-hidden="true"><path d="M20 3 V30 M8 20 L20 34 L32 20" fill="none" stroke="#3ddc84" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>Uma câmera sobre o buffet mostra onde há mais gente e conta as reposições de cada cuba: o que mais sai e o que acaba cedo, hora a hora. Sensor de peso só entra se a câmera não bastar.</p></div>
+          <div class="sol"><span class="sol-tag">Nossa resposta</span><p>Usamos as câmeras do buffet, ou uma mais específica, em bom ângulo, só para as cubas. A análise é por imagem: onde há mais gente, o nível de cada cuba e as reposições, mostrando o que mais sai e o que acaba cedo, hora a hora.</p></div>
         </div>
       </div>
     </div>
@@ -201,13 +207,13 @@
   <div class="pin">
     <div class="steps">
       <div class="step"><div class="big">01</div><h3>Mesas com relógio</h3><p>A câmera vê a mesa ocupada. Se ninguém atende em 1–2 minutos (configurável), o metre da praça recebe o alerta. Mesa que saiu e não foi limpa também avisa.</p><p class="src">Montagem sobre quadro real da câmera da Bovinu's (rostos já borrados na origem): o estado de cada mesa vem do nosso modelo.</p></div>
-      <div class="step"><div class="big">02</div><h3>Mix do prato</h3><p>Uma foto no momento da pesagem mostra a proporção de carne, carboidrato, salada e sobremesa — junto do peso que o sistema já registra.</p><p class="src">Foto gerada por IA. A leitura de cores que separa carne, carboidrato e salada está na demo mais abaixo.</p></div>
-      <div class="step"><div class="big">03</div><h3>Buffet que se avisa</h3><p>Câmera sobre as cubas conta reposições e mostra o que mais sai e o que acaba cedo, hora a hora.</p><p class="src">Ilustração sobre quadro real: o nível de procura de cada seção foi marcado à mão, para mostrar a ideia. Não é medição.</p></div>
-      <div class="step"><div class="big">04</div><h3>Avaliação sem atrito</h3><p>QR code na mesa, junto aos guardanapos, abre direto a avaliação no Google. Sem brinde, como a política do Google exige. O código real depende do ID do local da Bovinu's no Google, que a casa precisa fornecer.</p></div>
+      <div class="step"><div class="big">02</div><h3>Mix do prato</h3><p>Uma foto no momento da pesagem mostra a proporção de carne, carboidrato, salada e sobremesa — junto do peso que o sistema já registra.</p><p class="src">Imagem ilustrativa. A leitura de cores que separa carne, carboidrato e salada está na demo mais abaixo.</p></div>
+      <div class="step"><div class="big">03</div><h3>Buffet com métricas</h3><p>Câmera sobre as cubas conta reposições e mostra o que mais sai e o que acaba cedo, hora a hora.</p><p class="src">Ilustração sobre quadro real: o nível de procura de cada seção foi marcado à mão, para mostrar a ideia. Não é medição.</p></div>
+      <div class="step"><div class="big">04</div><h3>Avaliação sem complicação</h3><p>Duas opções na mesa, junto aos guardanapos: escanear o QR code ou aproximar o celular da tag NFC. As duas abrem direto a página de avaliação no Google. Sem brinde por avaliação, como a política do Google exige. O código real depende do ID do local da Bovinu's no Google, que a casa precisa fornecer.</p></div>
     </div>
     <div class="visual" title="Imagens reais da câmera (passos 1 e 3) e ilustrações (passos 2 e 4)">
-      <span class="ia-badge vis" id="b2">foto gerada por IA</span>
-      <span class="ia-badge vis" id="b4">ilustração gerada por IA</span>
+      <span class="ia-badge vis" id="b2">imagem ilustrativa</span>
+      <span class="ia-badge vis" id="b4">imagem ilustrativa</span>
       <!-- imagens geradas por IA. Enquanto o arquivo não existir, o desenho em SVG abaixo aparece no lugar. -->
       <img class="vis vis-img" id="i1" src="img/passo-1-mesas.webp?v=3" alt="Quadro real do salão com cada mesa marcada: livre em verde, ocupada em amarelo, atendida em azul" onerror="this.remove()">
       <img class="vis vis-img" id="i2" src="img/passo-2-prato.webp?v=3" alt="Prato de buffet por quilo fotografado do alto, dividido por cores em carne, carboidrato, salada e sobremesa" onerror="this.remove()">
@@ -304,7 +310,7 @@
         <p>A cuba é padrão Gastronorm 1/1 (530 × 325 mm), então a tara é conhecida. Um sensor sob ela conta cada reposição como um salto de peso e estima o consumo em gramas por minuto, sem depender da área visível. Não dá o peso exato de cada porção, mas dá uma boa estimativa do que sobra em cada cuba. A câmera diz qual alimento é; o sensor diz quanto há.</p>
         <p>Só entra se a câmera sozinha não bastar, porque a empresa pediu investimento pequeno. Sugestão: piloto em 2 ou 3 cubas de maior saída na fase 0. Cuidados: calor e vapor do banho-maria, peça própria para alimentos e calibração por tipo de cuba e de alimento.</p>
       </div>
-      <p class="note">Limite honesto: o nível vem da <b>área visível com comida</b> numa câmera de cima, não do volume. Arroz branco puro se confunde com o inox. Na instalação, cada cuba teria sua zona marcada uma única vez e um modelo de segmentação treinado com imagens do próprio buffet. O buffet de exemplo é uma foto gerada por IA; a leitura dela usa a cor do inox vazio da primeira cuba como calibração (nas fotos enviadas, vale a regra de saturação). "Gerar buffet de exemplo" usa a foto; se ela não carregar, usa um desenho.</p>
+      <p class="note">Limite honesto: o nível vem da <b>área visível com comida</b> numa câmera de cima, não do volume. Arroz branco puro se confunde com o inox. Na instalação, cada cuba teria sua zona marcada uma única vez e um modelo de segmentação treinado com imagens do próprio buffet. O buffet de exemplo é uma imagem ilustrativa; a leitura dela usa a cor do inox vazio da primeira cuba como calibração (nas fotos enviadas, vale a regra de saturação). "Gerar buffet de exemplo" usa a foto; se ela não carregar, usa um desenho.</p>
     </div>
   </div>
 </section>
@@ -389,7 +395,7 @@
 <script src="js/medido.js?v=2"></script>
 <script src="js/fila-core.js"></script>
 <script src="js/fila.js?v=2"></script>
-<script src="js/prato.js?v=6"></script>
+<script src="js/prato.js?v=7"></script>
 <script src="js/cubas-core.js?v=2"></script>
 <script src="js/cubas.js?v=4"></script>
 </body>

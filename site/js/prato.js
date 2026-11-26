@@ -121,7 +121,7 @@
   // Foto hiper-realista de exemplo (gerada por IA). Se o arquivo existir, a demo usa a foto;
   // se não, cai no desenho sintético acima.
   const real = new Image(); let realOk = false;
-  real.onload = () => { realOk = true; $('pratoPill').textContent = 'foto de exemplo gerada por IA · heurística de cor'; drawCover(real); };
+  real.onload = () => { realOk = true; $('pratoPill').textContent = 'imagem ilustrativa · heurística de cor'; drawCover(real); };
   real.src = 'img/prato-exemplo.webp?v=1';
   $('pratoGen').addEventListener('click', () => realOk ? drawCover(real) : sample());
   sample();
