@@ -36,8 +36,7 @@ section { position: relative; padding: 120px 0; }
 .lead { font-size: clamp(1.05rem, 2vw, 1.35rem); max-width: 720px; color: var(--muted); margin-top: 22px; }
 .grad { background: linear-gradient(100deg, var(--ember), var(--ember-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
-/* barra de progresso e nav */
-#progress { position: fixed; top: 0; left: 0; height: 3px; width: 100%; transform-origin: 0 50%; transform: scaleX(0); background: linear-gradient(90deg, var(--ember), var(--ember-2)); z-index: 100; }
+/* nav */
 nav.top { position: fixed; top: 0; width: 100%; z-index: 90; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(14px); background: rgba(11,10,9,.6); border-bottom: 1px solid rgba(255,255,255,.05); }
 nav.top b { font-size: .95rem; letter-spacing: .02em; }
 nav.top ul { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; }

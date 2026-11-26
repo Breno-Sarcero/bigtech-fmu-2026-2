@@ -18,7 +18,6 @@ h2{font-size:clamp(2.5rem,5.7vw,5.5rem);font-weight:760;line-height:1.02;max-wid
 h3{line-height:1.18;letter-spacing:-.028em}
 .lead{max-width:790px;line-height:1.72;font-size:clamp(1.04rem,1.6vw,1.24rem);margin-top:24px}
 .grad{background-image:linear-gradient(110deg,#f04a34 0%,#e23a29 42%,#b9231b 100%)}
-#progress{height:2px;box-shadow:0 0 16px #ed4935}
 nav.top{top:16px;left:50%;transform:translateX(-50%);width:calc(100% - 40px);max-width:1450px;border-radius:100px;border:1px solid #c6a46d25;background:#15100fd9;backdrop-filter:blur(22px);padding:12px clamp(16px,2vw,28px);gap:18px;box-shadow:0 10px 40px #0003}
 nav.top b{white-space:nowrap;color:var(--text);font-size:.89rem;letter-spacing:-.02em}
 nav.top ul{gap:clamp(9px,1.15vw,20px);align-items:center}
